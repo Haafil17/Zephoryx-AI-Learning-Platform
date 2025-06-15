@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -18,7 +19,7 @@ export const Hero = () => {
           <div className="flex items-center gap-2">
             <Sparkles className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              PromptCraft
+              Clavis AI
             </span>
           </div>
           <div className="flex items-center gap-4">
