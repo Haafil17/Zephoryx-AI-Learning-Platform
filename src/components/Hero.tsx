@@ -18,7 +18,7 @@ export const Hero = () => {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Sparkles className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+            <span className="text-2xl font-normal bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
               Clavis AI
             </span>
           </div>
@@ -26,21 +26,21 @@ export const Hero = () => {
             <Button
               variant="ghost"
               onClick={() => scrollToSection('techniques')}
-              className="text-slate-800 dark:text-slate-50 hover:text-indigo-600 dark:hover:text-indigo-300 font-medium"
+              className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
             >
               Techniques
             </Button>
             <Button
               variant="ghost"
               onClick={() => scrollToSection('examples')}
-              className="text-slate-800 dark:text-slate-50 hover:text-indigo-600 dark:hover:text-indigo-300 font-medium"
+              className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
             >
               Examples
             </Button>
             <Button
               variant="ghost"
               onClick={() => scrollToSection('resources')}
-              className="text-slate-800 dark:text-slate-50 hover:text-indigo-600 dark:hover:text-indigo-300 font-medium"
+              className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
             >
               Resources
             </Button>
@@ -53,16 +53,16 @@ export const Hero = () => {
       <div className="flex-1 flex items-center justify-center px-4 pt-20">
         <div className="max-w-6xl mx-auto text-center">
           <div className="mb-8">
-            <span className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-100 rounded-full text-sm font-medium mb-6 border dark:border-indigo-600">
+            <span className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-800 text-indigo-900 dark:text-indigo-100 rounded-full text-sm font-normal mb-6 border dark:border-indigo-500">
               Master the Art of AI Communication
             </span>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-white dark:via-indigo-200 dark:to-white bg-clip-text text-transparent leading-tight">
+            <h1 className="text-5xl md:text-7xl font-normal mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-white dark:via-indigo-100 dark:to-white bg-clip-text text-transparent leading-tight">
               Prompt Engineering
-              <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
                 Made Simple
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-700 dark:text-slate-100 max-w-4xl mx-auto leading-relaxed font-medium">
+            <p className="text-xl md:text-2xl text-slate-800 dark:text-slate-100 max-w-4xl mx-auto leading-relaxed font-normal">
               Learn the essential techniques to communicate effectively with AI systems. 
               Transform your ideas into powerful prompts that deliver exceptional results.
             </p>
@@ -72,7 +72,7 @@ export const Hero = () => {
             <Button
               onClick={() => scrollToSection('techniques')}
               size="lg"
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 dark:from-indigo-500 dark:to-purple-500 dark:hover:from-indigo-600 dark:hover:to-purple-600 text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 dark:from-indigo-500 dark:to-purple-500 dark:hover:from-indigo-600 dark:hover:to-purple-600 text-white px-8 py-4 text-lg font-normal shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
             >
               Start Learning
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -81,7 +81,7 @@ export const Hero = () => {
               onClick={() => scrollToSection('examples')}
               size="lg"
               variant="outline"
-              className="border-2 border-indigo-300 dark:border-indigo-400 text-indigo-700 dark:text-indigo-100 hover:bg-indigo-50 dark:hover:bg-indigo-900/50 px-8 py-4 text-lg font-semibold bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm hover:border-indigo-400 dark:hover:border-indigo-300"
+              className="border-2 border-indigo-600 dark:border-indigo-400 text-indigo-800 dark:text-indigo-100 hover:bg-indigo-50 dark:hover:bg-indigo-900/60 px-8 py-4 text-lg font-normal bg-white dark:bg-slate-800 backdrop-blur-sm hover:border-indigo-700 dark:hover:border-indigo-300"
             >
               View Examples
             </Button>
@@ -96,11 +96,11 @@ export const Hero = () => {
             ].map((item, index) => (
               <div
                 key={index}
-                className="bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-600"
+                className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-slate-300 dark:border-slate-600"
               >
                 <div className="text-3xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-bold text-slate-900 dark:text-slate-50 mb-2">{item.title}</h3>
-                <p className="text-slate-600 dark:text-slate-200">{item.desc}</p>
+                <h3 className="text-xl font-normal text-slate-900 dark:text-white mb-2">{item.title}</h3>
+                <p className="text-slate-700 dark:text-slate-200 font-normal">{item.desc}</p>
               </div>
             ))}
           </div>
