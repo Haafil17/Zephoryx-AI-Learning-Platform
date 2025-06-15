@@ -26,21 +26,21 @@ export const Hero = () => {
             <Button
               variant="ghost"
               onClick={() => scrollToSection('techniques')}
-              className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
+              className="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
             >
               Techniques
             </Button>
             <Button
               variant="ghost"
               onClick={() => scrollToSection('examples')}
-              className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
+              className="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
             >
               Examples
             </Button>
             <Button
               variant="ghost"
               onClick={() => scrollToSection('resources')}
-              className="text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
+              className="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300 font-normal"
             >
               Resources
             </Button>
@@ -56,13 +56,13 @@ export const Hero = () => {
             <span className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-800 text-indigo-900 dark:text-indigo-100 rounded-full text-sm font-normal mb-6 border dark:border-indigo-500">
               Master the Art of AI Communication
             </span>
-            <h1 className="text-5xl md:text-7xl font-normal mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-white dark:via-indigo-100 dark:to-white bg-clip-text text-transparent leading-tight">
+            <h1 className="text-5xl md:text-7xl font-normal mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-slate-100 dark:via-indigo-100 dark:to-slate-100 bg-clip-text text-transparent leading-tight">
               Prompt Engineering
               <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
                 Made Simple
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-800 dark:text-slate-100 max-w-4xl mx-auto leading-relaxed font-normal">
+            <p className="text-xl md:text-2xl text-slate-700 dark:text-slate-200 max-w-4xl mx-auto leading-relaxed font-normal">
               Learn the essential techniques to communicate effectively with AI systems. 
               Transform your ideas into powerful prompts that deliver exceptional results.
             </p>
@@ -99,8 +99,8 @@ export const Hero = () => {
                 className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-slate-300 dark:border-slate-600"
               >
                 <div className="text-3xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-normal text-slate-900 dark:text-white mb-2">{item.title}</h3>
-                <p className="text-slate-700 dark:text-slate-200 font-normal">{item.desc}</p>
+                <h3 className="text-xl font-normal text-slate-900 dark:text-slate-100 mb-2">{item.title}</h3>
+                <p className="text-slate-600 dark:text-slate-300 font-normal">{item.desc}</p>
               </div>
             ))}
           </div>
