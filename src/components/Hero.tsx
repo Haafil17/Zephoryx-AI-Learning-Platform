@@ -1,87 +1,117 @@
-
 import { Button } from "@/components/ui/button";
-import { ArrowDown, Sparkles, Brain, Zap } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const Hero = () => {
-  const scrollToTechniques = () => {
-    document.getElementById('techniques')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const scrollToExamples = () => {
-    document.getElementById('examples')?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
-      {/* Background gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-        <div className="absolute top-40 left-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+    <div className="relative min-h-screen flex flex-col">
+      {/* Navigation */}
+      <nav className="absolute top-0 left-0 right-0 z-50 p-6">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+            <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              PromptCraft
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              onClick={() => scrollToSection('techniques')}
+              className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+            >
+              Techniques
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => scrollToSection('examples')}
+              className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+            >
+              Examples
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => scrollToSection('resources')}
+              className="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400"
+            >
+              Resources
+            </Button>
+            <ThemeToggle />
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Content */}
+      <div className="flex-1 flex items-center justify-center px-4 pt-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="mb-8">
+            <span className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-medium mb-6">
+              Master the Art of AI Communication
+            </span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-slate-100 dark:via-indigo-100 dark:to-slate-100 bg-clip-text text-transparent leading-tight">
+              Prompt Engineering
+              <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                Made Simple
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
+              Learn the essential techniques to communicate effectively with AI systems. 
+              Transform your ideas into powerful prompts that deliver exceptional results.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <Button
+              onClick={() => scrollToSection('techniques')}
+              size="lg"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
+            >
+              Start Learning
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button
+              onClick={() => scrollToSection('examples')}
+              size="lg"
+              variant="outline"
+              className="border-2 border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950 px-8 py-4 text-lg font-semibold"
+            >
+              View Examples
+            </Button>
+          </div>
+
+          {/* Floating Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {[
+              { title: "Zero-Shot", desc: "Direct instructions", icon: "🎯" },
+              { title: "Few-Shot", desc: "Learn from examples", icon: "📚" },
+              { title: "Chain-of-Thought", desc: "Step-by-step reasoning", icon: "🧠" }
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-slate-200 dark:border-slate-700"
+              >
+                <div className="text-3xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-2">{item.title}</h3>
+                <p className="text-slate-600 dark:text-slate-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto text-center">
-        {/* Header with animated icons */}
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-            <Brain className="w-8 h-8 text-indigo-600 animate-pulse" />
-          </div>
-          <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-            <Sparkles className="w-8 h-8 text-purple-600 animate-bounce" />
-          </div>
-          <div className="p-3 bg-white/20 backdrop-blur-sm rounded-full">
-            <Zap className="w-8 h-8 text-yellow-600 animate-pulse" />
-          </div>
-        </div>
-
-        <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6 animate-fade-in">
-          Prompt Engineering
-        </h1>
-        
-        <p className="text-xl md:text-2xl text-slate-700 mb-8 max-w-4xl mx-auto leading-relaxed">
-          Master the art and science of communicating with AI systems. Learn proven techniques, 
-          best practices, and advanced strategies to get the most out of your AI interactions.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Button 
-            onClick={scrollToTechniques}
-            size="lg" 
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-          >
-            Start Learning
-            <ArrowDown className="ml-2 w-5 h-5" />
-          </Button>
-          <Button 
-            onClick={scrollToExamples}
-            variant="outline" 
-            size="lg"
-            className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white px-8 py-3 text-lg font-semibold rounded-full transition-all duration-300"
-          >
-            View Examples
-          </Button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-indigo-600 mb-2">50+</div>
-            <div className="text-slate-600">Techniques</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-purple-600 mb-2">100+</div>
-            <div className="text-slate-600">Examples</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-pink-600 mb-2">25+</div>
-            <div className="text-slate-600">Use Cases</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-yellow-600 mb-2">10+</div>
-            <div className="text-slate-600">Tools</div>
-          </div>
-        </div>
+      {/* Animated Background */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 -right-32 w-96 h-96 bg-purple-300 dark:bg-purple-900/20 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute -bottom-8 -left-32 w-96 h-96 bg-yellow-300 dark:bg-yellow-900/20 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-300 dark:bg-indigo-900/20 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
-    </section>
+    </div>
   );
 };
