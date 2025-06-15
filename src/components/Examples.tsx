@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Copy, Code, PenTool, BarChart, BookOpen, Microscope } from "lucide-react";
 import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 export const Examples = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -87,18 +87,23 @@ Use critical thinking and academic rigor in your analysis.`,
     }
   ];
 
-  const copyToClipboard = (text: string, index: number) => {
-    navigator.clipboard.writeText(text);
-    setCopiedIndex(index);
-    toast({
-      title: "Copied to clipboard!",
-      description: "The prompt has been copied to your clipboard.",
-    });
-    setTimeout(() => setCopiedIndex(null), 2000);
+  const copyToClipboard = async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      toast.success("Copied to clipboard!", {
+        description: "The prompt has been copied to your clipboard.",
+      });
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (err) {
+      toast.error("Failed to copy", {
+        description: "Could not copy the prompt to clipboard.",
+      });
+    }
   };
 
   return (
-    <section className="py-20 px-4 bg-white/50">
+    <section id="examples" className="py-20 px-4 bg-white/50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">

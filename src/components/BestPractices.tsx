@@ -93,7 +93,7 @@ export const BestPractices = () => {
   };
 
   return (
-    <section className="py-20 px-4">
+    <section id="best-practices" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">

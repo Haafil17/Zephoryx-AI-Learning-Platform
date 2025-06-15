@@ -3,6 +3,25 @@ import { Separator } from "@/components/ui/separator";
 import { Brain, Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 export const Footer = () => {
+  const scrollToSection = (sectionId: string) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSocialClick = (platform: string) => {
+    const urls = {
+      github: 'https://github.com',
+      twitter: 'https://twitter.com',
+      linkedin: 'https://linkedin.com',
+      mail: 'mailto:hello@promptcraft.com'
+    };
+    
+    if (platform === 'mail') {
+      window.location.href = urls[platform as keyof typeof urls];
+    } else {
+      window.open(urls[platform as keyof typeof urls], '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <footer className="bg-slate-900 text-white py-16 px-4">
       <div className="max-w-7xl mx-auto">
@@ -19,18 +38,30 @@ export const Footer = () => {
               Master the art of prompt engineering and unlock the full potential of AI systems.
             </p>
             <div className="flex space-x-4">
-              <div className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors">
+              <button 
+                onClick={() => handleSocialClick('github')}
+                className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+              >
                 <Github className="w-5 h-5" />
-              </div>
-              <div className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors">
+              </button>
+              <button 
+                onClick={() => handleSocialClick('twitter')}
+                className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+              >
                 <Twitter className="w-5 h-5" />
-              </div>
-              <div className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors">
+              </button>
+              <button 
+                onClick={() => handleSocialClick('linkedin')}
+                className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+              >
                 <Linkedin className="w-5 h-5" />
-              </div>
-              <div className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors">
+              </button>
+              <button 
+                onClick={() => handleSocialClick('mail')}
+                className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+              >
                 <Mail className="w-5 h-5" />
-              </div>
+              </button>
             </div>
           </div>
 
@@ -38,10 +69,38 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><a href="#techniques" className="hover:text-white transition-colors">Techniques</a></li>
-              <li><a href="#examples" className="hover:text-white transition-colors">Examples</a></li>
-              <li><a href="#best-practices" className="hover:text-white transition-colors">Best Practices</a></li>
-              <li><a href="#resources" className="hover:text-white transition-colors">Resources</a></li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('techniques')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Techniques
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('examples')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Examples
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('best-practices')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Best Practices
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('resources')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Resources
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -49,10 +108,38 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Categories</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><a href="#" className="hover:text-white transition-colors">Beginner Guides</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Advanced Techniques</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Industry Applications</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Tools & Platforms</a></li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('techniques')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Beginner Guides
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('techniques')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Advanced Techniques
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('examples')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Industry Applications
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('resources')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Tools & Platforms
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -60,10 +147,38 @@ export const Footer = () => {
           <div>
             <h3 className="font-semibold mb-4">Support</h3>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('resources')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Documentation
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleSocialClick('github')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Community
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => handleSocialClick('mail')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  Contact Us
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => scrollToSection('best-practices')} 
+                  className="hover:text-white transition-colors text-left"
+                >
+                  FAQ
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -73,9 +188,9 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
           <p>&copy; 2024 PromptCraft. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+            <button className="hover:text-white transition-colors">Privacy Policy</button>
+            <button className="hover:text-white transition-colors">Terms of Service</button>
+            <button className="hover:text-white transition-colors">Cookie Policy</button>
           </div>
         </div>
       </div>

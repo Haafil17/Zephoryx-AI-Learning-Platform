@@ -7,6 +7,10 @@ export const Hero = () => {
     document.getElementById('techniques')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToExamples = () => {
+    document.getElementById('examples')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20">
       {/* Background gradient orbs */}
@@ -49,6 +53,7 @@ export const Hero = () => {
             <ArrowDown className="ml-2 w-5 h-5" />
           </Button>
           <Button 
+            onClick={scrollToExamples}
             variant="outline" 
             size="lg"
             className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white px-8 py-3 text-lg font-semibold rounded-full transition-all duration-300"

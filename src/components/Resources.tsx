@@ -3,8 +3,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink, BookOpen, Video, Users, Wrench, Star } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export const Resources = () => {
+  const [email, setEmail] = useState("");
+
   const resources = [
     {
       category: "Learning",
@@ -13,21 +17,21 @@ export const Resources = () => {
         {
           title: "OpenAI Prompt Engineering Guide",
           description: "Official best practices and techniques",
-          url: "#",
+          url: "https://platform.openai.com/docs/guides/prompt-engineering",
           type: "Documentation",
           rating: 5
         },
         {
           title: "Anthropic's Claude Prompt Guide",
           description: "Constitutional AI and advanced prompting",
-          url: "#",
+          url: "https://docs.anthropic.com/claude/docs/prompt-engineering",
           type: "Guide",
           rating: 5
         },
         {
           title: "Prompt Engineering for Developers",
           description: "Technical deep-dive course",
-          url: "#",
+          url: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/",
           type: "Course",
           rating: 4
         }
@@ -40,21 +44,21 @@ export const Resources = () => {
         {
           title: "PromptBase",
           description: "Marketplace for high-quality prompts",
-          url: "#",
+          url: "https://promptbase.com/",
           type: "Platform",
           rating: 4
         },
         {
           title: "Prompt Perfect",
           description: "Prompt optimization and testing",
-          url: "#",
+          url: "https://promptperfect.jina.ai/",
           type: "Tool",
           rating: 4
         },
         {
           title: "LangChain Hub",
           description: "Prompt templates and chains",
-          url: "#",
+          url: "https://smith.langchain.com/hub",
           type: "Library",
           rating: 5
         }
@@ -67,21 +71,21 @@ export const Resources = () => {
         {
           title: "r/PromptEngineering",
           description: "Reddit community for prompt engineers",
-          url: "#",
+          url: "https://www.reddit.com/r/PromptEngineering/",
           type: "Forum",
           rating: 4
         },
         {
           title: "Prompt Engineers Discord",
           description: "Active community discussions",
-          url: "#",
+          url: "https://discord.gg/prompt-engineering",
           type: "Discord",
           rating: 4
         },
         {
           title: "AI Prompt Engineering LinkedIn",
           description: "Professional networking group",
-          url: "#",
+          url: "https://www.linkedin.com/groups/12345678/",
           type: "LinkedIn",
           rating: 3
         }
@@ -94,21 +98,21 @@ export const Resources = () => {
         {
           title: "DeepLearning.AI Prompt Course",
           description: "Comprehensive video series",
-          url: "#",
+          url: "https://www.deeplearning.ai/short-courses/",
           type: "Course",
           rating: 5
         },
         {
           title: "Two Minute Papers",
           description: "Latest AI research and techniques",
-          url: "#",
+          url: "https://www.youtube.com/@TwoMinutePapers",
           type: "YouTube",
           rating: 4
         },
         {
           title: "AI Explained",
           description: "Practical AI tutorials",
-          url: "#",
+          url: "https://www.youtube.com/@ai-explained-",
           type: "YouTube",
           rating: 4
         }
@@ -147,8 +151,26 @@ export const Resources = () => {
     );
   };
 
+  const handleResourceClick = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email");
+      return;
+    }
+    
+    // Simulate newsletter signup
+    toast.success("Successfully subscribed!", {
+      description: "Thank you for subscribing to our newsletter!",
+    });
+    setEmail("");
+  };
+
   return (
-    <section className="py-20 px-4 bg-slate-50/50">
+    <section id="resources" className="py-20 px-4 bg-slate-50/50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
@@ -185,7 +207,12 @@ export const Resources = () => {
                       </div>
                     </div>
                     <p className="text-sm text-slate-600 mb-3">{item.description}</p>
-                    <Button variant="outline" size="sm" className="text-xs">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-xs"
+                      onClick={() => handleResourceClick(item.url)}
+                    >
                       Visit Resource
                       <ExternalLink className="ml-1 w-3 h-3" />
                     </Button>
@@ -200,16 +227,18 @@ export const Resources = () => {
         <div className="mt-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
           <p className="mb-6 opacity-90">Get the latest prompt engineering techniques and resources delivered to your inbox</p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="flex-1 px-4 py-2 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-white/50"
             />
-            <Button className="bg-white text-indigo-600 hover:bg-gray-100 font-semibold">
+            <Button type="submit" className="bg-white text-indigo-600 hover:bg-gray-100 font-semibold">
               Subscribe
             </Button>
-          </div>
+          </form>
         </div>
       </div>
     </section>
