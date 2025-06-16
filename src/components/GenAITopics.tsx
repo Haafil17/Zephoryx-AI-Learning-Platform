@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,42 +15,48 @@ export const GenAITopics = () => {
       description: "Understanding transformer architecture and how models like GPT generate human-like text",
       category: "models",
       icon: FileText,
-      capabilities: ["Text Generation", "Code Writing", "Translation", "Summarization"]
+      capabilities: ["Text Generation", "Code Writing", "Translation", "Summarization"],
+      learnMoreUrl: "https://platform.openai.com/docs/guides/text-generation"
     },
     {
       title: "Text-to-Image Generation",
       description: "Creating stunning visuals from textual descriptions using diffusion models",
       category: "creative",
       icon: Image,
-      capabilities: ["Art Creation", "Product Design", "Marketing Assets", "Concept Art"]
+      capabilities: ["Art Creation", "Product Design", "Marketing Assets", "Concept Art"],
+      learnMoreUrl: "https://openai.com/dall-e-3"
     },
     {
       title: "Voice & Audio AI",
       description: "Generating realistic speech, music, and sound effects from text or audio inputs",
       category: "creative",
       icon: Mic,
-      capabilities: ["Voice Cloning", "Music Generation", "Podcast Creation", "Audio Enhancement"]
+      capabilities: ["Voice Cloning", "Music Generation", "Podcast Creation", "Audio Enhancement"],
+      learnMoreUrl: "https://elevenlabs.io/"
     },
     {
       title: "Prompt Engineering Mastery",
       description: "Advanced techniques for crafting effective prompts to get optimal AI outputs",
       category: "techniques",
       icon: Sparkles,
-      capabilities: ["Chain-of-Thought", "Few-Shot Learning", "Role-Based Prompting", "Template Design"]
+      capabilities: ["Chain-of-Thought", "Few-Shot Learning", "Role-Based Prompting", "Template Design"],
+      learnMoreUrl: "https://www.promptingguide.ai/"
     },
     {
       title: "AI Content Workflows",
       description: "Building efficient pipelines for content creation across multiple AI models",
       category: "workflow",
       icon: Zap,
-      capabilities: ["Automation", "Quality Control", "Multi-Modal", "Batch Processing"]
+      capabilities: ["Automation", "Quality Control", "Multi-Modal", "Batch Processing"],
+      learnMoreUrl: "https://zapier.com/blog/ai-automation/"
     },
     {
       title: "Fine-tuning & Customization",
       description: "Adapting pre-trained models for specific domains and use cases",
       category: "advanced",
       icon: Sparkles,
-      capabilities: ["Domain Adaptation", "Style Transfer", "Custom Training", "Model Optimization"]
+      capabilities: ["Domain Adaptation", "Style Transfer", "Custom Training", "Model Optimization"],
+      learnMoreUrl: "https://huggingface.co/docs/transformers/training"
     }
   ];
 
@@ -76,8 +83,8 @@ export const GenAITopics = () => {
   ];
 
   const handleExploreClick = (concept: typeof genAIConcepts[0]) => {
+    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
     toast.success(`Opening ${concept.title} resources...`);
-    // In a real app, this would navigate to detailed content
   };
 
   return (

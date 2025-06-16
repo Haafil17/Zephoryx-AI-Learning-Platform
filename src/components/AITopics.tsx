@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,8 +81,8 @@ export const AITopics = () => {
   };
 
   const handleLearnMore = (concept: typeof aiConcepts[0]) => {
-    toast.success(`Opening ${concept.title} resources...`);
     window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
+    toast.success(`Opening ${concept.title} resources...`);
   };
 
   return (

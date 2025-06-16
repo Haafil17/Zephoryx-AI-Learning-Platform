@@ -14,42 +14,48 @@ export const QuantumTopics = () => {
       description: "The fundamental unit of quantum information that can exist in multiple states simultaneously",
       category: "fundamentals",
       complexity: "Beginner",
-      principles: ["Superposition", "Entanglement", "Measurement"]
+      principles: ["Superposition", "Entanglement", "Measurement"],
+      learnMoreUrl: "https://qiskit.org/textbook/ch-states/introduction.html"
     },
     {
       title: "Quantum Superposition",
       description: "The quantum principle allowing particles to exist in multiple states at once",
       category: "fundamentals",
       complexity: "Beginner",
-      principles: ["Wave Function", "Probability", "Collapse"]
+      principles: ["Wave Function", "Probability", "Collapse"],
+      learnMoreUrl: "https://quantum.microsoft.com/en-us/experience/quantum-katas"
     },
     {
       title: "Quantum Entanglement",
       description: "The mysterious connection between quantum particles regardless of distance",
       category: "fundamentals",
       complexity: "Intermediate",
-      principles: ["Non-locality", "Correlation", "Bell's Theorem"]
+      principles: ["Non-locality", "Correlation", "Bell's Theorem"],
+      learnMoreUrl: "https://www.ibm.com/quantum-computing/learn/quantum-entanglement/"
     },
     {
       title: "Quantum Algorithms",
       description: "Specialized algorithms that leverage quantum properties for computational advantages",
       category: "computing",
       complexity: "Advanced",
-      principles: ["Shor's Algorithm", "Grover's Search", "Quantum Fourier Transform"]
+      principles: ["Shor's Algorithm", "Grover's Search", "Quantum Fourier Transform"],
+      learnMoreUrl: "https://qiskit.org/textbook/ch-algorithms/quantum-algorithms.html"
     },
     {
       title: "Quantum Cryptography",
       description: "Ultra-secure communication using quantum properties for unbreakable encryption",
       category: "applications",
       complexity: "Advanced",
-      principles: ["Quantum Key Distribution", "No-Cloning Theorem", "Quantum Signatures"]
+      principles: ["Quantum Key Distribution", "No-Cloning Theorem", "Quantum Signatures"],
+      learnMoreUrl: "https://www.nist.gov/topics/quantum-information-science"
     },
     {
       title: "Quantum Machine Learning",
       description: "Combining quantum computing with AI for exponential speedups in learning tasks",
       category: "applications",
       complexity: "Advanced",
-      principles: ["Quantum Neural Networks", "Variational Algorithms", "Quantum Advantage"]
+      principles: ["Quantum Neural Networks", "Variational Algorithms", "Quantum Advantage"],
+      learnMoreUrl: "https://quantum-machine-learning.org/"
     }
   ];
 
@@ -83,8 +89,8 @@ export const QuantumTopics = () => {
   ];
 
   const handleExploreConcept = (concept: typeof quantumConcepts[0]) => {
+    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
     toast.success(`Exploring ${concept.title} concept...`);
-    // In a real app, this would navigate to detailed quantum computing content
   };
 
   return (

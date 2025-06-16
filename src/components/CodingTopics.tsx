@@ -14,42 +14,48 @@ export const CodingTopics = () => {
       description: "Using AI tools like GitHub Copilot and ChatGPT to write code faster and more efficiently",
       category: "ai-tools",
       level: "Beginner",
-      languages: ["Python", "JavaScript", "Java", "C++"]
+      languages: ["Python", "JavaScript", "Java", "C++"],
+      learnMoreUrl: "https://github.com/features/copilot"
     },
     {
       title: "Prompt Engineering for Code",
       description: "Crafting effective prompts to generate high-quality, maintainable code",
       category: "prompting",
       level: "Intermediate",
-      languages: ["Any Language", "Pseudocode", "Documentation"]
+      languages: ["Any Language", "Pseudocode", "Documentation"],
+      learnMoreUrl: "https://docs.github.com/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot"
     },
     {
       title: "Code Review with AI",
       description: "Leveraging AI for automated code review, bug detection, and optimization suggestions",
       category: "quality",
       level: "Intermediate",
-      languages: ["Multi-language", "Static Analysis", "Best Practices"]
+      languages: ["Multi-language", "Static Analysis", "Best Practices"],
+      learnMoreUrl: "https://www.deepcode.ai/"
     },
     {
       title: "Algorithm Design & Optimization",
       description: "Using AI to design efficient algorithms and optimize existing code performance",
       category: "algorithms",
       level: "Advanced",
-      languages: ["Python", "C++", "Rust", "Go"]
+      languages: ["Python", "C++", "Rust", "Go"],
+      learnMoreUrl: "https://leetcode.com/explore/learn/"
     },
     {
       title: "Documentation Generation",
       description: "Automatically generating comprehensive documentation from code and comments",
       category: "documentation",
       level: "Beginner",
-      languages: ["Markdown", "API Docs", "README", "Comments"]
+      languages: ["Markdown", "API Docs", "README", "Comments"],
+      learnMoreUrl: "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes"
     },
     {
       title: "Testing & Debugging",
       description: "AI-assisted test case generation, debugging strategies, and error resolution",
       category: "testing",
       level: "Intermediate",
-      languages: ["Unit Tests", "Integration", "E2E Testing"]
+      languages: ["Unit Tests", "Integration", "E2E Testing"],
+      learnMoreUrl: "https://jestjs.io/docs/getting-started"
     }
   ];
 
@@ -94,8 +100,8 @@ export const CodingTopics = () => {
   ];
 
   const handleLearnMore = (concept: typeof codingConcepts[0]) => {
+    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
     toast.success(`Opening ${concept.title} resources...`);
-    // In a real app, this would navigate to detailed coding resources
   };
 
   return (
