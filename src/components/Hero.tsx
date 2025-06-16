@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Brain, Target, Zap } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -57,9 +56,9 @@ export const Hero = () => {
               🚀 Master the Art of AI Communication
             </span>
             <h1 className="text-5xl md:text-7xl mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-slate-100 dark:via-indigo-100 dark:to-slate-100 bg-clip-text text-transparent leading-tight">
-              Prompt Engineering
+              Clavis the
               <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
-                Made Simple
+                AI Expert
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-slate-700 dark:text-slate-200 max-w-4xl mx-auto leading-relaxed mb-6">

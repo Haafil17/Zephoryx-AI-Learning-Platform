@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Image, FileText, Mic, ChevronRight, Zap } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const GenAITopics = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -75,6 +75,11 @@ export const GenAITopics = () => {
     { name: "ElevenLabs", type: "Audio", description: "Voice cloning and generation" }
   ];
 
+  const handleExploreClick = (concept: typeof genAIConcepts[0]) => {
+    toast.success(`Opening ${concept.title} resources...`);
+    // In a real app, this would navigate to detailed content
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
       <div className="max-w-7xl mx-auto">
@@ -139,6 +144,7 @@ export const GenAITopics = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-between text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/30"
+                  onClick={() => handleExploreClick(concept)}
                 >
                   Explore Topic
                   <ChevronRight className="w-4 h-4" />

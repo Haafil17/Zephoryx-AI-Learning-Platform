@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Code, Zap, Brain, Target, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const CodingTopics = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -93,6 +93,11 @@ export const CodingTopics = () => {
     "Use AI for learning by asking for explanations of complex concepts"
   ];
 
+  const handleLearnMore = (concept: typeof codingConcepts[0]) => {
+    toast.success(`Opening ${concept.title} resources...`);
+    // In a real app, this would navigate to detailed coding resources
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
       <div className="max-w-7xl mx-auto">
@@ -160,6 +165,7 @@ export const CodingTopics = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-between text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/30"
+                  onClick={() => handleLearnMore(concept)}
                 >
                   Learn More
                   <ChevronRight className="w-4 h-4" />

@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Atom, Zap, Brain, Target, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const QuantumTopics = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -82,6 +82,11 @@ export const QuantumTopics = () => {
     { name: "Cybersecurity", description: "Unbreakable quantum encryption", impact: "Ultimate security" }
   ];
 
+  const handleExploreConcept = (concept: typeof quantumConcepts[0]) => {
+    toast.success(`Exploring ${concept.title} concept...`);
+    // In a real app, this would navigate to detailed quantum computing content
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950">
       <div className="max-w-7xl mx-auto">
@@ -149,6 +154,7 @@ export const QuantumTopics = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-between text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 dark:text-cyan-400 dark:hover:text-cyan-300 dark:hover:bg-cyan-900/30"
+                  onClick={() => handleExploreConcept(concept)}
                 >
                   Explore Concept
                   <ChevronRight className="w-4 h-4" />
