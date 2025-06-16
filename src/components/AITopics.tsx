@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Users, Target, Lightbulb, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const AITopics = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -14,42 +15,48 @@ export const AITopics = () => {
       description: "Understanding supervised, unsupervised, and reinforcement learning approaches",
       category: "fundamentals",
       difficulty: "Beginner",
-      applications: ["Prediction", "Classification", "Clustering"]
+      applications: ["Prediction", "Classification", "Clustering"],
+      learnMoreUrl: "https://www.coursera.org/learn/machine-learning"
     },
     {
       title: "Neural Networks & Deep Learning",
       description: "Architecture and training of artificial neural networks for complex tasks",
       category: "fundamentals",
       difficulty: "Intermediate",
-      applications: ["Image Recognition", "Natural Language", "Speech"]
+      applications: ["Image Recognition", "Natural Language", "Speech"],
+      learnMoreUrl: "https://www.deeplearningbook.org/"
     },
     {
       title: "AI Ethics & Bias",
       description: "Responsible AI development and addressing algorithmic bias in systems",
       category: "ethics",
       difficulty: "Advanced",
-      applications: ["Fair Hiring", "Medical Diagnosis", "Criminal Justice"]
+      applications: ["Fair Hiring", "Medical Diagnosis", "Criminal Justice"],
+      learnMoreUrl: "https://www.partnershiponai.org/"
     },
     {
       title: "Computer Vision",
       description: "Teaching machines to interpret and understand visual information",
       category: "applications",
       difficulty: "Intermediate",
-      applications: ["Object Detection", "Facial Recognition", "Medical Imaging"]
+      applications: ["Object Detection", "Facial Recognition", "Medical Imaging"],
+      learnMoreUrl: "https://opencv.org/"
     },
     {
       title: "Natural Language Processing",
       description: "Enabling computers to understand, interpret, and generate human language",
       category: "applications",
       difficulty: "Intermediate",
-      applications: ["Sentiment Analysis", "Translation", "Chatbots"]
+      applications: ["Sentiment Analysis", "Translation", "Chatbots"],
+      learnMoreUrl: "https://huggingface.co/course/chapter1/1"
     },
     {
       title: "AI in Healthcare",
       description: "Transforming medical diagnosis, treatment planning, and drug discovery",
       category: "industry",
       difficulty: "Advanced",
-      applications: ["Drug Discovery", "Diagnostic Imaging", "Personalized Medicine"]
+      applications: ["Drug Discovery", "Diagnostic Imaging", "Personalized Medicine"],
+      learnMoreUrl: "https://www.nature.com/subjects/machine-learning"
     }
   ];
 
@@ -72,6 +79,11 @@ export const AITopics = () => {
       case "Advanced": return "bg-red-100 text-red-800";
       default: return "bg-gray-100 text-gray-800";
     }
+  };
+
+  const handleLearnMore = (concept: typeof aiConcepts[0]) => {
+    toast.success(`Opening ${concept.title} resources...`);
+    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -141,6 +153,7 @@ export const AITopics = () => {
                 <Button 
                   variant="ghost" 
                   className="w-full justify-between text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/30"
+                  onClick={() => handleLearnMore(concept)}
                 >
                   Learn More
                   <ChevronRight className="w-4 h-4" />

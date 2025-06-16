@@ -1,9 +1,20 @@
+
 import { Separator } from "@/components/ui/separator";
 import { Brain, Github, Twitter, Linkedin, Mail } from "lucide-react";
+import { toast } from "sonner";
 
 export const Footer = () => {
   const scrollToSection = (sectionId: string) => {
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If element doesn't exist, try to trigger the tab instead
+      const tabTrigger = document.querySelector(`[value="${sectionId}"]`) as HTMLElement;
+      if (tabTrigger) {
+        tabTrigger.click();
+      }
+    }
   };
 
   const handleSocialClick = (platform: string) => {
@@ -16,9 +27,15 @@ export const Footer = () => {
     
     if (platform === 'mail') {
       window.location.href = urls[platform as keyof typeof urls];
+      toast.success("Opening email client...");
     } else {
       window.open(urls[platform as keyof typeof urls], '_blank', 'noopener,noreferrer');
+      toast.success(`Opening ${platform}...`);
     }
+  };
+
+  const handlePolicyClick = (policy: string) => {
+    toast.info(`${policy} page would open here in a real application.`);
   };
 
   return (
@@ -40,24 +57,28 @@ export const Footer = () => {
               <button 
                 onClick={() => handleSocialClick('github')}
                 className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+                aria-label="Visit our GitHub"
               >
                 <Github className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => handleSocialClick('twitter')}
                 className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+                aria-label="Visit our Twitter"
               >
                 <Twitter className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => handleSocialClick('linkedin')}
                 className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+                aria-label="Visit our LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => handleSocialClick('mail')}
                 className="p-2 bg-slate-800 rounded-lg hover:bg-slate-700 cursor-pointer transition-colors"
+                aria-label="Send us an email"
               >
                 <Mail className="w-5 h-5" />
               </button>
@@ -71,7 +92,7 @@ export const Footer = () => {
               <li>
                 <button 
                   onClick={() => scrollToSection('techniques')} 
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Techniques
                 </button>
@@ -79,15 +100,15 @@ export const Footer = () => {
               <li>
                 <button 
                   onClick={() => scrollToSection('examples')} 
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Examples
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection('best-practices')} 
-                  className="hover:text-white transition-colors text-left"
+                  onClick={() => scrollToSection('bestpractices')} 
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Best Practices
                 </button>
@@ -95,7 +116,7 @@ export const Footer = () => {
               <li>
                 <button 
                   onClick={() => scrollToSection('resources')} 
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Resources
                 </button>
@@ -109,34 +130,34 @@ export const Footer = () => {
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
                 <button 
-                  onClick={() => scrollToSection('techniques')} 
-                  className="hover:text-white transition-colors text-left"
+                  onClick={() => scrollToSection('ai')} 
+                  className="hover:text-white transition-colors text-left w-full"
                 >
-                  Beginner Guides
+                  AI Topics
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection('techniques')} 
-                  className="hover:text-white transition-colors text-left"
+                  onClick={() => scrollToSection('genai')} 
+                  className="hover:text-white transition-colors text-left w-full"
                 >
-                  Advanced Techniques
+                  Generative AI
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection('examples')} 
-                  className="hover:text-white transition-colors text-left"
+                  onClick={() => scrollToSection('quantum')} 
+                  className="hover:text-white transition-colors text-left w-full"
                 >
-                  Industry Applications
+                  Quantum Computing
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection('resources')} 
-                  className="hover:text-white transition-colors text-left"
+                  onClick={() => scrollToSection('coding')} 
+                  className="hover:text-white transition-colors text-left w-full"
                 >
-                  Tools & Platforms
+                  Coding & Development
                 </button>
               </li>
             </ul>
@@ -149,7 +170,7 @@ export const Footer = () => {
               <li>
                 <button 
                   onClick={() => scrollToSection('resources')} 
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Documentation
                 </button>
@@ -157,7 +178,7 @@ export const Footer = () => {
               <li>
                 <button 
                   onClick={() => handleSocialClick('github')} 
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Community
                 </button>
@@ -165,15 +186,15 @@ export const Footer = () => {
               <li>
                 <button 
                   onClick={() => handleSocialClick('mail')} 
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   Contact Us
                 </button>
               </li>
               <li>
                 <button 
-                  onClick={() => scrollToSection('best-practices')} 
-                  className="hover:text-white transition-colors text-left"
+                  onClick={() => scrollToSection('bestpractices')} 
+                  className="hover:text-white transition-colors text-left w-full"
                 >
                   FAQ
                 </button>
@@ -187,9 +208,24 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
           <p>&copy; 2024 Clavis AI. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <button className="hover:text-white transition-colors">Privacy Policy</button>
-            <button className="hover:text-white transition-colors">Terms of Service</button>
-            <button className="hover:text-white transition-colors">Cookie Policy</button>
+            <button 
+              className="hover:text-white transition-colors"
+              onClick={() => handlePolicyClick('Privacy Policy')}
+            >
+              Privacy Policy
+            </button>
+            <button 
+              className="hover:text-white transition-colors"
+              onClick={() => handlePolicyClick('Terms of Service')}
+            >
+              Terms of Service
+            </button>
+            <button 
+              className="hover:text-white transition-colors"
+              onClick={() => handlePolicyClick('Cookie Policy')}
+            >
+              Cookie Policy
+            </button>
           </div>
         </div>
       </div>

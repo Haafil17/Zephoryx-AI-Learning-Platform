@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Copy, Code, PenTool, BarChart, BookOpen, Microscope } from "lucide-react";
+import { Copy, Code, PenTool, BarChart, BookOpen, Microscope, Check } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -96,9 +96,24 @@ Use critical thinking and academic rigor in your analysis.`,
       });
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch (err) {
-      toast.error("Failed to copy", {
-        description: "Could not copy the prompt to clipboard.",
-      });
+      // Fallback for browsers that don't support clipboard API
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopiedIndex(index);
+        toast.success("Copied to clipboard!", {
+          description: "The prompt has been copied to your clipboard.",
+        });
+        setTimeout(() => setCopiedIndex(null), 2000);
+      } catch (fallbackErr) {
+        toast.error("Failed to copy", {
+          description: "Could not copy the prompt to clipboard.",
+        });
+      }
+      document.body.removeChild(textArea);
     }
   };
 
@@ -149,7 +164,10 @@ Use critical thinking and academic rigor in your analysis.`,
                     onClick={() => copyToClipboard(example.prompt, index)}
                   >
                     {copiedIndex === index ? (
-                      <span className="text-green-600 text-xs">Copied!</span>
+                      <div className="flex items-center gap-1 text-green-600">
+                        <Check className="w-4 h-4" />
+                        <span className="text-xs">Copied!</span>
+                      </div>
                     ) : (
                       <Copy className="w-4 h-4" />
                     )}
