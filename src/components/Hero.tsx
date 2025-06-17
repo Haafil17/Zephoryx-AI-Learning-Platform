@@ -1,175 +1,146 @@
+
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Target, Zap } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "./ThemeToggle";
+import { Sparkles, Brain, Trophy, Star, Award, Crown } from "lucide-react";
 
 export const Hero = () => {
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const leaderboard = [
+    { rank: 1, name: "Alex Chen", xp: 12500, level: "AI Master", badge: "🏆", color: "text-yellow-600" },
+    { rank: 2, name: "Sarah Kim", xp: 11200, level: "Prompt Expert", badge: "🥈", color: "text-gray-500" },
+    { rank: 3, name: "Mike Johnson", xp: 9800, level: "Code Wizard", badge: "🥉", color: "text-amber-600" },
+    { rank: 4, name: "Emily Davis", xp: 8500, level: "Tech Innovator", badge: "⭐", color: "text-blue-600" },
+    { rank: 5, name: "David Park", xp: 7200, level: "AI Enthusiast", badge: "💎", color: "text-purple-600" }
+  ];
 
   return (
-    <div className="relative min-h-screen flex flex-col">
-      {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-50 p-6">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            <span className="text-2xl bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
-              Clavis AI
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => scrollToSection('techniques')}
-              className="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300"
-            >
-              Techniques
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => scrollToSection('examples')}
-              className="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300"
-            >
-              Examples
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => scrollToSection('resources')}
-              className="text-slate-900 dark:text-slate-100 hover:text-indigo-600 dark:hover:text-indigo-300"
-            >
-              Resources
-            </Button>
-            <ThemeToggle />
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Content */}
-      <div className="flex-1 flex items-center justify-center px-4 pt-20">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="mb-8">
-            <span className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-800 text-indigo-900 dark:text-indigo-100 rounded-full text-sm mb-6 border dark:border-indigo-500">
-              🚀 Master the Art of AI Communication
-            </span>
-            <h1 className="text-5xl md:text-7xl mb-6 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 dark:from-slate-100 dark:via-indigo-100 dark:to-slate-100 bg-clip-text text-transparent leading-tight">
-              Clavis the
-              <span className="block bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300 bg-clip-text text-transparent">
-                AI Expert
+    <section className="relative min-h-screen flex items-center justify-center px-4 py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950 overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23e2e8f0" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+      
+      {/* Theme Toggle */}
+      <div className="absolute top-6 right-6 z-10">
+        <ThemeToggle />
+      </div>
+      
+      {/* Floating Elements */}
+      <div className="absolute top-20 left-10 animate-bounce">
+        <div className="w-8 h-8 bg-blue-500 rounded-full opacity-20"></div>
+      </div>
+      <div className="absolute bottom-20 right-20 animate-pulse">
+        <div className="w-12 h-12 bg-purple-500 rounded-full opacity-15"></div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+        {/* Main Content */}
+        <div className="lg:col-span-2 text-center lg:text-left space-y-8">
+          <div className="space-y-6">
+            <Badge className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+              <Sparkles className="w-4 h-4" />
+              Meet Your AI Expert
+            </Badge>
+            
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                Clavis
+              </span>
+              <br />
+              <span className="text-slate-800 dark:text-slate-100">
+                the AI Expert
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-700 dark:text-slate-200 max-w-4xl mx-auto leading-relaxed mb-6">
-              Unlock the full potential of AI with expertly crafted prompts. Learn proven techniques, 
-              discover best practices, and transform your ideas into powerful AI interactions that deliver 
-              exceptional results every time.
+            
+            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+              Master the art of artificial intelligence with advanced prompting techniques, 
+              cutting-edge AI tools, and expert guidance for next-generation technology.
             </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8 text-slate-600 dark:text-slate-300">
-              <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Brain className="w-4 h-4 text-indigo-600" />
-                <span className="text-sm">Advanced Techniques</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Target className="w-4 h-4 text-purple-600" />
-                <span className="text-sm">Real-World Examples</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 px-4 py-2 rounded-full backdrop-blur-sm">
-                <Zap className="w-4 h-4 text-yellow-600" />
-                <span className="text-sm">Instant Results</span>
-              </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <Brain className="w-5 h-5 mr-2" />
+              Start Learning
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 px-8 py-4 text-lg font-semibold transition-all duration-300"
+            >
+              <Trophy className="w-5 h-5 mr-2" />
+              View Leaderboard
+            </Button>
+          </div>
+          
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">500K+</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">Active Learners</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">1M+</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">AI Prompts Created</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">50+</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">AI Tools Covered</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">99%</div>
+              <div className="text-sm text-slate-600 dark:text-slate-400 font-medium">Success Rate</div>
             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button
-              onClick={() => scrollToSection('techniques')}
-              size="lg"
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 dark:from-indigo-500 dark:to-purple-500 dark:hover:from-indigo-600 dark:hover:to-purple-600 text-white px-8 py-4 text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200"
-            >
-              Start Your Journey
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button
-              onClick={() => scrollToSection('examples')}
-              size="lg"
-              variant="outline"
-              className="border-2 border-indigo-600 dark:border-indigo-400 text-indigo-800 dark:text-indigo-100 hover:bg-indigo-50 dark:hover:bg-indigo-900/60 px-8 py-4 text-lg bg-white dark:bg-slate-800 backdrop-blur-sm hover:border-indigo-700 dark:hover:border-indigo-300"
-            >
-              Explore Examples
-            </Button>
-          </div>
-
-          {/* Enhanced Floating Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {[
-              { 
-                title: "Zero-Shot Prompting", 
-                desc: "Get accurate results with direct, well-crafted instructions without examples", 
-                icon: "🎯",
-                features: ["Direct Instructions", "No Examples Needed", "Quick Results"]
-              },
-              { 
-                title: "Few-Shot Learning", 
-                desc: "Teach AI through carefully selected examples for consistent outputs", 
-                icon: "📚",
-                features: ["Example-Based", "Consistent Patterns", "Better Accuracy"]
-              },
-              { 
-                title: "Chain-of-Thought", 
-                desc: "Guide AI through complex reasoning with step-by-step thinking", 
-                icon: "🧠",
-                features: ["Step-by-Step", "Complex Reasoning", "Transparent Logic"]
-              }
-            ].map((item, index) => (
-              <div
-                key={index}
-                className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-slate-300 dark:border-slate-600 group"
-              >
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-200">{item.icon}</div>
-                <h3 className="text-xl text-slate-900 dark:text-slate-100 mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{item.title}</h3>
-                <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">{item.desc}</p>
-                <div className="space-y-1">
-                  {item.features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                      <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full"></div>
-                      {feature}
+        </div>
+        
+        {/* Leaderboard */}
+        <div className="lg:col-span-1">
+          <Card className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-2xl">
+            <CardHeader className="text-center pb-4">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Crown className="w-6 h-6 text-yellow-500" />
+                <CardTitle className="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+                  XP Leaderboard
+                </CardTitle>
+              </div>
+              <CardDescription className="text-slate-600 dark:text-slate-300">
+                Top AI learners this month
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {leaderboard.map((user) => (
+                <div key={user.rank} className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                  <div className="text-2xl">{user.badge}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-slate-800 dark:text-slate-100 truncate">
+                      {user.name}
                     </div>
-                  ))}
+                    <div className={`text-sm font-medium ${user.color}`}>
+                      {user.level}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-slate-800 dark:text-slate-100">
+                      {user.xp.toLocaleString()}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">XP</div>
+                  </div>
                 </div>
+              ))}
+              
+              <div className="pt-4 border-t border-slate-200 dark:border-slate-600">
+                <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white">
+                  <Award className="w-4 h-4 mr-2" />
+                  Join Competition
+                </Button>
               </div>
-            ))}
-          </div>
-
-          {/* New Statistics Section */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {[
-              { number: "50+", label: "Proven Techniques", color: "text-indigo-600" },
-              { number: "100+", label: "Real Examples", color: "text-purple-600" },
-              { number: "95%", label: "Success Rate", color: "text-green-600" },
-              { number: "24/7", label: "AI Availability", color: "text-orange-600" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>
-                  {stat.number}
-                </div>
-                <div className="text-slate-600 dark:text-slate-300 text-sm">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
-
-      {/* Enhanced Animated Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 -right-32 w-96 h-96 bg-purple-300 dark:bg-purple-900/40 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute -bottom-8 -left-32 w-96 h-96 bg-yellow-300 dark:bg-yellow-900/40 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-300 dark:bg-indigo-900/40 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-pink-300 dark:bg-pink-900/40 rounded-full mix-blend-multiply dark:mix-blend-normal filter blur-xl opacity-50 animate-blob animation-delay-6000"></div>
-      </div>
-    </div>
+    </section>
   );
 };
