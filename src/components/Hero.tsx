@@ -1,19 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "./ThemeToggle";
-import { Sparkles, Brain, Trophy, Star, Award, Crown, Zap, Rocket, Code2 } from "lucide-react";
+import { AuthButton } from "./AuthButton";
+import { Leaderboard } from "./Leaderboard";
+import { Sparkles, Brain, Trophy, Zap, Rocket } from "lucide-react";
 
 export const Hero = () => {
-  const leaderboard = [
-    { rank: 1, name: "Alex Chen", xp: 12500, level: "AI Master", badge: "🏆", color: "text-cyan-400" },
-    { rank: 2, name: "Sarah Kim", xp: 11200, level: "Prompt Expert", badge: "🥈", color: "text-purple-400" },
-    { rank: 3, name: "Mike Johnson", xp: 9800, level: "Code Wizard", badge: "🥉", color: "text-pink-400" },
-    { rank: 4, name: "Emily Davis", xp: 8500, level: "Tech Innovator", badge: "⭐", color: "text-blue-400" },
-    { rank: 5, name: "David Park", xp: 7200, level: "AI Enthusiast", badge: "💎", color: "text-green-400" }
-  ];
-
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 dark:from-black dark:via-purple-950 dark:to-black">
       {/* Animated Background Effects */}
@@ -30,8 +23,9 @@ export const Hero = () => {
         }}></div>
       </div>
       
-      {/* Theme Toggle */}
-      <div className="absolute top-6 right-6 z-10">
+      {/* Theme Toggle and Auth */}
+      <div className="absolute top-6 right-6 z-10 flex items-center gap-4">
+        <AuthButton />
         <ThemeToggle />
       </div>
       
@@ -112,53 +106,9 @@ export const Hero = () => {
           </div>
         </div>
         
-        {/* Neon Leaderboard */}
+        {/* Real-time Leaderboard */}
         <div className="lg:col-span-1">
-          <Card className="relative bg-slate-900/60 dark:bg-black/60 backdrop-blur-xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20 overflow-hidden">
-            {/* Animated border effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 opacity-50 animate-pulse"></div>
-            
-            <CardHeader className="text-center pb-4 relative z-10">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Crown className="w-8 h-8 text-yellow-400 animate-pulse drop-shadow-lg" />
-                <CardTitle className="text-3xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent drop-shadow-lg">
-                  XP Leaderboard
-                </CardTitle>
-              </div>
-              <CardDescription className="text-slate-300 font-medium">
-                Top AI learners this month
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3 relative z-10">
-              {leaderboard.map((user) => (
-                <div key={user.rank} className="flex items-center gap-4 p-4 rounded-lg bg-gradient-to-r from-slate-800/60 to-slate-700/60 hover:from-slate-700/60 hover:to-slate-600/60 transition-all duration-300 border border-slate-600/30 backdrop-blur-sm shadow-lg">
-                  <div className="text-3xl drop-shadow-lg">{user.badge}</div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-bold text-white truncate drop-shadow-sm">
-                      {user.name}
-                    </div>
-                    <div className={`text-sm font-semibold ${user.color} drop-shadow-sm`}>
-                      {user.level}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-white drop-shadow-sm">
-                      {user.xp.toLocaleString()}
-                    </div>
-                    <div className="text-xs text-slate-400">XP</div>
-                  </div>
-                </div>
-              ))}
-              
-              <div className="pt-4 border-t border-slate-600/50">
-                <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-white shadow-lg shadow-purple-500/30 transition-all duration-300 border border-purple-500/30">
-                  <Award className="w-5 h-5 mr-2" />
-                  Join Competition
-                  <Code2 className="w-4 h-4 ml-2 opacity-70" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <Leaderboard />
         </div>
       </div>
     </section>
