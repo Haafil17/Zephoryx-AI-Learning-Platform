@@ -24,7 +24,11 @@ export const Hero = () => {
       </div>
       
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23a855f7" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+      <div className="absolute inset-0 opacity-40">
+        <div className="w-full h-full" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23a855f7' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}></div>
+      </div>
       
       {/* Theme Toggle */}
       <div className="absolute top-6 right-6 z-10">
@@ -110,7 +114,7 @@ export const Hero = () => {
         
         {/* Neon Leaderboard */}
         <div className="lg:col-span-1">
-          <Card className="bg-slate-900/60 dark:bg-black/60 backdrop-blur-xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20 overflow-hidden">
+          <Card className="relative bg-slate-900/60 dark:bg-black/60 backdrop-blur-xl border-2 border-purple-500/30 shadow-2xl shadow-purple-500/20 overflow-hidden">
             {/* Animated border effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-pink-500/20 opacity-50 animate-pulse"></div>
             
