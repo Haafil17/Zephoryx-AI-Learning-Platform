@@ -1,6 +1,6 @@
 
 import { Hero } from "@/components/Hero";
-import { Techniques } from "@/components/Techniques";
+import { ExpandedTechniques } from "@/components/ExpandedTechniques";
 import { Examples } from "@/components/Examples";
 import { EnhancedBestPractices } from "@/components/EnhancedBestPractices";
 import { Resources } from "@/components/Resources";
@@ -24,36 +24,36 @@ const Index = () => {
       <div className="max-w-7xl mx-auto px-4 pt-8">
         <Tabs defaultValue="techniques" className="w-full">
           <TabsList className="flex justify-center mb-8 gap-2 bg-white/80 dark:bg-slate-900/70 rounded-xl shadow-lg flex-wrap">
-            <TabsTrigger value="techniques" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="techniques" className="px-6 py-3 text-base font-medium">
               Techniques
             </TabsTrigger>
-            <TabsTrigger value="examples" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="examples" className="px-6 py-3 text-base font-medium">
               Examples
             </TabsTrigger>
-            <TabsTrigger value="bestpractices" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="bestpractices" className="px-6 py-3 text-base font-medium">
               Best Practices
             </TabsTrigger>
-            <TabsTrigger value="features" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="features" className="px-6 py-3 text-base font-medium">
               Features
             </TabsTrigger>
-            <TabsTrigger value="ai" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="ai" className="px-6 py-3 text-base font-medium">
               AI
             </TabsTrigger>
-            <TabsTrigger value="genai" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="genai" className="px-6 py-3 text-base font-medium">
               Gen AI
             </TabsTrigger>
-            <TabsTrigger value="quantum" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="quantum" className="px-6 py-3 text-base font-medium">
               Quantum
             </TabsTrigger>
-            <TabsTrigger value="coding" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="coding" className="px-6 py-3 text-base font-medium">
               Coding
             </TabsTrigger>
-            <TabsTrigger value="resources" className="px-4 py-3 text-sm font-medium">
+            <TabsTrigger value="resources" className="px-6 py-3 text-base font-medium">
               Resources
             </TabsTrigger>
           </TabsList>
           <TabsContent value="techniques">
-            <Techniques />
+            <ExpandedTechniques />
           </TabsContent>
           <TabsContent value="examples">
             <Examples />

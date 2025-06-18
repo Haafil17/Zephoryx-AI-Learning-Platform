@@ -3,27 +3,64 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "./ThemeToggle";
-import { Leaderboard } from "./Leaderboard";
-import { Sparkles, Brain, Trophy, Zap, Rocket, User } from "lucide-react";
+import { Sparkles, Brain, Trophy, Zap, Rocket, User, BookOpen, Code } from "lucide-react";
 import { useState } from "react";
 
 export const Hero = () => {
   const [username, setUsername] = useState("");
 
   const handleStartLearning = () => {
-    // Scroll to techniques section
-    const techniquesSection = document.querySelector('[value="techniques"]');
-    if (techniquesSection) {
-      techniquesSection.scrollIntoView({ behavior: 'smooth' });
+    const techniquesTab = document.querySelector('[data-state="active"][value="techniques"]') || 
+                          document.querySelector('[value="techniques"]');
+    if (techniquesTab) {
+      (techniquesTab as HTMLElement).click();
     }
+    // Scroll to content area
+    setTimeout(() => {
+      const contentArea = document.querySelector('.max-w-7xl');
+      if (contentArea) {
+        contentArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
-  const handleViewLeaderboard = () => {
-    // Scroll to leaderboard or highlight it
-    const leaderboard = document.querySelector('.leaderboard-container');
-    if (leaderboard) {
-      leaderboard.scrollIntoView({ behavior: 'smooth' });
+  const handleViewExamples = () => {
+    const examplesTab = document.querySelector('[value="examples"]');
+    if (examplesTab) {
+      (examplesTab as HTMLElement).click();
     }
+    setTimeout(() => {
+      const contentArea = document.querySelector('.max-w-7xl');
+      if (contentArea) {
+        contentArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleViewBestPractices = () => {
+    const bestPracticesTab = document.querySelector('[value="bestpractices"]');
+    if (bestPracticesTab) {
+      (bestPracticesTab as HTMLElement).click();
+    }
+    setTimeout(() => {
+      const contentArea = document.querySelector('.max-w-7xl');
+      if (contentArea) {
+        contentArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleViewAI = () => {
+    const aiTab = document.querySelector('[value="ai"]');
+    if (aiTab) {
+      (aiTab as HTMLElement).click();
+    }
+    setTimeout(() => {
+      const contentArea = document.querySelector('.max-w-7xl');
+      if (contentArea) {
+        contentArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   return (
@@ -58,13 +95,13 @@ export const Hero = () => {
         <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-cyan-400 rounded-full opacity-40"></div>
       </div>
       
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center relative z-10">
+      <div className="max-w-6xl mx-auto text-center space-y-8 relative z-10">
         {/* Main Content */}
-        <div className="lg:col-span-2 text-center lg:text-left space-y-8">
+        <div className="space-y-8">
           <div className="space-y-6">
             <Badge className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-500/30 backdrop-blur-sm shadow-lg shadow-cyan-500/20">
               <Sparkles className="w-5 h-5 animate-pulse" />
-              <span className="font-semibold">Meet Your AI Expert</span>
+              <span className="font-semibold text-lg">Meet Your AI Expert</span>
             </Badge>
             
             <h1 className="text-6xl md:text-8xl font-bold leading-tight">
@@ -72,77 +109,118 @@ export const Hero = () => {
                 Clavis
               </span>
               <br />
-              <span className="text-white drop-shadow-lg">
+              <span className="text-white drop-shadow-lg text-4xl md:text-6xl">
                 the AI Expert
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-slate-200 max-w-3xl leading-relaxed drop-shadow-lg">
-              Master the art of <span className="text-cyan-400 font-semibold">artificial intelligence</span> with advanced prompting techniques, 
-              cutting-edge AI tools, and expert guidance for <span className="text-purple-400 font-semibold">next-generation technology</span>.
+            <p className="text-xl md:text-2xl text-slate-200 max-w-4xl mx-auto leading-relaxed drop-shadow-lg">
+              Master the art of <span className="text-cyan-400 font-bold">artificial intelligence</span> with advanced prompting techniques, 
+              cutting-edge AI tools, and expert guidance for <span className="text-purple-400 font-bold">next-generation technology</span>.
+              Learn everything from basic prompts to quantum computing and generative AI.
             </p>
           </div>
 
           {/* Username Input */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+          <div className="flex flex-col items-center gap-4">
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
               <Input
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Enter your username to get started"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="pl-10 pr-4 py-3 w-64 bg-slate-800/60 border-slate-600/50 text-white placeholder:text-slate-400 focus:border-cyan-500/50 focus:ring-cyan-500/30"
+                className="pl-10 pr-4 py-4 w-80 text-lg bg-slate-800/60 border-slate-600/50 text-white placeholder:text-slate-400 focus:border-cyan-500/50 focus:ring-cyan-500/30"
               />
             </div>
+            {username && (
+              <p className="text-cyan-300 font-semibold">Welcome, {username}! 👋</p>
+            )}
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          {/* Action Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
             <Button 
               size="lg" 
               onClick={handleStartLearning}
-              className="group bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl shadow-cyan-500/30 transition-all duration-300 border border-cyan-500/30"
+              className="group bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-6 py-4 text-base font-semibold shadow-lg hover:shadow-xl shadow-cyan-500/30 transition-all duration-300 border border-cyan-500/30"
             >
-              <Brain className="w-6 h-6 mr-2 group-hover:animate-pulse" />
+              <Brain className="w-5 h-5 mr-2 group-hover:animate-pulse" />
               Start Learning
-              <Zap className="w-4 h-4 ml-2 opacity-70" />
             </Button>
+            
             <Button 
               variant="outline" 
               size="lg"
-              onClick={handleViewLeaderboard}
-              className="group border-2 border-purple-500/50 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 hover:text-purple-200 px-8 py-4 text-lg font-semibold transition-all duration-300 backdrop-blur-sm shadow-lg shadow-purple-500/20"
+              onClick={handleViewExamples}
+              className="group border-2 border-purple-500/50 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 hover:text-purple-200 px-6 py-4 text-base font-semibold transition-all duration-300 backdrop-blur-sm shadow-lg shadow-purple-500/20"
             >
-              <Trophy className="w-6 h-6 mr-2 group-hover:animate-bounce" />
-              View Leaderboard
-              <Rocket className="w-4 h-4 ml-2 opacity-70" />
+              <Code className="w-5 h-5 mr-2 group-hover:animate-bounce" />
+              View Examples
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={handleViewBestPractices}
+              className="group border-2 border-green-500/50 bg-green-500/10 hover:bg-green-500/20 text-green-300 hover:text-green-200 px-6 py-4 text-base font-semibold transition-all duration-300 backdrop-blur-sm shadow-lg shadow-green-500/20"
+            >
+              <Trophy className="w-5 h-5 mr-2 group-hover:animate-bounce" />
+              Best Practices
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={handleViewAI}
+              className="group border-2 border-orange-500/50 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 hover:text-orange-200 px-6 py-4 text-base font-semibold transition-all duration-300 backdrop-blur-sm shadow-lg shadow-orange-500/20"
+            >
+              <Rocket className="w-5 h-5 mr-2 group-hover:animate-bounce" />
+              AI Topics
             </Button>
           </div>
           
-          {/* Neon Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
-            <div className="text-center p-4 rounded-xl bg-gradient-to-b from-cyan-500/10 to-transparent border border-cyan-500/20 backdrop-blur-sm">
+          {/* Enhanced Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 max-w-4xl mx-auto">
+            <div className="text-center p-6 rounded-xl bg-gradient-to-b from-cyan-500/10 to-transparent border border-cyan-500/20 backdrop-blur-sm">
               <div className="text-4xl font-bold text-cyan-400 drop-shadow-lg animate-pulse">500K+</div>
-              <div className="text-sm text-slate-300 font-medium">Active Learners</div>
+              <div className="text-base text-slate-300 font-medium">Active Learners</div>
             </div>
-            <div className="text-center p-4 rounded-xl bg-gradient-to-b from-purple-500/10 to-transparent border border-purple-500/20 backdrop-blur-sm">
+            <div className="text-center p-6 rounded-xl bg-gradient-to-b from-purple-500/10 to-transparent border border-purple-500/20 backdrop-blur-sm">
               <div className="text-4xl font-bold text-purple-400 drop-shadow-lg animate-pulse">1M+</div>
-              <div className="text-sm text-slate-300 font-medium">AI Prompts Created</div>
+              <div className="text-base text-slate-300 font-medium">AI Prompts Created</div>
             </div>
-            <div className="text-center p-4 rounded-xl bg-gradient-to-b from-pink-500/10 to-transparent border border-pink-500/20 backdrop-blur-sm">
+            <div className="text-center p-6 rounded-xl bg-gradient-to-b from-pink-500/10 to-transparent border border-pink-500/20 backdrop-blur-sm">
               <div className="text-4xl font-bold text-pink-400 drop-shadow-lg animate-pulse">50+</div>
-              <div className="text-sm text-slate-300 font-medium">AI Tools Covered</div>
+              <div className="text-base text-slate-300 font-medium">AI Tools Covered</div>
             </div>
-            <div className="text-center p-4 rounded-xl bg-gradient-to-b from-green-500/10 to-transparent border border-green-500/20 backdrop-blur-sm">
+            <div className="text-center p-6 rounded-xl bg-gradient-to-b from-green-500/10 to-transparent border border-green-500/20 backdrop-blur-sm">
               <div className="text-4xl font-bold text-green-400 drop-shadow-lg animate-pulse">99%</div>
-              <div className="text-sm text-slate-300 font-medium">Success Rate</div>
+              <div className="text-base text-slate-300 font-medium">Success Rate</div>
             </div>
           </div>
-        </div>
-        
-        {/* Real-time Leaderboard */}
-        <div className="lg:col-span-1 leaderboard-container">
-          <Leaderboard />
+
+          {/* What You'll Learn Section */}
+          <div className="pt-12">
+            <h3 className="text-3xl font-bold text-white mb-8">What You'll Master</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="p-6 rounded-xl bg-gradient-to-b from-blue-500/10 to-transparent border border-blue-500/20 backdrop-blur-sm">
+                <BookOpen className="w-12 h-12 text-blue-400 mb-4 mx-auto" />
+                <h4 className="text-xl font-bold text-white mb-2">Prompt Engineering</h4>
+                <p className="text-slate-300">Master advanced techniques for crafting effective AI prompts</p>
+              </div>
+              <div className="p-6 rounded-xl bg-gradient-to-b from-purple-500/10 to-transparent border border-purple-500/20 backdrop-blur-sm">
+                <Brain className="w-12 h-12 text-purple-400 mb-4 mx-auto" />
+                <h4 className="text-xl font-bold text-white mb-2">AI Technologies</h4>
+                <p className="text-slate-300">Explore machine learning, neural networks, and AI applications</p>
+              </div>
+              <div className="p-6 rounded-xl bg-gradient-to-b from-cyan-500/10 to-transparent border border-cyan-500/20 backdrop-blur-sm">
+                <Zap className="w-12 h-12 text-cyan-400 mb-4 mx-auto" />
+                <h4 className="text-xl font-bold text-white mb-2">Cutting-Edge Tools</h4>
+                <p className="text-slate-300">Learn the latest AI tools and emerging technologies</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
