@@ -4,7 +4,7 @@ import { ExpandedTechniques } from "@/components/ExpandedTechniques";
 import { Examples } from "@/components/Examples";
 import { EnhancedBestPractices } from "@/components/EnhancedBestPractices";
 import { Resources } from "@/components/Resources";
-import { InteractiveFeatures } from "@/components/InteractiveFeatures";
+import { EnhancedInteractiveFeatures } from "@/components/EnhancedInteractiveFeatures";
 import { AITopics } from "@/components/AITopics";
 import { GenAITopics } from "@/components/GenAITopics";
 import { QuantumTopics } from "@/components/QuantumTopics";
@@ -16,13 +16,25 @@ import {
   TabsTrigger,
   TabsContent,
 } from "@/components/ui/tabs";
+import { useState, useEffect } from "react";
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState("techniques");
+
+  useEffect(() => {
+    const handleTabChange = (event: CustomEvent) => {
+      setActiveTab(event.detail);
+    };
+
+    window.addEventListener('changeTab', handleTabChange as EventListener);
+    return () => window.removeEventListener('changeTab', handleTabChange as EventListener);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
       <Hero />
       <div className="max-w-7xl mx-auto px-4 pt-8">
-        <Tabs defaultValue="techniques" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="flex justify-center mb-8 gap-2 bg-white/80 dark:bg-slate-900/70 rounded-xl shadow-lg flex-wrap p-2">
             <TabsTrigger value="techniques" className="px-6 py-3 text-base font-medium rounded-lg transition-all duration-200 hover:scale-105">
               🎯 Techniques
@@ -62,7 +74,7 @@ const Index = () => {
             <EnhancedBestPractices />
           </TabsContent>
           <TabsContent value="features" className="focus:outline-none">
-            <InteractiveFeatures />
+            <EnhancedInteractiveFeatures />
           </TabsContent>
           <TabsContent value="ai" className="focus:outline-none">
             <AITopics />

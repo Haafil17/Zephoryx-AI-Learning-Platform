@@ -26,14 +26,14 @@ export const Hero = () => {
   }, []);
 
   const handleTabNavigation = (tabValue: string) => {
-    const tab = document.querySelector(`[value="${tabValue}"]`);
-    if (tab) {
-      (tab as HTMLElement).click();
-    }
+    // Dispatch custom event to trigger tab change
+    window.dispatchEvent(new CustomEvent('changeTab', { detail: tabValue }));
+    
+    // Smooth scroll to content
     setTimeout(() => {
-      const contentArea = document.querySelector('.max-w-7xl');
-      if (contentArea) {
-        contentArea.scrollIntoView({ behavior: 'smooth' });
+      const tabsContainer = document.querySelector('[role="tablist"]');
+      if (tabsContainer) {
+        tabsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
   };
@@ -157,11 +157,11 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => handleTabNavigation("ai")}
+              onClick={() => handleTabNavigation("features")}
               className="group border-3 border-orange-500/60 bg-orange-500/20 hover:bg-orange-500/30 text-orange-200 hover:text-orange-100 px-8 py-6 text-lg font-bold transition-all duration-300 backdrop-blur-sm shadow-2xl shadow-orange-500/30 rounded-2xl"
             >
               <Rocket className="w-6 h-6 mr-3 group-hover:animate-bounce" />
-              AI Universe
+              Interactive Features
             </Button>
           </div>
           
