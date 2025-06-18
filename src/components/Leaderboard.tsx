@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -39,7 +38,7 @@ const sampleLeaderboard = [
 export const Leaderboard = () => {
   const handleJoinCompetition = () => {
     // Scroll to username input or show join form
-    const usernameInput = document.querySelector('input[placeholder="Enter your username"]');
+    const usernameInput = document.querySelector('input[placeholder="Enter your username"]') as HTMLInputElement;
     if (usernameInput) {
       usernameInput.focus();
     }
