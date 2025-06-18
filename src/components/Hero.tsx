@@ -1,12 +1,31 @@
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ThemeToggle } from "./ThemeToggle";
-import { AuthButton } from "./AuthButton";
 import { Leaderboard } from "./Leaderboard";
-import { Sparkles, Brain, Trophy, Zap, Rocket } from "lucide-react";
+import { Sparkles, Brain, Trophy, Zap, Rocket, User } from "lucide-react";
+import { useState } from "react";
 
 export const Hero = () => {
+  const [username, setUsername] = useState("");
+
+  const handleStartLearning = () => {
+    // Scroll to techniques section
+    const techniquesSection = document.querySelector('[value="techniques"]');
+    if (techniquesSection) {
+      techniquesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleViewLeaderboard = () => {
+    // Scroll to leaderboard or highlight it
+    const leaderboard = document.querySelector('.leaderboard-container');
+    if (leaderboard) {
+      leaderboard.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 dark:from-black dark:via-purple-950 dark:to-black">
       {/* Animated Background Effects */}
@@ -23,9 +42,8 @@ export const Hero = () => {
         }}></div>
       </div>
       
-      {/* Theme Toggle and Auth */}
-      <div className="absolute top-6 right-6 z-10 flex items-center gap-4">
-        <AuthButton />
+      {/* Theme Toggle */}
+      <div className="absolute top-6 right-6 z-10">
         <ThemeToggle />
       </div>
       
@@ -64,10 +82,25 @@ export const Hero = () => {
               cutting-edge AI tools, and expert guidance for <span className="text-purple-400 font-semibold">next-generation technology</span>.
             </p>
           </div>
+
+          {/* Username Input */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <Input
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="pl-10 pr-4 py-3 w-64 bg-slate-800/60 border-slate-600/50 text-white placeholder:text-slate-400 focus:border-cyan-500/50 focus:ring-cyan-500/30"
+              />
+            </div>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <Button 
               size="lg" 
+              onClick={handleStartLearning}
               className="group bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl shadow-cyan-500/30 transition-all duration-300 border border-cyan-500/30"
             >
               <Brain className="w-6 h-6 mr-2 group-hover:animate-pulse" />
@@ -77,6 +110,7 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
+              onClick={handleViewLeaderboard}
               className="group border-2 border-purple-500/50 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 hover:text-purple-200 px-8 py-4 text-lg font-semibold transition-all duration-300 backdrop-blur-sm shadow-lg shadow-purple-500/20"
             >
               <Trophy className="w-6 h-6 mr-2 group-hover:animate-bounce" />
@@ -107,7 +141,7 @@ export const Hero = () => {
         </div>
         
         {/* Real-time Leaderboard */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 leaderboard-container">
           <Leaderboard />
         </div>
       </div>

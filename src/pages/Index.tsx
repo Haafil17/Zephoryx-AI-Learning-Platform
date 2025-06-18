@@ -2,7 +2,7 @@
 import { Hero } from "@/components/Hero";
 import { Techniques } from "@/components/Techniques";
 import { Examples } from "@/components/Examples";
-import { BestPractices } from "@/components/BestPractices";
+import { EnhancedBestPractices } from "@/components/EnhancedBestPractices";
 import { Resources } from "@/components/Resources";
 import { InteractiveFeatures } from "@/components/InteractiveFeatures";
 import { AITopics } from "@/components/AITopics";
@@ -59,7 +59,7 @@ const Index = () => {
             <Examples />
           </TabsContent>
           <TabsContent value="bestpractices">
-            <BestPractices />
+            <EnhancedBestPractices />
           </TabsContent>
           <TabsContent value="features">
             <InteractiveFeatures />
