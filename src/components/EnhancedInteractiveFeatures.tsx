@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -410,6 +409,14 @@ Make it compelling and results-driven.`,
     return <AlertCircle className="w-5 h-5 text-red-600" />;
   };
 
+  const switchToTab = (tabValue: string) => {
+    // Use React state to handle tab switching instead of DOM manipulation
+    const tabTrigger = document.querySelector(`[value="${tabValue}"]`) as HTMLButtonElement;
+    if (tabTrigger) {
+      tabTrigger.click();
+    }
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900 dark:to-indigo-950">
       <div className="max-w-7xl mx-auto">
@@ -761,11 +768,11 @@ Make it compelling and results-driven.`,
                       onClick={() => {
                         // Switch to the appropriate tab based on feature
                         if (feature.id === "prompt-analyzer") {
-                          document.querySelector('[value="analyzer"]')?.click();
+                          switchToTab("analyzer");
                         } else if (feature.id === "chat-simulator") {
-                          document.querySelector('[value="chat"]')?.click();
+                          switchToTab("chat");
                         } else if (feature.id === "template-library") {
-                          document.querySelector('[value="templates"]')?.click();
+                          switchToTab("templates");
                         }
                         toast({
                           title: "Feature Activated!",
