@@ -1,13 +1,13 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Copy, Code, PenTool, BarChart, BookOpen, Microscope, Check, ExternalLink } from "lucide-react";
+import { Copy, Code, PenTool, BarChart, BookOpen, Microscope, Check, ExternalLink, Video, Play } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const Examples = () => {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   const examples = [
     {
@@ -95,6 +95,33 @@ Apply rigorous academic standards and critical thinking throughout.`,
     }
   ];
 
+  const exampleVideos = [
+    {
+      id: "advanced-prompting",
+      title: "Advanced Prompting Techniques",
+      description: "Masterclass on professional prompt engineering",
+      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
+      duration: "32:15",
+      category: "techniques"
+    },
+    {
+      id: "business-prompts",
+      title: "Business Prompt Templates",
+      description: "Real-world examples for business applications",
+      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
+      duration: "24:30",
+      category: "business"
+    },
+    {
+      id: "creative-prompts",
+      title: "Creative Writing with AI",
+      description: "Unleashing creativity through effective prompting",
+      thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
+      duration: "28:45",
+      category: "creative"
+    }
+  ];
+
   const copyToClipboard = async (text: string, index: number) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -146,6 +173,13 @@ Apply rigorous academic standards and critical thinking throughout.`,
     });
   };
 
+  const handleVideoPlay = (videoId: string) => {
+    setPlayingVideoId(videoId);
+    toast.success("Playing tutorial...", {
+      description: "Loading example content"
+    });
+  };
+
   return (
     <section id="examples" className="py-20 px-4 bg-white/50 dark:bg-slate-900/30">
       <div className="max-w-7xl mx-auto">
@@ -156,6 +190,41 @@ Apply rigorous academic standards and critical thinking throughout.`,
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
             Master the art of prompt engineering with these expertly crafted templates designed for real-world applications across various industries and use cases.
           </p>
+        </div>
+
+        {/* Video Tutorial Section */}
+        <div className="mb-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
+            Prompt Engineering Video Tutorials
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {exampleVideos.map((video) => (
+              <Card key={video.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
+                <div className="relative">
+                  <img 
+                    src={video.thumbnail} 
+                    alt={video.title}
+                    className="w-full h-48 object-cover rounded-t-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/30 rounded-t-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      onClick={() => handleVideoPlay(video.id)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-4"
+                    >
+                      <Play className="w-6 h-6" />
+                    </Button>
+                  </div>
+                  <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                    {video.duration}
+                  </Badge>
+                </div>
+                <CardContent className="p-4">
+                  <h4 className="font-semibold mb-2">{video.title}</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">{video.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -224,6 +293,13 @@ Apply rigorous academic standards and critical thinking throughout.`,
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
                     Learn More
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleVideoPlay(`${example.title.toLowerCase().replace(/\s+/g, '-')}`)}
+                  >
+                    <Video className="w-4 h-4" />
                   </Button>
                 </div>
               </CardContent>

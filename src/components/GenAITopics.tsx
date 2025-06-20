@@ -1,13 +1,13 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Image, FileText, Mic, ChevronRight, Zap } from "lucide-react";
+import { Sparkles, Image, FileText, Mic, ChevronRight, Zap, Video, Play } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const GenAITopics = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   const genAIConcepts = [
     {
@@ -60,6 +60,41 @@ export const GenAITopics = () => {
     }
   ];
 
+  const genAIVideos = [
+    {
+      id: "gpt-tutorial",
+      title: "Mastering ChatGPT & LLMs",
+      description: "Complete guide to using large language models effectively",
+      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
+      duration: "28:15",
+      category: "models"
+    },
+    {
+      id: "dalle-masterclass",
+      title: "AI Art Creation with DALL-E",
+      description: "Creating stunning visuals with text-to-image AI",
+      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
+      duration: "19:40",
+      category: "creative"
+    },
+    {
+      id: "prompt-engineering",
+      title: "Advanced Prompt Engineering",
+      description: "Professional techniques for better AI outputs",
+      thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
+      duration: "35:20",
+      category: "techniques"
+    },
+    {
+      id: "ai-workflows",
+      title: "Building AI Content Workflows",
+      description: "Automating content creation with multiple AI tools",
+      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
+      duration: "24:10",
+      category: "workflow"
+    }
+  ];
+
   const categories = [
     { id: "all", name: "All Topics", count: genAIConcepts.length },
     { id: "models", name: "AI Models", count: genAIConcepts.filter(c => c.category === "models").length },
@@ -87,6 +122,13 @@ export const GenAITopics = () => {
     toast.success(`Opening ${concept.title} resources...`);
   };
 
+  const handleVideoPlay = (videoId: string) => {
+    setPlayingVideoId(videoId);
+    toast.success("Playing GenAI tutorial...", {
+      description: "Loading educational content"
+    });
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
       <div className="max-w-7xl mx-auto">
@@ -97,6 +139,41 @@ export const GenAITopics = () => {
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
             Master the art of creating content with AI - from text and images to audio and video generation
           </p>
+        </div>
+
+        {/* Featured Video Section */}
+        <div className="mb-16 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8">
+          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
+            GenAI Video Tutorials
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {genAIVideos.map((video) => (
+              <Card key={video.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
+                <div className="relative">
+                  <img 
+                    src={video.thumbnail} 
+                    alt={video.title}
+                    className="w-full h-40 object-cover rounded-t-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/30 rounded-t-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      onClick={() => handleVideoPlay(video.id)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-3"
+                    >
+                      <Play className="w-5 h-5" />
+                    </Button>
+                  </div>
+                  <Badge className="absolute top-2 right-2 bg-black/70 text-white text-xs">
+                    {video.duration}
+                  </Badge>
+                </div>
+                <CardContent className="p-4">
+                  <h4 className="font-semibold text-sm mb-2">{video.title}</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">{video.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         {/* Category Filter */}
@@ -148,14 +225,23 @@ export const GenAITopics = () => {
                     ))}
                   </div>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-between text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/30"
-                  onClick={() => handleExploreClick(concept)}
-                >
-                  Explore Topic
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="ghost" 
+                    className="flex-1 justify-between text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/30"
+                    onClick={() => handleExploreClick(concept)}
+                  >
+                    Explore Topic
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleVideoPlay(`${concept.title.toLowerCase().replace(/\s+/g, '-')}`)}
+                  >
+                    <Video className="w-4 h-4" />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}

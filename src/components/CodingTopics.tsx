@@ -1,12 +1,13 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Code, Zap, Brain, Target, ChevronRight, Star } from "lucide-react";
+import { Code, Zap, Brain, Target, ChevronRight, Star, Video, Play } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 export const CodingTopics = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   const codingConcepts = [
     {
@@ -59,6 +60,41 @@ export const CodingTopics = () => {
     }
   ];
 
+  const codingVideos = [
+    {
+      id: "ai-coding-basics",
+      title: "AI-Powered Coding Fundamentals",
+      description: "Getting started with GitHub Copilot and AI coding tools",
+      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
+      duration: "20:30",
+      category: "ai-tools"
+    },
+    {
+      id: "prompt-engineering-code",
+      title: "Code Prompt Engineering",
+      description: "Writing effective prompts for code generation",
+      thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
+      duration: "15:45",
+      category: "prompting"
+    },
+    {
+      id: "ai-code-review",
+      title: "AI-Assisted Code Review",
+      description: "Using AI for code quality and bug detection",
+      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
+      duration: "18:20",
+      category: "quality"
+    },
+    {
+      id: "algorithm-optimization",
+      title: "AI Algorithm Optimization",
+      description: "Leveraging AI for performance improvements",
+      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
+      duration: "25:15",
+      category: "algorithms"
+    }
+  ];
+
   const categories = [
     { id: "all", name: "All Topics", count: codingConcepts.length },
     { id: "ai-tools", name: "AI Tools", count: codingConcepts.filter(c => c.category === "ai-tools").length },
@@ -104,6 +140,13 @@ export const CodingTopics = () => {
     toast.success(`Opening ${concept.title} resources...`);
   };
 
+  const handleVideoPlay = (videoId: string) => {
+    setPlayingVideoId(videoId);
+    toast.success("Playing coding tutorial...", {
+      description: "Loading development content"
+    });
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
       <div className="max-w-7xl mx-auto">
@@ -114,6 +157,41 @@ export const CodingTopics = () => {
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
             Revolutionize your development workflow with AI tools and techniques for faster, smarter coding
           </p>
+        </div>
+
+        {/* Coding Video Tutorials */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
+            AI Coding Video Tutorials
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {codingVideos.map((video) => (
+              <Card key={video.id} className="group hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
+                <div className="relative">
+                  <img 
+                    src={video.thumbnail} 
+                    alt={video.title}
+                    className="w-full h-40 object-cover rounded-t-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/30 rounded-t-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      onClick={() => handleVideoPlay(video.id)}
+                      className="bg-green-600 hover:bg-green-700 text-white rounded-full p-3"
+                    >
+                      <Play className="w-5 h-5" />
+                    </Button>
+                  </div>
+                  <Badge className="absolute top-2 right-2 bg-black/70 text-white text-xs">
+                    {video.duration}
+                  </Badge>
+                </div>
+                <CardContent className="p-4">
+                  <h4 className="font-semibold text-sm mb-2">{video.title}</h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300">{video.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         {/* Category Filter */}
@@ -168,14 +246,23 @@ export const CodingTopics = () => {
                     ))}
                   </div>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-between text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/30"
-                  onClick={() => handleLearnMore(concept)}
-                >
-                  Learn More
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="ghost" 
+                    className="flex-1 justify-between text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/30"
+                    onClick={() => handleLearnMore(concept)}
+                  >
+                    Learn More
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleVideoPlay(`${concept.title.toLowerCase().replace(/\s+/g, '-')}`)}
+                  >
+                    <Video className="w-4 h-4" />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
