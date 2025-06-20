@@ -139,7 +139,7 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <Card className={`w-96 h-96 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-2 border-blue-200 dark:border-blue-800 shadow-2xl transition-all duration-300 ${isMinimized ? 'h-16' : 'h-96'}`}>
+      <Card className={`w-96 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-2 border-blue-200 dark:border-blue-800 shadow-2xl transition-all duration-300 ${isMinimized ? 'h-16' : 'h-96'}`}>
         <CardHeader className="pb-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -278,75 +278,3 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
     </div>
   );
 };
-```
-
-Now I'll create a floating chat button component:
-
-<lov-write file_path="src/components/ChatFloatingButton.tsx">
-import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { MessageCircle, X } from "lucide-react";
-import { AIChatAssistant } from './AIChatAssistant';
-
-export const ChatFloatingButton: React.FC = () => {
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
-
-  return (
-    <>
-      {!isChatOpen && (
-        <Button
-          onClick={toggleChat}
-          className="fixed bottom-4 right-4 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110"
-          size="lg"
-        >
-          <MessageCircle className="w-6 h-6" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
-        </Button>
-      )}
-      
-      <AIChatAssistant isOpen={isChatOpen} onToggle={toggleChat} />
-    </>
-  );
-};
-```
-
-Finally, I'll update the main App component to include the floating chat button:
-
-<lov-write file_path="src/App.tsx">
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { ChatFloatingButton } from "@/components/ChatFloatingButton";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="light" storageKey="prompt-engineering-theme">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <ChatFloatingButton />
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
-
-export default App;
-```
