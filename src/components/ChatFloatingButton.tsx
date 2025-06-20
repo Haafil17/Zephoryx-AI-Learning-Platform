@@ -8,15 +8,18 @@ export const ChatFloatingButton: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const toggleChat = () => {
+    console.log('Toggle chat clicked, current state:', isChatOpen);
     setIsChatOpen(!isChatOpen);
   };
+
+  console.log('ChatFloatingButton render, isChatOpen:', isChatOpen);
 
   return (
     <>
       {!isChatOpen && (
         <Button
           onClick={toggleChat}
-          className="fixed bottom-4 right-4 z-40 w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-2xl transition-all duration-300 hover:scale-110"
+          className="fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-2xl transition-all duration-300 hover:scale-110"
           size="lg"
         >
           <MessageCircle className="w-6 h-6" />
