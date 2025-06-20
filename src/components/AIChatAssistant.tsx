@@ -135,6 +135,7 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
     { icon: HelpCircle, label: "Get Started", message: "How do I get started with AI?" }
   ];
 
+  // Show the chat when isOpen is true
   if (!isOpen) return null;
 
   return (
