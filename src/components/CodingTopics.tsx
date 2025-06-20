@@ -68,7 +68,7 @@ export const CodingTopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "20:30",
       category: "ai-tools",
-      videoUrl: "https://www.youtube.com/embed/Fi3AJZZregI"
+      videoUrl: "https://www.youtube.com/embed/Fi3AJZZregI?autoplay=1"
     },
     {
       id: "prompt-engineering-code",
@@ -77,7 +77,7 @@ export const CodingTopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "15:45",
       category: "prompting",
-      videoUrl: "https://www.youtube.com/embed/GPqSoiOP3w8"
+      videoUrl: "https://www.youtube.com/embed/GPqSoiOP3w8?autoplay=1"
     },
     {
       id: "ai-code-review",
@@ -86,7 +86,7 @@ export const CodingTopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "18:20",
       category: "quality",
-      videoUrl: "https://www.youtube.com/embed/1T6hAznFtP4"
+      videoUrl: "https://www.youtube.com/embed/1T6hAznFtP4?autoplay=1"
     },
     {
       id: "algorithm-optimization",
@@ -95,7 +95,7 @@ export const CodingTopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "25:15",
       category: "algorithms",
-      videoUrl: "https://www.youtube.com/embed/Ven2P4IxJ_0"
+      videoUrl: "https://www.youtube.com/embed/Ven2P4IxJ_0?autoplay=1"
     }
   ];
 
@@ -175,6 +175,7 @@ export const CodingTopics = () => {
                   src={codingVideos.find(v => v.id === playingVideoId)?.videoUrl}
                   className="w-full h-full"
                   allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   title={codingVideos.find(v => v.id === playingVideoId)?.title}
                 />
               </div>

@@ -94,7 +94,7 @@ export const AITopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "15:30",
       category: "fundamentals",
-      videoUrl: "https://www.youtube.com/embed/kWmX3pd1f10"
+      videoUrl: "https://www.youtube.com/embed/kWmX3pd1f10?autoplay=1"
     },
     {
       id: "neural-networks",
@@ -103,7 +103,7 @@ export const AITopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "22:45",
       category: "fundamentals",
-      videoUrl: "https://www.youtube.com/embed/aircAruvnKk"
+      videoUrl: "https://www.youtube.com/embed/aircAruvnKk?autoplay=1"
     },
     {
       id: "ai-ethics",
@@ -112,7 +112,7 @@ export const AITopics = () => {
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "18:20",
       category: "ethics",
-      videoUrl: "https://www.youtube.com/embed/AaAX-E6Vvd0"
+      videoUrl: "https://www.youtube.com/embed/AaAX-E6Vvd0?autoplay=1"
     }
   ];
 
@@ -147,6 +147,7 @@ export const AITopics = () => {
                   src={aiVideos.find(v => v.id === playingVideoId)?.videoUrl}
                   className="w-full h-full"
                   allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   title={aiVideos.find(v => v.id === playingVideoId)?.title}
                 />
               </div>

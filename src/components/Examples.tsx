@@ -103,7 +103,7 @@ Apply rigorous academic standards and critical thinking throughout.`,
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "32:15",
       category: "techniques",
-      videoUrl: "https://www.youtube.com/embed/V2efhrCxTiw"
+      videoUrl: "https://www.youtube.com/embed/V2efhrCxTiw?autoplay=1"
     },
     {
       id: "business-prompts",
@@ -112,7 +112,7 @@ Apply rigorous academic standards and critical thinking throughout.`,
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "24:30",
       category: "business",
-      videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM"
+      videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM?autoplay=1"
     },
     {
       id: "creative-prompts",
@@ -121,7 +121,7 @@ Apply rigorous academic standards and critical thinking throughout.`,
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "28:45",
       category: "creative",
-      videoUrl: "https://www.youtube.com/embed/wShG8lT2tz0"
+      videoUrl: "https://www.youtube.com/embed/wShG8lT2tz0?autoplay=1"
     }
   ];
 
@@ -207,6 +207,7 @@ Apply rigorous academic standards and critical thinking throughout.`,
                   src={exampleVideos.find(v => v.id === playingVideoId)?.videoUrl}
                   className="w-full h-full"
                   allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   title={exampleVideos.find(v => v.id === playingVideoId)?.title}
                 />
               </div>

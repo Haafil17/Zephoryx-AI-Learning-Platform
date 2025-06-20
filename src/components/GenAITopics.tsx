@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Image, FileText, Mic, ChevronRight, Zap, Video, Play } from "lucide-react";
+import { Sparkles, Image, FileText, Mic, ChevronRight, Zap, Video, Play, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -67,7 +67,8 @@ export const GenAITopics = () => {
       description: "Complete guide to using large language models effectively",
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "28:15",
-      category: "models"
+      category: "models",
+      videoUrl: "https://www.youtube.com/embed/JTxsNm9IdYU?autoplay=1"
     },
     {
       id: "dalle-masterclass",
@@ -75,7 +76,8 @@ export const GenAITopics = () => {
       description: "Creating stunning visuals with text-to-image AI",
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "19:40",
-      category: "creative"
+      category: "creative",
+      videoUrl: "https://www.youtube.com/embed/F1X4fHzF4mQ?autoplay=1"
     },
     {
       id: "prompt-engineering",
@@ -83,7 +85,8 @@ export const GenAITopics = () => {
       description: "Professional techniques for better AI outputs",
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "35:20",
-      category: "techniques"
+      category: "techniques",
+      videoUrl: "https://www.youtube.com/embed/dOxUroR57xs?autoplay=1"
     },
     {
       id: "ai-workflows",
@@ -91,7 +94,8 @@ export const GenAITopics = () => {
       description: "Automating content creation with multiple AI tools",
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "24:10",
-      category: "workflow"
+      category: "workflow",
+      videoUrl: "https://www.youtube.com/embed/ZuHf7_yWN0I?autoplay=1"
     }
   ];
 
@@ -129,9 +133,38 @@ export const GenAITopics = () => {
     });
   };
 
+  const closeVideo = () => {
+    setPlayingVideoId(null);
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
       <div className="max-w-7xl mx-auto">
+        {/* Video Modal */}
+        {playingVideoId && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="text-lg font-semibold">
+                  {genAIVideos.find(v => v.id === playingVideoId)?.title}
+                </h3>
+                <Button variant="ghost" size="sm" onClick={closeVideo}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="aspect-video">
+                <iframe
+                  src={genAIVideos.find(v => v.id === playingVideoId)?.videoUrl}
+                  className="w-full h-full"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  title={genAIVideos.find(v => v.id === playingVideoId)?.title}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
             Generative AI
