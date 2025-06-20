@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Code, Zap, Brain, Target, ChevronRight, Star, Video, Play } from "lucide-react";
+import { Code, Zap, Brain, Target, ChevronRight, Star, Video, Play, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -67,7 +67,8 @@ export const CodingTopics = () => {
       description: "Getting started with GitHub Copilot and AI coding tools",
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "20:30",
-      category: "ai-tools"
+      category: "ai-tools",
+      videoUrl: "https://www.youtube.com/embed/Fi3AJZZregI"
     },
     {
       id: "prompt-engineering-code",
@@ -75,7 +76,8 @@ export const CodingTopics = () => {
       description: "Writing effective prompts for code generation",
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "15:45",
-      category: "prompting"
+      category: "prompting",
+      videoUrl: "https://www.youtube.com/embed/GPqSoiOP3w8"
     },
     {
       id: "ai-code-review",
@@ -83,7 +85,8 @@ export const CodingTopics = () => {
       description: "Using AI for code quality and bug detection",
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "18:20",
-      category: "quality"
+      category: "quality",
+      videoUrl: "https://www.youtube.com/embed/1T6hAznFtP4"
     },
     {
       id: "algorithm-optimization",
@@ -91,7 +94,8 @@ export const CodingTopics = () => {
       description: "Leveraging AI for performance improvements",
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "25:15",
-      category: "algorithms"
+      category: "algorithms",
+      videoUrl: "https://www.youtube.com/embed/Ven2P4IxJ_0"
     }
   ];
 
@@ -147,9 +151,37 @@ export const CodingTopics = () => {
     });
   };
 
+  const closeVideo = () => {
+    setPlayingVideoId(null);
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
       <div className="max-w-7xl mx-auto">
+        {/* Video Modal */}
+        {playingVideoId && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="text-lg font-semibold">
+                  {codingVideos.find(v => v.id === playingVideoId)?.title}
+                </h3>
+                <Button variant="ghost" size="sm" onClick={closeVideo}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="aspect-video">
+                <iframe
+                  src={codingVideos.find(v => v.id === playingVideoId)?.videoUrl}
+                  className="w-full h-full"
+                  allowFullScreen
+                  title={codingVideos.find(v => v.id === playingVideoId)?.title}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-6">
             AI-Powered Coding

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Users, Target, Lightbulb, ChevronRight, Star, Video, Play } from "lucide-react";
+import { Brain, Users, Target, Lightbulb, ChevronRight, Star, Video, Play, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -93,7 +93,8 @@ export const AITopics = () => {
       description: "Understanding the basics of artificial intelligence",
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "15:30",
-      category: "fundamentals"
+      category: "fundamentals",
+      videoUrl: "https://www.youtube.com/embed/kWmX3pd1f10"
     },
     {
       id: "neural-networks",
@@ -101,7 +102,8 @@ export const AITopics = () => {
       description: "How neural networks process information",
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "22:45",
-      category: "fundamentals"
+      category: "fundamentals",
+      videoUrl: "https://www.youtube.com/embed/aircAruvnKk"
     },
     {
       id: "ai-ethics",
@@ -109,7 +111,8 @@ export const AITopics = () => {
       description: "Real-world examples of AI ethical considerations",
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "18:20",
-      category: "ethics"
+      category: "ethics",
+      videoUrl: "https://www.youtube.com/embed/AaAX-E6Vvd0"
     }
   ];
 
@@ -120,9 +123,37 @@ export const AITopics = () => {
     });
   };
 
+  const closeVideo = () => {
+    setPlayingVideoId(null);
+  };
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
       <div className="max-w-7xl mx-auto">
+        {/* Video Modal */}
+        {playingVideoId && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="text-lg font-semibold">
+                  {aiVideos.find(v => v.id === playingVideoId)?.title}
+                </h3>
+                <Button variant="ghost" size="sm" onClick={closeVideo}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="aspect-video">
+                <iframe
+                  src={aiVideos.find(v => v.id === playingVideoId)?.videoUrl}
+                  className="w-full h-full"
+                  allowFullScreen
+                  title={aiVideos.find(v => v.id === playingVideoId)?.title}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
             Artificial Intelligence

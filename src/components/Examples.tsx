@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Copy, Code, PenTool, BarChart, BookOpen, Microscope, Check, ExternalLink, Video, Play } from "lucide-react";
+import { Copy, Code, PenTool, BarChart, BookOpen, Microscope, Check, ExternalLink, Video, Play, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -102,7 +102,8 @@ Apply rigorous academic standards and critical thinking throughout.`,
       description: "Masterclass on professional prompt engineering",
       thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
       duration: "32:15",
-      category: "techniques"
+      category: "techniques",
+      videoUrl: "https://www.youtube.com/embed/V2efhrCxTiw"
     },
     {
       id: "business-prompts",
@@ -110,7 +111,8 @@ Apply rigorous academic standards and critical thinking throughout.`,
       description: "Real-world examples for business applications",
       thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
       duration: "24:30",
-      category: "business"
+      category: "business",
+      videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM"
     },
     {
       id: "creative-prompts",
@@ -118,7 +120,8 @@ Apply rigorous academic standards and critical thinking throughout.`,
       description: "Unleashing creativity through effective prompting",
       thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
       duration: "28:45",
-      category: "creative"
+      category: "creative",
+      videoUrl: "https://www.youtube.com/embed/wShG8lT2tz0"
     }
   ];
 
@@ -180,9 +183,37 @@ Apply rigorous academic standards and critical thinking throughout.`,
     });
   };
 
+  const closeVideo = () => {
+    setPlayingVideoId(null);
+  };
+
   return (
     <section id="examples" className="py-20 px-4 bg-white/50 dark:bg-slate-900/30">
       <div className="max-w-7xl mx-auto">
+        {/* Video Modal */}
+        {playingVideoId && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h3 className="text-lg font-semibold">
+                  {exampleVideos.find(v => v.id === playingVideoId)?.title}
+                </h3>
+                <Button variant="ghost" size="sm" onClick={closeVideo}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="aspect-video">
+                <iframe
+                  src={exampleVideos.find(v => v.id === playingVideoId)?.videoUrl}
+                  className="w-full h-full"
+                  allowFullScreen
+                  title={exampleVideos.find(v => v.id === playingVideoId)?.title}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
             Professional Prompt Templates
