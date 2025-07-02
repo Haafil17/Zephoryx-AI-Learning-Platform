@@ -1,249 +1,179 @@
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { ThemeToggle } from "./ThemeToggle";
-import { Sparkles, Brain, Trophy, Zap, Rocket, User, BookOpen, Code, Star, Award, Target } from "lucide-react";
-import { useState, useEffect } from "react";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import { AuthButton } from '@/components/AuthButton';
+import { 
+  Sparkles, 
+  Brain, 
+  Zap, 
+  Target, 
+  BookOpen, 
+  Trophy,
+  Users,
+  TrendingUp,
+  ArrowRight,
+  Lightbulb
+} from 'lucide-react';
 
 export const Hero = () => {
-  const [username, setUsername] = useState("");
-  const [currentTip, setCurrentTip] = useState(0);
+  const handleGetStarted = () => {
+    const event = new CustomEvent('changeTab', { detail: 'lessons' });
+    window.dispatchEvent(event);
+  };
 
-  const tips = [
-    "💡 Master zero-shot prompting for instant results",
-    "🎯 Use specific examples to guide AI behavior", 
-    "🧠 Break complex tasks into simple steps",
-    "⚡ Set clear constraints for better outputs",
-    "🔄 Iterate and refine your prompts"
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTip((prev) => (prev + 1) % tips.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleTabNavigation = (tabValue: string) => {
-    // Dispatch custom event to trigger tab change
-    window.dispatchEvent(new CustomEvent('changeTab', { detail: tabValue }));
-    
-    // Smooth scroll to content
-    setTimeout(() => {
-      const tabsContainer = document.querySelector('[role="tablist"]');
-      if (tabsContainer) {
-        tabsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+  const handleViewLeaderboard = () => {
+    const event = new CustomEvent('changeTab', { detail: 'leaderboard' });
+    window.dispatchEvent(event);
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 dark:from-black dark:via-purple-950 dark:to-black">
-      {/* Enhanced Animated Background */}
-      <div className="absolute inset-0 opacity-40">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/30 via-transparent to-transparent animate-pulse"></div>
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/3 left-1/3 w-64 h-64 bg-yellow-500/15 rounded-full blur-2xl animate-bounce"></div>
-      </div>
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950 overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-grid-slate-200/50 dark:bg-grid-slate-700/25 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] dark:[mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.5))]"></div>
       
-      {/* Floating Elements */}
-      <div className="absolute top-20 left-10 animate-float">
-        <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full opacity-70 shadow-2xl shadow-cyan-500/50 flex items-center justify-center">
-          <Brain className="w-6 h-6 text-white" />
-        </div>
-      </div>
-      <div className="absolute bottom-20 right-20 animate-pulse">
-        <div className="w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full opacity-60 shadow-2xl shadow-pink-500/50 flex items-center justify-center">
-          <Zap className="w-8 h-8 text-white" />
-        </div>
-      </div>
-      <div className="absolute top-1/2 left-20 animate-ping">
-        <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-cyan-400 rounded-full opacity-50 flex items-center justify-center">
-          <Star className="w-4 h-4 text-white" />
-        </div>
-      </div>
-      
-      {/* Theme Toggle */}
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
-      </div>
-      
-      <div className="max-w-6xl mx-auto text-center space-y-12 relative z-10">
-        {/* Main Header */}
-        <div className="space-y-8">
-          <div className="space-y-6">
-            <Badge className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500/30 to-purple-500/30 text-cyan-200 border-2 border-cyan-500/40 backdrop-blur-sm shadow-2xl shadow-cyan-500/30 text-lg font-bold">
-              <Sparkles className="w-6 h-6 animate-spin" />
-              <span>Your AI Mastery Journey Starts Here</span>
-              <Award className="w-6 h-6 animate-pulse" />
-            </Badge>
-            
-            <h1 className="text-7xl md:text-9xl font-bold leading-tight">
-              <span className="bg-gradient-to-r from-cyan-300 via-purple-300 to-pink-300 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
-                Clavis
-              </span>
-              <br />
-              <span className="text-white drop-shadow-2xl text-5xl md:text-7xl font-light">
-                AI Expert Platform
-              </span>
+      {/* Floating elements */}
+      <div className="absolute top-20 left-10 w-20 h-20 bg-blue-200 dark:bg-blue-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-70 animate-blob"></div>
+      <div className="absolute top-40 right-10 w-20 h-20 bg-purple-200 dark:bg-purple-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+      <div className="absolute -top-8 left-20 w-20 h-20 bg-cyan-200 dark:bg-cyan-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+
+      {/* Header */}
+      <header className="relative z-10 flex justify-between items-center p-6 lg:px-12">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+            <Sparkles className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              AI Learning Hub
             </h1>
-            
-            <p className="text-2xl md:text-3xl text-slate-100 max-w-5xl mx-auto leading-relaxed drop-shadow-lg font-medium">
-              Transform into an <span className="text-cyan-300 font-bold bg-cyan-300/10 px-3 py-1 rounded-lg">AI Virtuoso</span> with 
-              cutting-edge prompting techniques, advanced AI methodologies, and expert guidance for 
-              <span className="text-purple-300 font-bold bg-purple-300/10 px-3 py-1 rounded-lg"> next-generation technology mastery</span>.
-            </p>
-
-            {/* Rotating Tips */}
-            <div className="bg-gradient-to-r from-slate-800/60 to-slate-700/60 backdrop-blur-lg rounded-2xl p-6 border border-slate-600/50 max-w-2xl mx-auto">
-              <div className="text-lg text-cyan-200 font-semibold animate-fade-in">
-                {tips[currentTip]}
-              </div>
-            </div>
+            <p className="text-sm text-slate-600 dark:text-slate-400">Master AI with Interactive Learning</p>
           </div>
-
-          {/* Enhanced Username Input */}
-          <div className="flex flex-col items-center gap-6">
-            <div className="relative group">
-              <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-6 h-6 group-focus-within:text-cyan-400 transition-colors" />
-              <Input
-                type="text"
-                placeholder="Enter your username to begin your AI journey"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="pl-12 pr-6 py-6 w-96 text-xl bg-slate-800/70 border-2 border-slate-600/50 text-white placeholder:text-slate-400 focus:border-cyan-500/70 focus:ring-cyan-500/40 rounded-2xl backdrop-blur-sm shadow-2xl"
-              />
-            </div>
-            {username && (
-              <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm rounded-xl px-6 py-3 border border-cyan-500/30">
-                <p className="text-cyan-200 font-bold text-lg">Welcome aboard, {username}! 🚀 Ready to master AI?</p>
-              </div>
-            )}
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="scale-125">
+            <ThemeToggle />
           </div>
+          <AuthButton />
+        </div>
+      </header>
+
+      {/* Main content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-12 pb-24">
+        <div className="text-center mb-16">
+          <Badge className="mb-6 px-4 py-2 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400">
+            <Zap className="w-4 h-4 mr-2" />
+            Interactive AI Learning Platform
+          </Badge>
           
-          {/* Enhanced Action Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <h2 className="text-5xl lg:text-7xl font-bold mb-8 bg-gradient-to-r from-slate-800 via-blue-600 to-purple-600 dark:from-slate-200 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
+            Master AI &<br />
+            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+              Earn XP
+            </span>
+          </h2>
+          
+          <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-300 max-w-4xl mx-auto mb-12 leading-relaxed">
+            Learn prompt engineering, AI fundamentals, and advanced techniques through 
+            interactive lessons. <span className="font-semibold text-blue-600 dark:text-blue-400">Earn XP, climb leaderboards,</span> and 
+            compete with learners worldwide.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button 
+              onClick={handleGetStarted}
               size="lg" 
-              onClick={() => handleTabNavigation("techniques")}
-              className="group bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white px-8 py-6 text-lg font-bold shadow-2xl hover:shadow-3xl shadow-cyan-500/40 transition-all duration-300 border-2 border-cyan-500/40 rounded-2xl"
+              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-4 text-lg font-semibold shadow-2xl shadow-blue-500/25 transition-all duration-300 hover:scale-105"
             >
-              <Brain className="w-6 h-6 mr-3 group-hover:animate-bounce" />
-              Master Techniques
+              <BookOpen className="w-5 h-5 mr-2" />
+              Start Learning
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
-            
             <Button 
+              onClick={handleViewLeaderboard}
               variant="outline" 
-              size="lg"
-              onClick={() => handleTabNavigation("examples")}
-              className="group border-3 border-purple-500/60 bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 hover:text-purple-100 px-8 py-6 text-lg font-bold transition-all duration-300 backdrop-blur-sm shadow-2xl shadow-purple-500/30 rounded-2xl"
+              size="lg" 
+              className="border-2 border-slate-300 dark:border-slate-600 px-8 py-4 text-lg font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-300 hover:scale-105"
             >
-              <Code className="w-6 h-6 mr-3 group-hover:animate-pulse" />
-              Explore Examples
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={() => handleTabNavigation("bestpractices")}
-              className="group border-3 border-green-500/60 bg-green-500/20 hover:bg-green-500/30 text-green-200 hover:text-green-100 px-8 py-6 text-lg font-bold transition-all duration-300 backdrop-blur-sm shadow-2xl shadow-green-500/30 rounded-2xl"
-            >
-              <Trophy className="w-6 h-6 mr-3 group-hover:animate-bounce" />
-              Best Practices
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={() => handleTabNavigation("features")}
-              className="group border-3 border-orange-500/60 bg-orange-500/20 hover:bg-orange-500/30 text-orange-200 hover:text-orange-100 px-8 py-6 text-lg font-bold transition-all duration-300 backdrop-blur-sm shadow-2xl shadow-orange-500/30 rounded-2xl"
-            >
-              <Rocket className="w-6 h-6 mr-3 group-hover:animate-bounce" />
-              Interactive Features
+              <Trophy className="w-5 h-5 mr-2" />
+              View Leaderboard
             </Button>
           </div>
-          
-          {/* Enhanced Stats with Animation */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 max-w-5xl mx-auto">
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-cyan-500/20 to-transparent border-2 border-cyan-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-transform duration-300">
-              <div className="text-5xl font-bold text-cyan-300 drop-shadow-lg animate-pulse">750K+</div>
-              <div className="text-lg text-slate-200 font-semibold mt-2">AI Enthusiasts</div>
-              <div className="text-sm text-slate-400">Worldwide Community</div>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-purple-500/20 to-transparent border-2 border-purple-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-transform duration-300">
-              <div className="text-5xl font-bold text-purple-300 drop-shadow-lg animate-pulse">2.5M+</div>
-              <div className="text-lg text-slate-200 font-semibold mt-2">Prompts Mastered</div>
-              <div className="text-sm text-slate-400">Success Stories</div>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-pink-500/20 to-transparent border-2 border-pink-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-transform duration-300">
-              <div className="text-5xl font-bold text-pink-300 drop-shadow-lg animate-pulse">150+</div>
-              <div className="text-lg text-slate-200 font-semibold mt-2">AI Tools & Techniques</div>
-              <div className="text-sm text-slate-400">Comprehensive Coverage</div>
-            </div>
-            <div className="text-center p-8 rounded-2xl bg-gradient-to-b from-green-500/20 to-transparent border-2 border-green-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-transform duration-300">
-              <div className="text-5xl font-bold text-green-300 drop-shadow-lg animate-pulse">99.8%</div>
-              <div className="text-lg text-slate-200 font-semibold mt-2">Success Rate</div>
-              <div className="text-sm text-slate-400">Proven Results</div>
-            </div>
-          </div>
+        </div>
 
-          {/* Enhanced Learning Paths */}
-          <div className="pt-16">
-            <h3 className="text-4xl font-bold text-white mb-12 drop-shadow-lg">Your AI Mastery Journey</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="p-8 rounded-2xl bg-gradient-to-b from-blue-500/20 to-transparent border-2 border-blue-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-all duration-300">
-                <BookOpen className="w-16 h-16 text-blue-300 mb-6 mx-auto animate-pulse" />
-                <h4 className="text-2xl font-bold text-white mb-4">Prompt Engineering Mastery</h4>
-                <p className="text-slate-200 text-lg leading-relaxed">Master advanced techniques for crafting effective AI prompts that deliver consistent, high-quality results</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge className="bg-blue-500/20 text-blue-200 border-blue-500/30">Zero-Shot</Badge>
-                  <Badge className="bg-blue-500/20 text-blue-200 border-blue-500/30">Few-Shot</Badge>
-                  <Badge className="bg-blue-500/20 text-blue-200 border-blue-500/30">Chain-of-Thought</Badge>
-                </div>
+        {/* Feature cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <Card className="group bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-2 border-white/50 dark:border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-blue-300 dark:hover:border-blue-600">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Brain className="w-6 h-6 text-white" />
               </div>
-              <div className="p-8 rounded-2xl bg-gradient-to-b from-purple-500/20 to-transparent border-2 border-purple-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-all duration-300">
-                <Brain className="w-16 h-16 text-purple-300 mb-6 mx-auto animate-pulse" />
-                <h4 className="text-2xl font-bold text-white mb-4">AI Technologies Deep Dive</h4>
-                <p className="text-slate-200 text-lg leading-relaxed">Explore machine learning, neural networks, generative AI, and cutting-edge applications across industries</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge className="bg-purple-500/20 text-purple-200 border-purple-500/30">Machine Learning</Badge>
-                  <Badge className="bg-purple-500/20 text-purple-200 border-purple-500/30">Neural Networks</Badge>
-                  <Badge className="bg-purple-500/20 text-purple-200 border-purple-500/30">GenAI</Badge>
-                </div>
+              <h3 className="font-bold text-lg mb-2">Interactive Lessons</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Structured learning paths with hands-on examples and real-world applications
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="group bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-2 border-white/50 dark:border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-purple-300 dark:hover:border-purple-600">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Trophy className="w-6 h-6 text-white" />
               </div>
-              <div className="p-8 rounded-2xl bg-gradient-to-b from-cyan-500/20 to-transparent border-2 border-cyan-500/30 backdrop-blur-sm shadow-2xl hover:scale-105 transition-all duration-300">
-                <Target className="w-16 h-16 text-cyan-300 mb-6 mx-auto animate-pulse" />
-                <h4 className="text-2xl font-bold text-white mb-4">Practical Implementation</h4>
-                <p className="text-slate-200 text-lg leading-relaxed">Learn hands-on with real-world projects, industry tools, and emerging technologies like quantum computing</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge className="bg-cyan-500/20 text-cyan-200 border-cyan-500/30">Real Projects</Badge>
-                  <Badge className="bg-cyan-500/20 text-cyan-200 border-cyan-500/30">Industry Tools</Badge>
-                  <Badge className="bg-cyan-500/20 text-cyan-200 border-cyan-500/30">Quantum Computing</Badge>
-                </div>
+              <h3 className="font-bold text-lg mb-2">XP & Achievements</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Earn experience points, unlock achievements, and track your learning progress
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="group bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-2 border-white/50 dark:border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-green-300 dark:hover:border-green-600">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Users className="w-6 h-6 text-white" />
               </div>
-            </div>
+              <h3 className="font-bold text-lg mb-2">Global Leaderboard</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Compete with learners worldwide and see where you rank globally
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="group bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border-2 border-white/50 dark:border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 hover:border-orange-300 dark:hover:border-orange-600">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Lightbulb className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="font-bold text-lg mb-2">AI Assistant</h3>
+              <p className="text-slate-600 dark:text-slate-400 text-sm">
+                Get personalized help and guidance from our intelligent learning assistant
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Stats section */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <div className="space-y-2">
+            <div className="text-3xl lg:text-4xl font-bold text-blue-600 dark:text-blue-400">50+</div>
+            <div className="text-slate-600 dark:text-slate-400 font-medium">Interactive Lessons</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-3xl lg:text-4xl font-bold text-purple-600 dark:text-purple-400">10K+</div>
+            <div className="text-slate-600 dark:text-slate-400 font-medium">Active Learners</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-3xl lg:text-4xl font-bold text-green-600 dark:text-green-400">95%</div>
+            <div className="text-slate-600 dark:text-slate-400 font-medium">Success Rate</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-3xl lg:text-4xl font-bold text-orange-600 dark:text-orange-400">24/7</div>
+            <div className="text-slate-600 dark:text-slate-400 font-medium">AI Support</div>
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        @keyframes fade-in {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-      `}</style>
-    </section>
+    </div>
   );
 };
