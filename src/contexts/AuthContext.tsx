@@ -103,8 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         password,
         options: {
-          data: { full_name: fullName },
-          emailRedirectTo: `${window.location.origin}/`
+          data: { full_name: fullName }
         }
       });
       
@@ -114,7 +113,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       if (data.user) {
-        toast.success('Account created! Please check your email for verification.');
+        toast.success('Account created successfully! You can now sign in.');
       }
     } catch (error: any) {
       console.error('Email signup error:', error);
