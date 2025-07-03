@@ -47,15 +47,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/`
+        }
+      });
+      
+      if (error) {
+        console.error('Error signing in with Google:', error);
+        // Fallback to email auth if Google is not configured
+        throw new Error('Google authentication is not configured. Please use email authentication instead.');
       }
-    });
-    
-    if (error) {
-      console.error('Error signing in with Google:', error);
+    } catch (error) {
+      console.error('Google auth error:', error);
+      throw error;
     }
   };
 

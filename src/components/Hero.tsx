@@ -42,7 +42,7 @@ export const Hero = () => {
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 rounded-full px-4 py-2 backdrop-blur-sm border border-white/30 dark:border-slate-600/30">
+          <div className="flex items-center gap-3 bg-white/60 dark:bg-slate-800/60 rounded-full px-6 py-3 backdrop-blur-sm border border-white/30 dark:border-slate-600/30">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Theme</span>
             <ThemeToggle />
           </div>
@@ -111,47 +111,41 @@ export const Hero = () => {
             </Button>
           </div>
 
-          {/* Quick stats or getting started guide */}
+          {/* Getting started guide */}
           <div className="mt-12 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-3xl p-8 border border-white/30 dark:border-slate-600/30 shadow-2xl max-w-3xl mx-auto">
             <h2 className="text-2xl font-bold mb-6 flex items-center justify-center gap-2">
               <Target className="w-6 h-6 text-green-500" />
-              How to Get Started:
+              Getting Started:
             </h2>
             <div className="space-y-4 text-left">
               <div className="flex items-start gap-3">
                 <span className="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">1</span>
                 <div>
-                  <p className="font-semibold">Sign up</p>
-                  <p className="text-slate-600 dark:text-slate-300">at <span className="font-mono bg-slate-200 dark:bg-slate-700 px-2 py-1 rounded">/auth</span> to start earning XP</p>
+                  <p className="font-semibold">Create Account</p>
+                  <p className="text-slate-600 dark:text-slate-300">Sign up with email or Google to start earning XP</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">2</span>
                 <div>
-                  <p className="font-semibold">Complete lessons</p>
-                  <p className="text-slate-600 dark:text-slate-300">to earn 100-300 XP each</p>
+                  <p className="font-semibold">Complete Lessons</p>
+                  <p className="text-slate-600 dark:text-slate-300">Learn AI concepts and earn 100-300 XP per lesson</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">3</span>
                 <div>
-                  <p className="font-semibold">Climb the leaderboard</p>
-                  <p className="text-slate-600 dark:text-slate-300">and compete globally</p>
+                  <p className="font-semibold">Climb Leaderboard</p>
+                  <p className="text-slate-600 dark:text-slate-300">Compete with learners worldwide</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="bg-yellow-500 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">4</span>
                 <div>
-                  <p className="font-semibold">Use the AI Assistant</p>
-                  <p className="text-slate-600 dark:text-slate-300">for personalized learning help</p>
+                  <p className="font-semibold">Get AI Help</p>
+                  <p className="text-slate-600 dark:text-slate-300">Use our AI assistant for personalized guidance</p>
                 </div>
               </div>
-            </div>
-            
-            <div className="mt-6 p-4 bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-xl border border-green-500/20">
-              <p className="text-center text-sm text-slate-700 dark:text-slate-300">
-                🎉 The platform now has a complete gamified learning experience with authentication, lessons, XP system, and enhanced AI assistance. Everything is working together seamlessly!
-              </p>
             </div>
           </div>
         </div>
