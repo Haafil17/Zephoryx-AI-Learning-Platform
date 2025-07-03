@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (email: string, password: string, fullName?: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -51,30 +50,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/`
-        }
-      });
-      
-      if (error) {
-        console.error('Google auth error:', error);
-        if (error.message.includes('provider is not enabled')) {
-          toast.error('Google authentication is not configured. Please use email/password login or contact support.');
-          return;
-        }
-        throw error;
-      }
-    } catch (error: any) {
-      console.error('Google auth error:', error);
-      toast.error('Failed to sign in with Google. Please try email/password login.');
-      throw error;
-    }
-  };
-
   const signInWithEmail = async (email: string, password: string) => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -103,7 +78,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         password,
         options: {
-          data: { full_name: fullName }
+          data: { full_name: fullName },
+          emailRedirectTo: undefined // Disable email verification
         }
       });
       
@@ -136,7 +112,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     user,
     session,
-    signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,
     signOut,
