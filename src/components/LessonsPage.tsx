@@ -209,8 +209,8 @@ export const LessonsPage = () => {
         </Card>
       )}
 
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2 justify-center">
+      {/* Category Filter - Made Bigger and More Visible */}
+      <div className="flex flex-wrap gap-4 justify-center px-4">
         {categories.map((category) => {
           const IconComponent = category.icon;
           return (
@@ -218,10 +218,17 @@ export const LessonsPage = () => {
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className="flex items-center gap-2"
+              className={`
+                flex items-center gap-3 px-6 py-4 text-lg font-semibold rounded-xl 
+                transition-all duration-300 hover:scale-105 hover:shadow-lg
+                ${selectedCategory === category.id 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg border-0' 
+                  : 'bg-white/80 dark:bg-slate-800/80 border-2 border-slate-200 dark:border-slate-600 hover:border-blue-300 dark:hover:border-blue-500'
+                }
+              `}
             >
-              <IconComponent className="w-4 h-4" />
-              {category.name}
+              <IconComponent className="w-6 h-6" />
+              <span className="whitespace-nowrap">{category.name}</span>
             </Button>
           );
         })}
