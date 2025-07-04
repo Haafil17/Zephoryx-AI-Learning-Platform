@@ -3,9 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { BookOpen, Star, Trophy, Clock, Target, Brain, Zap, Code, Sparkles } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { BookOpen, Star, Brain, Zap, Code, Sparkles, Target } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -14,16 +12,9 @@ interface Lesson {
   title: string;
   description: string;
   content: string;
-  xp_reward: number;
   difficulty: string;
   category: string;
   created_at: string;
-}
-
-interface UserProgress {
-  lesson_id: string;
-  completed_at: string;
-  xp_earned: number;
 }
 
 const categoryIcons = {
@@ -49,20 +40,14 @@ const difficultyColors = {
 };
 
 export const LessonsPage = () => {
-  const { user } = useAuth();
   const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
-  const [completingLesson, setCompletingLesson] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     fetchLessons();
-    if (user) {
-      fetchUserProgress();
-    }
-  }, [user]);
+  }, []);
 
   const fetchLessons = async () => {
     try {
@@ -81,61 +66,6 @@ export const LessonsPage = () => {
     }
   };
 
-  const fetchUserProgress = async () => {
-    if (!user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('user_lesson_progress')
-        .select('*')
-        .eq('user_id', user.id);
-
-      if (error) throw error;
-      setUserProgress(data || []);
-    } catch (error) {
-      console.error('Error fetching user progress:', error);
-    }
-  };
-
-  const completeLesson = async (lesson: Lesson) => {
-    if (!user) {
-      toast.error('Please sign in to complete lessons');
-      return;
-    }
-
-    setCompletingLesson(lesson.id);
-    try {
-      const { error } = await supabase
-        .from('user_lesson_progress')
-        .insert({
-          user_id: user.id,
-          lesson_id: lesson.id,
-          xp_earned: lesson.xp_reward
-        });
-
-      if (error) {
-        if (error.code === '23505') {
-          toast.error('You have already completed this lesson!');
-        } else {
-          throw error;
-        }
-      } else {
-        toast.success(`Lesson completed! You earned ${lesson.xp_reward} XP!`);
-        fetchUserProgress();
-        setSelectedLesson(null);
-      }
-    } catch (error) {
-      console.error('Error completing lesson:', error);
-      toast.error('Failed to complete lesson');
-    } finally {
-      setCompletingLesson(null);
-    }
-  };
-
-  const isLessonCompleted = (lessonId: string) => {
-    return userProgress.some(progress => progress.lesson_id === lessonId);
-  };
-
   const getFilteredLessons = () => {
     if (selectedCategory === 'all') return lessons;
     return lessons.filter(lesson => lesson.category === selectedCategory);
@@ -148,11 +78,6 @@ export const LessonsPage = () => {
     { id: 'machine-learning', name: 'Machine Learning', icon: Zap },
     { id: 'neural-networks', name: 'Neural Networks', icon: Code }
   ];
-
-  const totalXP = userProgress.reduce((sum, progress) => sum + progress.xp_earned, 0);
-  const completedLessons = userProgress.length;
-  const totalLessons = lessons.length;
-  const completionRate = totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0;
 
   if (loading) {
     return (
@@ -170,44 +95,9 @@ export const LessonsPage = () => {
           AI Learning Lessons
         </h1>
         <p className="text-xl text-slate-600 dark:text-slate-300">
-          Master AI concepts through interactive lessons and earn XP
+          Master AI concepts through interactive lessons
         </p>
       </div>
-
-      {/* Progress Overview */}
-      {user && (
-        <Card className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border-blue-500/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Trophy className="w-6 h-6 text-yellow-500" />
-              Your Progress
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">{totalXP}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Total XP Earned</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">{completedLessons}</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Lessons Completed</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600">{Math.round(completionRate)}%</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Completion Rate</div>
-              </div>
-            </div>
-            <div className="mt-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span>Progress</span>
-                <span>{completedLessons}/{totalLessons} lessons</span>
-              </div>
-              <Progress value={completionRate} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Category Filter - Made Bigger and More Visible */}
       <div className="flex flex-wrap gap-4 justify-center px-4">
@@ -238,21 +128,14 @@ export const LessonsPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {getFilteredLessons().map((lesson) => {
           const IconComponent = categoryIcons[lesson.category as keyof typeof categoryIcons] || Sparkles;
-          const isCompleted = isLessonCompleted(lesson.id);
           
           return (
-            <Card key={lesson.id} className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${isCompleted ? 'bg-green-50 dark:bg-green-900/20 border-green-500/50' : ''}`}>
+            <Card key={lesson.id} className="cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className={`p-2 rounded-lg ${categoryColors[lesson.category as keyof typeof categoryColors] || 'bg-gray-500'} text-white`}>
                     <IconComponent className="w-5 h-5" />
                   </div>
-                  {isCompleted && (
-                    <Badge variant="outline" className="bg-green-100 text-green-800 border-green-500">
-                      <Star className="w-3 h-3 mr-1" />
-                      Completed
-                    </Badge>
-                  )}
                 </div>
                 <div>
                   <CardTitle className="text-lg">{lesson.title}</CardTitle>
@@ -260,21 +143,14 @@ export const LessonsPage = () => {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Badge className={difficultyColors[lesson.difficulty as keyof typeof difficultyColors]}>
-                    {lesson.difficulty}
-                  </Badge>
-                  <div className="flex items-center gap-1 text-sm text-amber-600">
-                    <Trophy className="w-4 h-4" />
-                    {lesson.xp_reward} XP
-                  </div>
-                </div>
+                <Badge className={difficultyColors[lesson.difficulty as keyof typeof difficultyColors]}>
+                  {lesson.difficulty}
+                </Badge>
                 <Button 
                   onClick={() => setSelectedLesson(lesson)}
                   className="w-full"
-                  disabled={isCompleted}
                 >
-                  {isCompleted ? 'Completed' : 'Start Lesson'}
+                  Start Lesson
                 </Button>
               </CardContent>
             </Card>
@@ -290,15 +166,9 @@ export const LessonsPage = () => {
               <div className="flex items-start justify-between">
                 <div className="space-y-2">
                   <CardTitle className="text-2xl">{selectedLesson.title}</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge className={difficultyColors[selectedLesson.difficulty as keyof typeof difficultyColors]}>
-                      {selectedLesson.difficulty}
-                    </Badge>
-                    <div className="flex items-center gap-1 text-sm text-amber-600">
-                      <Trophy className="w-4 h-4" />
-                      {selectedLesson.xp_reward} XP
-                    </div>
-                  </div>
+                  <Badge className={difficultyColors[selectedLesson.difficulty as keyof typeof difficultyColors]}>
+                    {selectedLesson.difficulty}
+                  </Badge>
                 </div>
                 <Button
                   variant="outline"
@@ -316,38 +186,15 @@ export const LessonsPage = () => {
                 </p>
               </div>
               
-              {user ? (
-                <div className="flex justify-end">
-                  <Button
-                    onClick={() => completeLesson(selectedLesson)}
-                    disabled={completingLesson === selectedLesson.id || isLessonCompleted(selectedLesson.id)}
-                    className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
-                  >
-                    {completingLesson === selectedLesson.id ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                        Completing...
-                      </>
-                    ) : isLessonCompleted(selectedLesson.id) ? (
-                      <>
-                        <Star className="w-4 h-4 mr-2" />
-                        Already Completed
-                      </>
-                    ) : (
-                      <>
-                        <Trophy className="w-4 h-4 mr-2" />
-                        Complete Lesson (+{selectedLesson.xp_reward} XP)
-                      </>
-                    )}
-                  </Button>
-                </div>
-              ) : (
-                <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <p className="text-blue-800 dark:text-blue-200">
-                    Sign in to complete lessons and earn XP!
-                  </p>
-                </div>
-              )}
+              <div className="flex justify-end">
+                <Button
+                  onClick={() => setSelectedLesson(null)}
+                  className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600"
+                >
+                  <Star className="w-4 h-4 mr-2" />
+                  Lesson Complete
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
