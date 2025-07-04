@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      lessons: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          description: string | null
+          difficulty: string
+          id: string
+          title: string
+          updated_at: string
+          xp_reward: number
+        }
+        Insert: {
+          category?: string
+          content: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          id?: string
+          title: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -41,6 +77,38 @@ export type Database = {
           xp?: number | null
         }
         Relationships: []
+      }
+      user_lesson_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+          xp_earned: number
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+          xp_earned?: number
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
+          xp_earned?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_lesson_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
