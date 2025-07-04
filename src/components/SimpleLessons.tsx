@@ -92,15 +92,15 @@ export const SimpleLessons = () => {
       {/* Header */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          Clavis AI Learning
+          AI Learning Lessons
         </h1>
         <p className="text-xl text-slate-600 dark:text-slate-300">
           Master AI concepts through interactive lessons
         </p>
       </div>
 
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-3 justify-center">
+      {/* Category Filter - Big and Visible */}
+      <div className="flex flex-wrap gap-4 justify-center px-4 py-6">
         {categories.map((category) => {
           const IconComponent = category.icon;
           return (
@@ -108,14 +108,17 @@ export const SimpleLessons = () => {
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className={`flex items-center gap-2 px-4 py-2 ${
-                selectedCategory === category.id 
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
-                  : ''
-              }`}
+              className={`
+                flex items-center gap-3 px-8 py-6 text-xl font-bold rounded-2xl 
+                transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[200px]
+                ${selectedCategory === category.id 
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-xl border-0 transform scale-105' 
+                  : 'bg-white/90 dark:bg-slate-800/90 border-3 border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 text-slate-800 dark:text-slate-200'
+                }
+              `}
             >
-              <IconComponent className="w-4 h-4" />
-              {category.name}
+              <IconComponent className="w-8 h-8" />
+              <span className="whitespace-nowrap">{category.name}</span>
             </Button>
           );
         })}
