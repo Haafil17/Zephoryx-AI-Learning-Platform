@@ -15,7 +15,7 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [username, setUsernameLocal] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
@@ -33,8 +33,7 @@ const Auth = () => {
     setAuthLoading(true);
     try {
       if (isSignUp) {
-        await signUpWithEmail(email, password, fullName);
-        // Switch to sign in tab after successful signup
+        await signUpWithEmail(email, password, username);
         setIsSignUp(false);
         setPassword('');
       } else {
@@ -69,11 +68,11 @@ const Auth = () => {
             <div className="flex items-center justify-center gap-2 mb-2">
               <Sparkles className="w-8 h-8 text-blue-500" />
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                AI Learning Hub
+                Clavis AI
               </CardTitle>
             </div>
             <CardDescription className="text-slate-600 dark:text-slate-400">
-              Join the community and start earning XP!
+              Your AI learning companion
             </CardDescription>
           </CardHeader>
 
@@ -125,15 +124,15 @@ const Auth = () => {
               <TabsContent value="signup" className="space-y-4">
                 <form onSubmit={handleEmailAuth} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="username">Name</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                       <Input
-                        id="fullName"
+                        id="username"
                         type="text"
-                        placeholder="Enter your full name"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="What should we call you?"
+                        value={username}
+                        onChange={(e) => setUsernameLocal(e.target.value)}
                         className="pl-10"
                         required
                       />
@@ -178,10 +177,6 @@ const Auth = () => {
             </Tabs>
           </CardContent>
         </Card>
-
-        <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-          By signing up, you agree to our Terms of Service and Privacy Policy
-        </p>
       </div>
     </div>
   );

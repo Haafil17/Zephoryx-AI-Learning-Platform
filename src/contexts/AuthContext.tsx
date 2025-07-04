@@ -7,8 +7,10 @@ import { toast } from 'sonner';
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  username: string;
+  setUsername: (username: string) => void;
   signInWithEmail: (email: string, password: string) => Promise<void>;
-  signUpWithEmail: (email: string, password: string, fullName?: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string, username?: string) => Promise<void>;
   signOut: () => Promise<void>;
   loading: boolean;
 }
@@ -26,9 +28,16 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [username, setUsernameState] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Load username from localStorage
+    const savedUsername = localStorage.getItem('clavis-username');
+    if (savedUsername) {
+      setUsernameState(savedUsername);
+    }
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -49,6 +58,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const setUsername = (newUsername: string) => {
+    setUsernameState(newUsername);
+    localStorage.setItem('clavis-username', newUsername);
+  };
 
   const signInWithEmail = async (email: string, password: string) => {
     try {
@@ -72,14 +86,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUpWithEmail = async (email: string, password: string, fullName?: string) => {
+  const signUpWithEmail = async (email: string, password: string, username?: string) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: { full_name: fullName },
-          emailRedirectTo: undefined // Disable email verification
+          data: { username: username }
         }
       });
       
@@ -89,6 +102,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       if (data.user) {
+        if (username) {
+          setUsername(username);
+        }
         toast.success('Account created successfully! You can now sign in.');
       }
     } catch (error: any) {
@@ -112,6 +128,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     user,
     session,
+    username,
+    setUsername,
     signInWithEmail,
     signUpWithEmail,
     signOut,
