@@ -13,7 +13,7 @@ export const Examples = () => {
     {
       icon: Code,
       title: "Advanced Code Generation",
-      category: "Software Development",
+      category: "Software Development", 
       prompt: `As an expert Python developer, create a robust function that:
 
 • Processes a list of numbers and returns the sum of even numbers only
@@ -99,29 +99,38 @@ Apply rigorous academic standards and critical thinking throughout.`,
     {
       id: "advanced-prompting",
       title: "Advanced Prompting Techniques",
-      description: "Masterclass on professional prompt engineering",
-      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
-      duration: "32:15",
+      description: "Master professional prompt engineering with real examples",
+      thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=225&fit=crop&crop=center",
+      duration: "8:42",
       category: "techniques",
-      videoUrl: "https://www.youtube.com/embed/V2efhrCxTiw?autoplay=1"
+      embedId: "F_hJ2Ey4BNc"
     },
     {
-      id: "business-prompts",
+      id: "business-prompts", 
       title: "Business Prompt Templates",
-      description: "Real-world examples for business applications",
-      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
-      duration: "24:30",
+      description: "Professional prompts for business applications and workflows",
+      thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop&crop=center",
+      duration: "12:15",
       category: "business",
-      videoUrl: "https://www.youtube.com/embed/jC4v5AS4RIM?autoplay=1"
+      embedId: "yR4hNBNS6yc"
     },
     {
       id: "creative-prompts",
       title: "Creative Writing with AI",
-      description: "Unleashing creativity through effective prompting",
-      thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
-      duration: "28:45",
+      description: "Unlock creativity through effective prompting strategies",
+      thumbnail: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=400&h=225&fit=crop&crop=center",
+      duration: "15:30",
       category: "creative",
-      videoUrl: "https://www.youtube.com/embed/wShG8lT2tz0?autoplay=1"
+      embedId: "aircAruvnKk"
+    },
+    {
+      id: "technical-prompts",
+      title: "Technical Documentation",
+      description: "Generate comprehensive technical docs with AI",
+      thumbnail: "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=400&h=225&fit=crop&crop=center",
+      duration: "10:28",
+      category: "technical",
+      embedId: "kWmX3pd1f10"
     }
   ];
 
@@ -160,7 +169,6 @@ Apply rigorous academic standards and critical thinking throughout.`,
   };
 
   const openInNewTab = (category: string) => {
-    // Create URLs based on category for better user experience
     const urls: Record<string, string> = {
       "Software Development": "https://github.com/explore",
       "Marketing Content": "https://www.copywritingcourse.com/",
@@ -176,10 +184,10 @@ Apply rigorous academic standards and critical thinking throughout.`,
     });
   };
 
-  const handleVideoPlay = (videoId: string) => {
-    setPlayingVideoId(videoId);
-    toast.success("Playing tutorial...", {
-      description: "Loading example content"
+  const handleVideoPlay = (video: typeof exampleVideos[0]) => {
+    setPlayingVideoId(video.id);
+    toast.success(`Playing: ${video.title}`, {
+      description: "Loading video tutorial"
     });
   };
 
@@ -187,28 +195,35 @@ Apply rigorous academic standards and critical thinking throughout.`,
     setPlayingVideoId(null);
   };
 
+  const currentVideo = exampleVideos.find(v => v.id === playingVideoId);
+
   return (
     <section id="examples" className="py-20 px-4 bg-white/50 dark:bg-slate-900/30">
       <div className="max-w-7xl mx-auto">
-        {/* Video Modal */}
-        {playingVideoId && (
-          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
-              <div className="flex justify-between items-center p-4 border-b">
-                <h3 className="text-lg font-semibold">
-                  {exampleVideos.find(v => v.id === playingVideoId)?.title}
-                </h3>
-                <Button variant="ghost" size="sm" onClick={closeVideo}>
-                  <X className="w-4 h-4" />
+        {/* Enhanced Video Modal */}
+        {playingVideoId && currentVideo && (
+          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+              <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+                    {currentVideo.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                    {currentVideo.description}
+                  </p>
+                </div>
+                <Button variant="ghost" size="sm" onClick={closeVideo} className="hover:bg-slate-200 dark:hover:bg-slate-700">
+                  <X className="w-5 h-5" />
                 </Button>
               </div>
-              <div className="aspect-video">
+              <div className="aspect-video bg-black">
                 <iframe
-                  src={exampleVideos.find(v => v.id === playingVideoId)?.videoUrl}
+                  src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
                   className="w-full h-full"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={exampleVideos.find(v => v.id === playingVideoId)?.title}
+                  title={currentVideo.title}
                 />
               </div>
             </div>
@@ -224,94 +239,123 @@ Apply rigorous academic standards and critical thinking throughout.`,
           </p>
         </div>
 
-        {/* Video Tutorial Section */}
-        <div className="mb-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
-            Prompt Engineering Video Tutorials
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Enhanced Video Tutorial Section */}
+        <div className="mb-20 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-3xl p-8 border border-purple-100 dark:border-purple-800/50">
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+              🎥 Video Learning Hub
+            </h3>
+            <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+              Watch expert tutorials and learn prompt engineering through practical examples
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {exampleVideos.map((video) => (
-              <Card key={video.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
-                <div className="relative">
+              <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2">
+                <div className="relative overflow-hidden rounded-t-lg">
                   <img 
                     src={video.thumbnail} 
                     alt={video.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
+                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/30 rounded-t-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Button
-                      onClick={() => handleVideoPlay(video.id)}
-                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-4"
+                      onClick={() => handleVideoPlay(video)}
+                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300"
                     >
                       <Play className="w-6 h-6" />
                     </Button>
                   </div>
-                  <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                  <Badge className="absolute top-3 right-3 bg-black/80 text-white font-semibold px-2 py-1">
                     {video.duration}
                   </Badge>
+                  <div className="absolute top-3 left-3">
+                    <Badge variant="secondary" className="bg-purple-100 text-purple-800 font-medium">
+                      HD Quality
+                    </Badge>
+                  </div>
                 </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold mb-2">{video.title}</h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">{video.description}</p>
+                <CardContent className="p-5">
+                  <h4 className="font-bold text-lg mb-2 text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    {video.title}
+                  </h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    {video.description}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <Badge variant="outline" className="text-xs">
+                      {video.category}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleVideoPlay(video)}
+                      className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/30"
+                    >
+                      <Play className="w-4 h-4 mr-1" />
+                      Watch
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Enhanced Examples Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {examples.map((example, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-[1.02]">
+            <Card key={index} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-[1.02] hover:-translate-y-1">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-full ${example.color} bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300`}>
-                    <example.icon className={`w-6 h-6 ${example.color.replace('bg-', 'text-')}`} />
+                  <div className={`p-4 rounded-2xl ${example.color} bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-300 group-hover:scale-110`}>
+                    <example.icon className={`w-7 h-7 ${example.color.replace('bg-', 'text-')}`} />
                   </div>
-                  <Badge variant="secondary" className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium">
+                  <Badge variant="secondary" className="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-medium px-3 py-1">
                     {example.category}
                   </Badge>
                 </div>
-                <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                <CardTitle className="text-2xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors mb-2">
                   {example.title}
                 </CardTitle>
                 <div className="flex flex-wrap gap-2 mt-3">
                   {example.tags.map((tag, tagIndex) => (
-                    <Badge key={tagIndex} variant="outline" className="text-xs font-medium">
+                    <Badge key={tagIndex} variant="outline" className="text-xs font-medium hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors">
                       {tag}
                     </Badge>
                   ))}
                 </div>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 relative group/prompt border border-slate-200 dark:border-slate-600">
+              <CardContent className="space-y-5">
+                <div className="bg-slate-50 dark:bg-slate-700/50 rounded-xl p-5 relative group/prompt border-2 border-slate-200 dark:border-slate-600 hover:border-purple-300 dark:hover:border-purple-600 transition-colors">
                   <pre className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-mono leading-relaxed">
                     {example.prompt}
                   </pre>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="absolute top-2 right-2 opacity-0 group-hover/prompt:opacity-100 transition-opacity bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-800"
+                    className="absolute top-3 right-3 opacity-0 group-hover/prompt:opacity-100 transition-all duration-300 bg-white/95 dark:bg-slate-800/95 hover:bg-white dark:hover:bg-slate-800 shadow-lg hover:shadow-xl"
                     onClick={() => copyToClipboard(example.prompt, index)}
                   >
                     {copiedIndex === index ? (
-                      <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+                      <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                         <Check className="w-4 h-4" />
-                        <span className="text-xs font-medium">Copied!</span>
+                        <span className="text-xs font-semibold">Copied!</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
                         <Copy className="w-4 h-4" />
-                        <span className="text-xs">Copy</span>
+                        <span className="text-xs font-medium">Copy</span>
                       </div>
                     )}
                   </Button>
                 </div>
                 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1 hover:bg-purple-50 dark:hover:bg-purple-900/20 border-purple-200 dark:border-purple-700"
+                    className="flex-1 hover:bg-purple-50 dark:hover:bg-purple-900/20 border-purple-200 dark:border-purple-700 hover:border-purple-300 dark:hover:border-purple-600 font-medium"
                     onClick={() => copyToClipboard(example.prompt, index)}
                   >
                     <Copy className="w-4 h-4 mr-2" />
@@ -320,16 +364,17 @@ Apply rigorous academic standards and critical thinking throughout.`,
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="hover:bg-slate-100 dark:hover:bg-slate-700"
+                    className="hover:bg-slate-100 dark:hover:bg-slate-700 font-medium"
                     onClick={() => openInNewTab(example.category)}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
-                    Learn More
+                    Resources
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleVideoPlay(`${example.title.toLowerCase().replace(/\s+/g, '-')}`)}
+                    className="hover:bg-purple-50 dark:hover:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+                    onClick={() => handleVideoPlay(exampleVideos[index % exampleVideos.length])}
                   >
                     <Video className="w-4 h-4" />
                   </Button>
@@ -339,32 +384,32 @@ Apply rigorous academic standards and critical thinking throughout.`,
           ))}
         </div>
 
-        {/* Additional Tips Section */}
-        <div className="mt-16 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-center mb-6 text-slate-800 dark:text-slate-100">
-            Pro Tips for Better Prompts
+        {/* Enhanced Pro Tips Section */}
+        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-3xl p-10 border border-indigo-100 dark:border-indigo-800/50">
+          <h3 className="text-3xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
+            🚀 Pro Prompting Strategies
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-white font-bold">1</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <span className="text-white font-bold text-xl">1</span>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800 dark:text-slate-100">Be Specific</h4>
-              <p className="text-sm text-slate-600 dark:text-slate-300">Include clear context, desired format, and specific requirements.</p>
+              <h4 className="font-bold text-lg mb-3 text-slate-800 dark:text-slate-100">Be Ultra-Specific</h4>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Include detailed context, desired format, constraints, and specific requirements for optimal results.</p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-white font-bold">2</span>
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <span className="text-white font-bold text-xl">2</span>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800 dark:text-slate-100">Set the Role</h4>
-              <p className="text-sm text-slate-600 dark:text-slate-300">Define the AI's expertise level and professional background.</p>
+              <h4 className="font-bold text-lg mb-3 text-slate-800 dark:text-slate-100">Define the Expert Role</h4>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Set clear expertise levels, professional backgrounds, and specialized knowledge areas for better AI responses.</p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-white font-bold">3</span>
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                <span className="text-white font-bold text-xl">3</span>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800 dark:text-slate-100">Iterate</h4>
-              <p className="text-sm text-slate-600 dark:text-slate-300">Refine your prompts based on results and feedback.</p>
+              <h4 className="font-bold text-lg mb-3 text-slate-800 dark:text-slate-100">Iterate & Refine</h4>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Continuously improve your prompts based on results, feedback, and changing requirements.</p>
             </div>
           </div>
         </div>

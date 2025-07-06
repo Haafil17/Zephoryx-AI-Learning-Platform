@@ -19,7 +19,7 @@ export const AITopics = () => {
       learnMoreUrl: "https://www.coursera.org/learn/machine-learning"
     },
     {
-      title: "Neural Networks & Deep Learning",
+      title: "Neural Networks & Deep Learning", 
       description: "Architecture and training of artificial neural networks for complex tasks",
       category: "fundamentals",
       difficulty: "Intermediate",
@@ -30,7 +30,7 @@ export const AITopics = () => {
       title: "AI Ethics & Bias",
       description: "Responsible AI development and addressing algorithmic bias in systems",
       category: "ethics",
-      difficulty: "Advanced",
+      difficulty: "Advanced", 
       applications: ["Fair Hiring", "Medical Diagnosis", "Criminal Justice"],
       learnMoreUrl: "https://www.partnershiponai.org/"
     },
@@ -45,7 +45,7 @@ export const AITopics = () => {
     {
       title: "Natural Language Processing",
       description: "Enabling computers to understand, interpret, and generate human language",
-      category: "applications",
+      category: "applications", 
       difficulty: "Intermediate",
       applications: ["Sentiment Analysis", "Translation", "Chatbots"],
       learnMoreUrl: "https://huggingface.co/course/chapter1/1"
@@ -90,36 +90,45 @@ export const AITopics = () => {
     {
       id: "ai-basics",
       title: "AI Fundamentals Explained",
-      description: "Understanding the basics of artificial intelligence",
-      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
-      duration: "15:30",
+      description: "Complete introduction to artificial intelligence concepts",
+      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center",
+      duration: "18:45",
       category: "fundamentals",
-      videoUrl: "https://www.youtube.com/embed/kWmX3pd1f10?autoplay=1"
+      embedId: "kWmX3pd1f10"
     },
     {
       id: "neural-networks",
       title: "Neural Networks Deep Dive",
-      description: "How neural networks process information",
-      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
-      duration: "22:45",
+      description: "Understanding how neural networks process and learn from data",
+      thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center",
+      duration: "25:12", 
       category: "fundamentals",
-      videoUrl: "https://www.youtube.com/embed/aircAruvnKk?autoplay=1"
+      embedId: "aircAruvnKk"
     },
     {
       id: "ai-ethics",
       title: "AI Ethics in Practice",
-      description: "Real-world examples of AI ethical considerations",
-      thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
-      duration: "18:20",
+      description: "Real-world examples of ethical AI development and deployment",
+      thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop&crop=center",
+      duration: "14:30",
       category: "ethics",
-      videoUrl: "https://www.youtube.com/embed/AaAX-E6Vvd0?autoplay=1"
+      embedId: "AaAX-E6Vvd0"
+    },
+    {
+      id: "computer-vision",
+      title: "Computer Vision Applications",
+      description: "How machines see and interpret visual data",
+      thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center",
+      duration: "20:15",
+      category: "applications",
+      embedId: "yQQ7DX6bI5Y"
     }
   ];
 
-  const handleVideoPlay = (videoId: string) => {
-    setPlayingVideoId(videoId);
-    toast.success("Playing video...", {
-      description: "Video content loading"
+  const handleVideoPlay = (video: typeof aiVideos[0]) => {
+    setPlayingVideoId(video.id);
+    toast.success(`Playing: ${video.title}`, {
+      description: "Loading AI tutorial"
     });
   };
 
@@ -127,28 +136,35 @@ export const AITopics = () => {
     setPlayingVideoId(null);
   };
 
+  const currentVideo = aiVideos.find(v => v.id === playingVideoId);
+
   return (
     <section className="py-16 px-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
       <div className="max-w-7xl mx-auto">
-        {/* Video Modal */}
-        {playingVideoId && (
-          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
-              <div className="flex justify-between items-center p-4 border-b">
-                <h3 className="text-lg font-semibold">
-                  {aiVideos.find(v => v.id === playingVideoId)?.title}
-                </h3>
-                <Button variant="ghost" size="sm" onClick={closeVideo}>
-                  <X className="w-4 h-4" />
+        {/* Enhanced Video Modal */}
+        {playingVideoId && currentVideo && (
+          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
+            <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+              <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+                    {currentVideo.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                    {currentVideo.description}
+                  </p>
+                </div>
+                <Button variant="ghost" size="sm" onClick={closeVideo} className="hover:bg-slate-200 dark:hover:bg-slate-700">
+                  <X className="w-5 h-5" />
                 </Button>
               </div>
-              <div className="aspect-video">
+              <div className="aspect-video bg-black">
                 <iframe
-                  src={aiVideos.find(v => v.id === playingVideoId)?.videoUrl}
+                  src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
                   className="w-full h-full"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={aiVideos.find(v => v.id === playingVideoId)?.title}
+                  title={currentVideo.title}
                 />
               </div>
             </div>
@@ -164,35 +180,39 @@ export const AITopics = () => {
           </p>
         </div>
 
-        {/* Video Gallery Section */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
-            AI Learning Videos
+        {/* Enhanced Video Gallery Section */}
+        <div className="mb-16 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-3xl p-8 border border-blue-100 dark:border-blue-800/50">
+          <h3 className="text-3xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
+            🎯 AI Learning Videos
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {aiVideos.map((video) => (
-              <Card key={video.id} className="group hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
-                <div className="relative">
+              <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2">
+                <div className="relative overflow-hidden rounded-t-lg">
                   <img 
                     src={video.thumbnail} 
                     alt={video.title}
-                    className="w-full h-48 object-cover rounded-t-lg"
+                    className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/20 rounded-t-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Button
-                      onClick={() => handleVideoPlay(video.id)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4"
+                      onClick={() => handleVideoPlay(video)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300"
                     >
-                      <Play className="w-6 h-6" />
+                      <Play className="w-5 h-5" />
                     </Button>
                   </div>
-                  <Badge className="absolute top-2 right-2 bg-black/70 text-white">
+                  <Badge className="absolute top-3 right-3 bg-black/80 text-white font-semibold">
                     {video.duration}
                   </Badge>
                 </div>
-                <CardHeader>
-                  <CardTitle className="text-lg">{video.title}</CardTitle>
-                  <CardDescription>{video.description}</CardDescription>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {video.title}
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    {video.description}
+                  </CardDescription>
                 </CardHeader>
               </Card>
             ))}
@@ -208,9 +228,9 @@ export const AITopics = () => {
               onClick={() => setSelectedCategory(category.id)}
               className={`${
                 selectedCategory === category.id
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-slate-700 hover:bg-blue-50"
-              } px-4 py-2 rounded-full border transition-all duration-200`}
+                  ? "bg-blue-600 text-white shadow-lg"
+                  : "bg-white text-slate-700 hover:bg-blue-50 border-blue-200"
+              } px-6 py-3 rounded-full border transition-all duration-200 hover:scale-105`}
             >
               {category.name}
               <Badge variant="secondary" className="ml-2 text-xs">
@@ -221,13 +241,13 @@ export const AITopics = () => {
         </div>
 
         {/* AI Concepts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {filteredConcepts.map((concept, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
+            <Card key={index} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-1">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-full group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors">
-                    <Brain className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <div className="p-4 bg-blue-100 dark:bg-blue-900/50 rounded-2xl group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors group-hover:scale-110 duration-300">
+                    <Brain className="w-7 h-7 text-blue-600 dark:text-blue-400" />
                   </div>
                   <Badge className={getDifficultyColor(concept.difficulty)}>
                     {concept.difficulty}
@@ -245,7 +265,7 @@ export const AITopics = () => {
                   <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Applications:</h4>
                   <div className="flex flex-wrap gap-2">
                     {concept.applications.map((app, appIndex) => (
-                      <Badge key={appIndex} variant="outline" className="text-xs">
+                      <Badge key={appIndex} variant="outline" className="text-xs hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors">
                         {app}
                       </Badge>
                     ))}
@@ -254,7 +274,7 @@ export const AITopics = () => {
                 <div className="flex gap-2">
                   <Button 
                     variant="ghost" 
-                    className="flex-1 justify-between text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/30"
+                    className="flex-1 justify-between text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/30 font-medium"
                     onClick={() => handleLearnMore(concept)}
                   >
                     Learn More
@@ -263,7 +283,8 @@ export const AITopics = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleVideoPlay(`${concept.title.toLowerCase().replace(/\s+/g, '-')}`)}
+                    className="hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                    onClick={() => handleVideoPlay(aiVideos[index % aiVideos.length])}
                   >
                     <Video className="w-4 h-4" />
                   </Button>
@@ -274,42 +295,42 @@ export const AITopics = () => {
         </div>
 
         {/* AI Impact Stats */}
-        <div className="mt-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-8 text-white">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-4">AI Transforming Industries</h3>
-            <p className="text-lg opacity-90 max-w-2xl mx-auto">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-10 text-white shadow-2xl">
+          <div className="text-center mb-10">
+            <h3 className="text-4xl font-bold mb-4">AI Transforming Industries</h3>
+            <p className="text-xl opacity-90 max-w-3xl mx-auto leading-relaxed">
               Artificial Intelligence is revolutionizing how we work, learn, and solve complex problems across every sector
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Target className="w-8 h-8" />
+            <div className="text-center group hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                <Target className="w-10 h-10" />
               </div>
-              <div className="text-3xl font-bold mb-2">85%</div>
-              <div className="text-sm opacity-90">Accuracy Improvement</div>
+              <div className="text-4xl font-bold mb-2">85%</div>
+              <div className="text-lg opacity-90">Accuracy Improvement</div>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8" />
+            <div className="text-center group hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                <Users className="w-10 h-10" />
               </div>
-              <div className="text-3xl font-bold mb-2">2.3B</div>
-              <div className="text-sm opacity-90">People Impacted</div>
+              <div className="text-4xl font-bold mb-2">2.3B</div>
+              <div className="text-lg opacity-90">People Impacted</div>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lightbulb className="w-8 h-8" />
+            <div className="text-center group hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                <Lightbulb className="w-10 h-10" />
               </div>
-              <div className="text-3xl font-bold mb-2">40%</div>
-              <div className="text-sm opacity-90">Productivity Boost</div>
+              <div className="text-4xl font-bold mb-2">40%</div>
+              <div className="text-lg opacity-90">Productivity Boost</div>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-8 h-8" />
+            <div className="text-center group hover:scale-105 transition-transform duration-300">
+              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                <Star className="w-10 h-10" />
               </div>
-              <div className="text-3xl font-bold mb-2">100+</div>
-              <div className="text-sm opacity-90">Use Cases</div>
+              <div className="text-4xl font-bold mb-2">100+</div>
+              <div className="text-lg opacity-90">Use Cases</div>
             </div>
           </div>
         </div>
