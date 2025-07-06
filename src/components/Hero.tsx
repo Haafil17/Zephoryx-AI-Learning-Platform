@@ -16,11 +16,25 @@ export const Hero = () => {
   const handleStartLearning = () => {
     // Dispatch custom event to change to techniques tab
     window.dispatchEvent(new CustomEvent('changeTab', { detail: 'techniques' }));
+    // Scroll to tabs section
+    setTimeout(() => {
+      const tabsSection = document.querySelector('[role="tablist"]');
+      if (tabsSection) {
+        tabsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   };
 
   const handleExploreTools = () => {
     // Dispatch custom event to change to features tab
     window.dispatchEvent(new CustomEvent('changeTab', { detail: 'features' }));
+    // Scroll to tabs section
+    setTimeout(() => {
+      const tabsSection = document.querySelector('[role="tablist"]');
+      if (tabsSection) {
+        tabsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   };
 
   return (

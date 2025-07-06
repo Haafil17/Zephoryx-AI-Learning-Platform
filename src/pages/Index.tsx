@@ -110,10 +110,58 @@ const Index = () => {
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
               Everything You Need to Master AI
             </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed mb-8">
               Discover all the powerful tools, techniques, and resources available on Clavis AI. 
               From prompt analysis to quantum computing, we've got you covered.
             </p>
+            
+            {/* Video Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-indigo-200/50 dark:border-indigo-500/30">
+                <div className="aspect-video bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl mb-4 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto">
+                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                    <h4 className="font-bold text-lg">Getting Started</h4>
+                    <p className="text-sm opacity-90">Learn the basics of AI prompting</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 text-sm">Master fundamental prompting techniques in under 5 minutes</p>
+              </div>
+              
+              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-purple-200/50 dark:border-purple-500/30">
+                <div className="aspect-video bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl mb-4 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto">
+                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                    <h4 className="font-bold text-lg">Advanced Techniques</h4>
+                    <p className="text-sm opacity-90">Chain-of-thought & few-shot learning</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 text-sm">Explore sophisticated prompting strategies for complex tasks</p>
+              </div>
+              
+              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-pink-200/50 dark:border-pink-500/30 md:col-span-2 lg:col-span-1">
+                <div className="aspect-video bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl mb-4 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto">
+                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                      </svg>
+                    </div>
+                    <h4 className="font-bold text-lg">Real Examples</h4>
+                    <p className="text-sm opacity-90">Live demonstrations & use cases</p>
+                  </div>
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 text-sm">Watch real-world applications and practical examples</p>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
