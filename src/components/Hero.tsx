@@ -1,26 +1,26 @@
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ArrowRight, Sparkles, Brain, Zap, Target } from "lucide-react";
-import { useState, useEffect } from "react";
-import { Leaderboard } from "./Leaderboard";
+import { useState } from "react";
+import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
 
 export const Hero = () => {
-  const [prompt, setPrompt] = useState("");
-  
-  const handleAnalyze = () => {
-    if (prompt.trim()) {
-      // Dispatch custom event to change to features tab where prompt analyzer would be
-      window.dispatchEvent(new CustomEvent('changeTab', { detail: 'features' }));
-    }
-  };
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleStartLearning = () => {
+    // Dispatch custom event to change to techniques tab
+    window.dispatchEvent(new CustomEvent('changeTab', { detail: 'techniques' }));
+  };
+
+  const handleExploreTools = () => {
+    // Dispatch custom event to change to features tab
+    window.dispatchEvent(new CustomEvent('changeTab', { detail: 'features' }));
   };
 
   return (
@@ -74,8 +74,8 @@ export const Hero = () => {
             <div className="flex items-center gap-3 p-4 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50">
               <Target className="w-8 h-8 text-purple-600" />
               <div>
-                <div className="font-semibold text-slate-800 dark:text-slate-100">Analyzer</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Prompt Optimization</div>
+                <div className="font-semibold text-slate-800 dark:text-slate-100">Techniques</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Advanced Methods</div>
               </div>
             </div>
             <div className="flex items-center gap-3 p-4 bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-xl border border-slate-200/50 dark:border-slate-700/50">
@@ -87,35 +87,11 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Prompt Analyzer Input */}
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Input
-                placeholder="Enter your prompt to analyze..."
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                className="flex-1 h-14 text-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-2 border-slate-200 dark:border-slate-700 focus:border-indigo-500 dark:focus:border-indigo-400"
-                onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
-              />
-              <Button 
-                onClick={handleAnalyze}
-                size="lg" 
-                className="h-14 px-8 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                Analyze Prompt
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Get instant feedback on your prompts with our AI-powered analyzer
-            </p>
-          </div>
-
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               size="lg" 
-              onClick={() => scrollToSection('techniques')}
+              onClick={handleStartLearning}
               className="h-14 px-8 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
             >
               Start Learning
@@ -124,7 +100,7 @@ export const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => scrollToSection('features')}
+              onClick={handleExploreTools}
               className="h-14 px-8 border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-300"
             >
               Explore Tools
@@ -132,10 +108,10 @@ export const Hero = () => {
           </div>
         </div>
 
-        {/* Right Column - Leaderboard */}
+        {/* Right Column - Username Section */}
         <div className="flex justify-center lg:justify-end">
           <div className="w-full max-w-md">
-            <Leaderboard />
+            <UsernameSection />
           </div>
         </div>
       </div>
