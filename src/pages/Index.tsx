@@ -1,3 +1,4 @@
+
 import { Hero } from "@/components/Hero";
 import { ExpandedTechniques } from "@/components/ExpandedTechniques";
 import { Examples } from "@/components/Examples";
@@ -33,11 +34,15 @@ import {
   Target,
   Lightbulb,
   Rocket,
-  Settings
+  Settings,
+  Play,
+  X
 } from "lucide-react";
+import { toast } from "sonner";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("techniques");
+  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     const handleTabChange = (event: CustomEvent) => {
@@ -99,9 +104,79 @@ const Index = () => {
     }
   ];
 
+  const homeVideos = [
+    {
+      id: "getting-started",
+      title: "Getting Started with AI Prompting",
+      description: "Learn the basics of AI prompting in under 5 minutes",
+      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center",
+      duration: "4:32",
+      embedId: "kWmX3pd1f10"
+    },
+    {
+      id: "advanced-techniques", 
+      title: "Advanced Prompting Techniques",
+      description: "Chain-of-thought & few-shot learning strategies",
+      thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center",
+      duration: "8:15",
+      embedId: "aircAruvnKk"
+    },
+    {
+      id: "real-examples",
+      title: "Real-World AI Applications",
+      description: "Live demonstrations & practical use cases",
+      thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center",
+      duration: "12:45",
+      embedId: "yR4hNBNS6yc"
+    }
+  ];
+
+  const handleVideoPlay = (video: typeof homeVideos[0]) => {
+    setPlayingVideoId(video.id);
+    toast.success(`Playing: ${video.title}`, {
+      description: "Loading video tutorial"
+    });
+  };
+
+  const closeVideo = () => {
+    setPlayingVideoId(null);
+  };
+
+  const currentVideo = homeVideos.find(v => v.id === playingVideoId);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
       <Hero />
+      
+      {/* Video Modal */}
+      {playingVideoId && currentVideo && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+            <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+              <div>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+                  {currentVideo.title}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                  {currentVideo.description}
+                </p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={closeVideo} className="hover:bg-slate-200 dark:hover:bg-slate-700">
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+            <div className="aspect-video bg-black">
+              <iframe
+                src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
+                className="w-full h-full"
+                allowFullScreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                title={currentVideo.title}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       
       {/* Features Overview Section */}
       <section className="py-20 px-4">
@@ -115,52 +190,63 @@ const Index = () => {
               From prompt analysis to quantum computing, we've got you covered.
             </p>
             
-            {/* Video Section */}
+            {/* Fixed Video Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-indigo-200/50 dark:border-indigo-500/30">
-                <div className="aspect-video bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl mb-4 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto">
-                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
+              {homeVideos.map((video) => (
+                <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2 cursor-pointer" onClick={() => handleVideoPlay(video)}>
+                  <div className="relative overflow-hidden rounded-t-lg">
+                    <img 
+                      src={video.thumbnail} 
+                      alt={video.title}
+                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <Button
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVideoPlay(video);
+                        }}
+                      >
+                        <Play className="w-6 h-6" />
+                      </Button>
                     </div>
-                    <h4 className="font-bold text-lg">Getting Started</h4>
-                    <p className="text-sm opacity-90">Learn the basics of AI prompting</p>
-                  </div>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-sm">Master fundamental prompting techniques in under 5 minutes</p>
-              </div>
-              
-              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-purple-200/50 dark:border-purple-500/30">
-                <div className="aspect-video bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl mb-4 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto">
-                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
+                    <Badge className="absolute top-3 right-3 bg-black/80 text-white font-semibold px-2 py-1">
+                      {video.duration}
+                    </Badge>
+                    <div className="absolute top-3 left-3">
+                      <Badge variant="secondary" className="bg-indigo-100 text-indigo-800 font-medium">
+                        HD Quality
+                      </Badge>
                     </div>
-                    <h4 className="font-bold text-lg">Advanced Techniques</h4>
-                    <p className="text-sm opacity-90">Chain-of-thought & few-shot learning</p>
                   </div>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-sm">Explore sophisticated prompting strategies for complex tasks</p>
-              </div>
-              
-              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-pink-200/50 dark:border-pink-500/30 md:col-span-2 lg:col-span-1">
-                <div className="aspect-video bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl mb-4 flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-3 mx-auto">
-                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
+                  <CardContent className="p-6">
+                    <h4 className="font-bold text-lg mb-2 text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {video.title}
+                    </h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                      {video.description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <Badge variant="outline" className="text-xs">
+                        Tutorial
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:text-indigo-300 dark:hover:bg-indigo-900/30"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVideoPlay(video);
+                        }}
+                      >
+                        <Play className="w-4 h-4 mr-1" />
+                        Watch
+                      </Button>
                     </div>
-                    <h4 className="font-bold text-lg">Real Examples</h4>
-                    <p className="text-sm opacity-90">Live demonstrations & use cases</p>
-                  </div>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 text-sm">Watch real-world applications and practical examples</p>
-              </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
 
