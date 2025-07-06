@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Crown, Award, User } from 'lucide-react';
+import { Crown, Award, User, Edit2, Check, X } from 'lucide-react';
+import { useUsername } from '@/hooks/useUsername';
+import { toast } from 'sonner';
 
 const getRankBadge = (rank: number) => {
   switch (rank) {
@@ -36,12 +39,35 @@ const sampleLeaderboard = [
 ];
 
 export const Leaderboard = () => {
-  const handleJoinCompetition = () => {
-    // Scroll to username input or show join form
-    const usernameInput = document.querySelector('input[placeholder="Enter your username"]') as HTMLInputElement;
-    if (usernameInput) {
-      usernameInput.focus();
+  const { username, setUsername, clearUsername } = useUsername();
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempUsername, setTempUsername] = useState(username);
+
+  const handleEditUsername = () => {
+    setTempUsername(username);
+    setIsEditing(true);
+  };
+
+  const handleSaveUsername = () => {
+    if (tempUsername.trim()) {
+      setUsername(tempUsername.trim());
+      setIsEditing(false);
+      toast.success('Username saved!');
+    } else {
+      toast.error('Please enter a valid username');
     }
+  };
+
+  const handleCancelEdit = () => {
+    setTempUsername(username);
+    setIsEditing(false);
+  };
+
+  const handleClearUsername = () => {
+    clearUsername();
+    setIsEditing(false);
+    setTempUsername('');
+    toast.success('Username cleared!');
   };
 
   return (
@@ -58,6 +84,70 @@ export const Leaderboard = () => {
         <CardDescription className="text-slate-300 font-medium">
           Top AI learners this month
         </CardDescription>
+
+        {/* Username Section */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-slate-800/80 to-slate-700/80 rounded-lg border border-slate-600/50">
+          {!isEditing ? (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm">
+                    <User className="w-4 h-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-white font-semibold">
+                  {username || 'Set your username'}
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleEditUsername}
+                className="text-slate-300 hover:text-white"
+              >
+                <Edit2 className="w-4 h-4" />
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              <Input
+                value={tempUsername}
+                onChange={(e) => setTempUsername(e.target.value)}
+                placeholder="Enter your username"
+                className="bg-slate-700 border-slate-600 text-white"
+                autoFocus
+              />
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSaveUsername}
+                  className="text-green-400 hover:text-green-300"
+                >
+                  <Check className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCancelEdit}
+                  className="text-red-400 hover:text-red-300"
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+                {username && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClearUsername}
+                    className="text-orange-400 hover:text-orange-300 ml-auto"
+                  >
+                    Clear
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </CardHeader>
       
       <CardContent className="space-y-3 relative z-10">
@@ -91,7 +181,6 @@ export const Leaderboard = () => {
         
         <div className="pt-4 border-t border-slate-600/50">
           <Button 
-            onClick={handleJoinCompetition}
             className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white shadow-lg shadow-blue-500/30 transition-all duration-300"
           >
             <Award className="w-5 h-5 mr-2" />

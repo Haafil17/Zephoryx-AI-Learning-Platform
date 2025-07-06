@@ -141,32 +141,32 @@ const Index = () => {
 
       <div className="max-w-7xl mx-auto px-4 pt-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex justify-center mb-8 gap-3 bg-white/90 dark:bg-slate-800/90 rounded-2xl shadow-xl flex-wrap p-3 border-2 border-indigo-100 dark:border-slate-700">
-            <TabsTrigger value="techniques" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+          <TabsList className="flex justify-center mb-12 gap-4 bg-white/95 dark:bg-slate-800/95 rounded-3xl shadow-2xl flex-wrap p-6 border-2 border-indigo-100 dark:border-slate-700 min-h-[120px]">
+            <TabsTrigger value="techniques" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
               🎯 Techniques
             </TabsTrigger>
-            <TabsTrigger value="examples" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="examples" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
               💡 Examples
             </TabsTrigger>
-            <TabsTrigger value="bestpractices" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="bestpractices" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[160px]">
               🏆 Best Practices
             </TabsTrigger>
-            <TabsTrigger value="features" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="features" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
               ⚡ Features
             </TabsTrigger>
-            <TabsTrigger value="ai" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="ai" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[120px]">
               🤖 AI
             </TabsTrigger>
-            <TabsTrigger value="genai" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="genai" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
               🎨 Gen AI
             </TabsTrigger>
-            <TabsTrigger value="quantum" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="quantum" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
               ⚛️ Quantum
             </TabsTrigger>
-            <TabsTrigger value="coding" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="coding" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
               💻 Coding
             </TabsTrigger>
-            <TabsTrigger value="resources" className="px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="resources" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[150px]">
               📚 Resources
             </TabsTrigger>
           </TabsList>
