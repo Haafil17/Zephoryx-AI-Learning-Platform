@@ -4,6 +4,7 @@ import { ArrowRight, Sparkles, Brain, Zap, Target } from "lucide-react";
 import { useState } from "react";
 import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
+import { AuthButton } from "./AuthButton";
 
 export const Hero = () => {
   const scrollToSection = (sectionId: string) => {
@@ -39,8 +40,9 @@ export const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
-      {/* Theme Toggle - Positioned in top right */}
-      <div className="fixed top-6 right-6 z-50">
+      {/* Auth and Theme Toggle - Positioned in top right */}
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-3">
+        <AuthButton />
         <ThemeToggle />
       </div>
 

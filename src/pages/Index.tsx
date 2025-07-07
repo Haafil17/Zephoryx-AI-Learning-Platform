@@ -167,11 +167,11 @@ const Index = () => {
             </div>
             <div className="aspect-video bg-black">
               <iframe
-                src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
+                src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1&start=0&title=Clavis AI`}
                 className="w-full h-full"
                 allowFullScreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                title={currentVideo.title}
+                title={`Clavis AI - ${currentVideo.title}`}
               />
             </div>
           </div>

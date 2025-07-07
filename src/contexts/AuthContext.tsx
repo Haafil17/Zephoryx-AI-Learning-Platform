@@ -1,12 +1,13 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  signInWithGoogle: () => Promise<void>;
+  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   loading: boolean;
 }
@@ -46,23 +47,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+  const signUp = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
       options: {
-        redirectTo: `${window.location.origin}/`
+        emailRedirectTo: `${window.location.origin}/`
       }
     });
     
     if (error) {
-      console.error('Error signing in with Google:', error);
+      console.error('Error signing up:', error);
+      return { error };
     }
+    
+    toast.success('Account created successfully!');
+    return { error: null };
+  };
+
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (error) {
+      console.error('Error signing in:', error);
+      return { error };
+    }
+    
+    toast.success('Signed in successfully!');
+    return { error: null };
   };
 
   const signOut = async () => {
     try {
       await supabase.auth.signOut({ scope: 'global' });
-      window.location.href = '/';
+      toast.success('Signed out successfully!');
     } catch (error) {
       console.error('Error signing out:', error);
     }
@@ -71,7 +92,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     user,
     session,
-    signInWithGoogle,
+    signUp,
+    signIn,
     signOut,
     loading
   };
