@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LogIn, LogOut, User, Mail, Lock, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 
 export const AuthButton = () => {
   const { user, signIn, signUp, signOut, loading } = useAuth();
@@ -22,7 +23,15 @@ export const AuthButton = () => {
       ? await signUp(email, password)
       : await signIn(email, password);
     
-    if (!error) {
+    if (error) {
+      if (error.message === 'Email not confirmed') {
+        toast.error('Please check the Supabase dashboard - email confirmation needs to be disabled', {
+          description: 'Go to Authentication > Settings and disable email confirmation'
+        });
+      } else {
+        toast.error(error.message);
+      }
+    } else {
       setShowAuth(false);
       setEmail('');
       setPassword('');
