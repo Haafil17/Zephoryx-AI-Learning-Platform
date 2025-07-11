@@ -25,9 +25,7 @@ export const AuthButton = () => {
     
     if (error) {
       if (error.message === 'Email not confirmed') {
-        toast.error('Please check the Supabase dashboard - email confirmation needs to be disabled', {
-          description: 'Go to Authentication > Settings and disable email confirmation'
-        });
+        toast.error('Please check your email and click the confirmation link to verify your account');
       } else {
         toast.error(error.message);
       }
