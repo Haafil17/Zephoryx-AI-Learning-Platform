@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     // Check if email confirmation is required
     if (data.user && !data.session) {
-      toast.success('Please check your email to confirm your account');
+      toast.success('Please sign in');
     } else {
       toast.success('Account created successfully!');
     }
