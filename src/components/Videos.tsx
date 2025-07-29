@@ -193,7 +193,7 @@ export const Videos = () => {
     // Research & Education
     {
       id: "ai-research-methods",
-      title: "AI-Powered Research: Finding & Analyzing Information",
+      title: "AI-Powered Research: Finding and Analyzing Information",
       description: "Revolutionize your research process with AI tools for information gathering and synthesis",
       thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop&crop=center",
       duration: "23:17",
