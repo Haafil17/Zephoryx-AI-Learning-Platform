@@ -9,6 +9,7 @@ import { AITopics } from "@/components/AITopics";
 import { GenAITopics } from "@/components/GenAITopics";
 import { QuantumTopics } from "@/components/QuantumTopics";
 import { CodingTopics } from "@/components/CodingTopics";
+import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -300,6 +301,9 @@ const Index = () => {
             <TabsTrigger value="coding" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
               💻 Coding
             </TabsTrigger>
+            <TabsTrigger value="videos" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
+              🎥 Videos
+            </TabsTrigger>
             <TabsTrigger value="resources" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[150px]">
               📚 Resources
             </TabsTrigger>
@@ -327,6 +331,9 @@ const Index = () => {
           </TabsContent>
           <TabsContent value="coding" className="focus:outline-none">
             <CodingTopics />
+          </TabsContent>
+          <TabsContent value="videos" className="focus:outline-none">
+            <Videos />
           </TabsContent>
           <TabsContent value="resources" className="focus:outline-none">
             <Resources />
