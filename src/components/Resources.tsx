@@ -84,8 +84,8 @@ export const Resources = () => {
         },
         {
           title: "AI Prompt Engineering LinkedIn",
-          description: "Professional networking group",
-          url: "https://www.linkedin.com/groups/12345678/",
+          description: "Professional networking and knowledge sharing",
+          url: "https://www.linkedin.com/search/results/groups/?keywords=prompt%20engineering",
           type: "LinkedIn",
           rating: 3
         }

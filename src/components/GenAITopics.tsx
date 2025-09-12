@@ -270,7 +270,7 @@ export const GenAITopics = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleVideoPlay(`${concept.title.toLowerCase().replace(/\s+/g, '-')}`)}
+                    onClick={() => handleVideoPlay(genAIVideos[index % genAIVideos.length].id)}
                   >
                     <Video className="w-4 h-4" />
                   </Button>

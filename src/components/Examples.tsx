@@ -33,7 +33,7 @@ Please provide the complete implementation with clear explanations.`,
       prompt: `Create compelling product copy for an eco-friendly water bottle that:
 
 • Emphasizes sustainability and environmental impact
-• Appeals to health-conscious millennials and Gen-Z
+• Appeals to health-conscious millennials and Gen Z
 • Uses persuasive yet authentic language
 • Highlights unique features and benefits
 • Includes a strong call-to-action
