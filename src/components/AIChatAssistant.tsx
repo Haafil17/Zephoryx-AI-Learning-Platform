@@ -103,17 +103,17 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
       return "🌙 **Theme & Dark Mode:**\n\nI notice you mentioned dark mode clarity! The website supports both light and dark themes with improved contrast:\n\n**Theme Features:**\n• Toggle button in the top-right corner\n• Automatic system preference detection\n• Improved readability in both modes\n• Better contrast ratios\n• Eye-friendly color schemes\n\n**If dark mode isn't clear enough:**\n• Try refreshing the page\n• Check your browser's zoom level\n• Ensure you're using the latest version\n\n**Accessibility Features:**\n• High contrast options\n• Readable font sizes\n• Clear visual hierarchy\n\nLet me know if you need help with any theme-related issues!";
     }
     
-    // Default responses with more context
+    // Default responses with more context - direct and relevant
     const contextualResponses = [
-      "That's fascinating! 🤔 As your AI assistant with deep knowledge of this platform, I can help you explore that topic further. This website covers everything from basic prompt engineering to advanced quantum computing concepts. What specific aspect interests you most?",
+      "I can help you with that topic. 🤔 This platform covers prompt engineering, AI/ML fundamentals, generative AI applications, quantum computing, and coding resources. What specific information are you looking for?",
       
-      "Great question! 🌟 With access to all the content on this platform - including techniques, examples, best practices, AI topics, generative AI, quantum computing, and coding resources - I can provide detailed guidance. Could you be more specific about what you'd like to learn?",
+      "Based on your question, I can guide you to the relevant content. 🌟 Would you like to know about techniques, see examples, learn best practices, or explore any of our AI topics?",
       
-      "Excellent! 🎯 I have comprehensive knowledge of all sections of this website. Whether you're interested in prompt engineering techniques, AI fundamentals, creative applications, or hands-on coding, I can guide you through the most relevant content. What's your learning goal?",
+      "Let me help you find what you need. 🎯 This website has sections on prompt engineering techniques, practical examples, AI fundamentals, generative AI, quantum computing, and development guides. Which area relates to your question?",
       
-      "Interesting point! 💡 This platform offers extensive resources across multiple domains. From interactive prompt builders to quantum computing simulators, there's a lot to explore. Based on your question, I think you might be interested in [specific area]. Should we dive deeper into that?",
+      "I'm here to assist. 💡 Could you clarify which topic you're interested in? I have access to content on prompting methods, AI concepts, creative applications, quantum computing, or coding tutorials.",
       
-      "Perfect timing! 🚀 As an AI with full knowledge of this educational platform, I can help you navigate through our comprehensive content on prompt engineering, machine learning, generative AI, quantum computing, and more. What would you like to focus on first?"
+      "I can provide guidance on that. 🚀 To give you the most relevant information, could you specify whether you're interested in learning techniques, seeing examples, or exploring a specific AI topic area?"
     ];
     
     return contextualResponses[Math.floor(Math.random() * contextualResponses.length)];

@@ -276,35 +276,35 @@ const Index = () => {
 
       <div className="max-w-7xl mx-auto px-4 pt-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex justify-center mb-12 gap-4 bg-white/95 dark:bg-slate-800/95 rounded-3xl shadow-2xl flex-wrap p-6 border-2 border-indigo-100 dark:border-slate-700 min-h-[120px]">
-            <TabsTrigger value="techniques" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
+          <TabsList className="flex justify-center mb-12 gap-3 bg-muted/30 dark:bg-muted/10 rounded-full shadow-sm flex-wrap p-3 border border-border/50 backdrop-blur-sm">
+            <TabsTrigger value="techniques" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               🎯 Techniques
             </TabsTrigger>
-            <TabsTrigger value="examples" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
+            <TabsTrigger value="examples" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               💡 Examples
             </TabsTrigger>
-            <TabsTrigger value="bestpractices" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[160px]">
+            <TabsTrigger value="bestpractices" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               🏆 Best Practices
             </TabsTrigger>
-            <TabsTrigger value="features" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
+            <TabsTrigger value="features" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               ⚡ Features
             </TabsTrigger>
-            <TabsTrigger value="ai" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[120px]">
+            <TabsTrigger value="ai" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               🤖 AI
             </TabsTrigger>
-            <TabsTrigger value="genai" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
+            <TabsTrigger value="genai" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               🎨 Gen AI
             </TabsTrigger>
-            <TabsTrigger value="quantum" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[140px]">
+            <TabsTrigger value="quantum" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               ⚛️ Quantum
             </TabsTrigger>
-            <TabsTrigger value="coding" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
+            <TabsTrigger value="coding" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               💻 Coding
             </TabsTrigger>
-            <TabsTrigger value="videos" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[130px]">
+            <TabsTrigger value="videos" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               🎥 Videos
             </TabsTrigger>
-            <TabsTrigger value="resources" className="px-10 py-6 text-lg font-bold rounded-2xl transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg min-w-[150px]">
+            <TabsTrigger value="resources" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               📚 Resources
             </TabsTrigger>
           </TabsList>
