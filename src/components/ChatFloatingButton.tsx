@@ -19,11 +19,12 @@ export const ChatFloatingButton: React.FC = () => {
       {!isChatOpen && (
         <Button
           onClick={toggleChat}
-          className="fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-2xl transition-all duration-300 hover:scale-110"
+          variant="premium"
+          className="fixed bottom-4 right-4 z-50 w-14 h-14 rounded-full"
           size="lg"
         >
           <MessageCircle className="w-6 h-6" />
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-pulse shadow-lg"></div>
         </Button>
       )}
       
