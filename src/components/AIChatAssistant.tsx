@@ -35,14 +35,23 @@ interface ChatMessage {
 interface AIChatAssistantProps {
   isOpen: boolean;
   onToggle: () => void;
+  position: { x: number; y: number };
 }
 
-export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onToggle }) => {
+export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onToggle, position }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{ startX: number; startY: number; offsetX: number; offsetY: number }>({
+    startX: 0,
+    startY: 0,
+    offsetX: 0,
+    offsetY: 0
+  });
+  const [chatPosition, setChatPosition] = useState(position);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -169,13 +178,60 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
     { icon: BookOpen, label: "Navigate", message: "How do I navigate and use this website?" }
   ];
 
+  const handleHeaderMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(false);
+    dragRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      offsetX: e.clientX - chatPosition.x,
+      offsetY: e.clientY - chatPosition.y
+    };
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const deltaX = Math.abs(moveEvent.clientX - dragRef.current.startX);
+      const deltaY = Math.abs(moveEvent.clientY - dragRef.current.startY);
+      
+      if (deltaX > 5 || deltaY > 5) {
+        setIsDragging(true);
+      }
+
+      setChatPosition({
+        x: moveEvent.clientX - dragRef.current.offsetX,
+        y: moveEvent.clientY - dragRef.current.offsetY
+      });
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      setTimeout(() => setIsDragging(false), 100);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  useEffect(() => {
+    setChatPosition(position);
+  }, [position]);
+
   // Show the chat when isOpen is true
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div 
+      style={{
+        position: 'fixed',
+        left: `${chatPosition.x}px`,
+        top: `${chatPosition.y}px`,
+        zIndex: 50
+      }}
+    >
       <Card className={`w-96 bg-white/95 dark:bg-slate-900/98 backdrop-blur-sm border-2 border-blue-200 dark:border-blue-700/80 shadow-2xl transition-all duration-300 ${isMinimized ? 'h-16' : 'h-[500px]'}`}>
-        <CardHeader className="pb-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 text-white">
+        <CardHeader 
+          onMouseDown={handleHeaderMouseDown}
+          className="pb-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 text-white cursor-move"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
