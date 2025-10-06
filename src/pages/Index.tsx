@@ -11,6 +11,9 @@ import { QuantumTopics } from "@/components/QuantumTopics";
 import { CodingTopics } from "@/components/CodingTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
+import { PromptBuilder } from "@/components/PromptBuilder";
+import { PromptAnalyzer } from "@/components/PromptAnalyzer";
+import { PromptTester } from "@/components/PromptTester";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -301,6 +304,9 @@ const Index = () => {
             <TabsTrigger value="coding" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               💻 Coding
             </TabsTrigger>
+            <TabsTrigger value="aitools" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🔧 AI Tools
+            </TabsTrigger>
             <TabsTrigger value="videos" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
               🎥 Videos
             </TabsTrigger>
@@ -331,6 +337,23 @@ const Index = () => {
           </TabsContent>
           <TabsContent value="coding" className="focus:outline-none">
             <CodingTopics />
+          </TabsContent>
+          <TabsContent value="aitools" className="focus:outline-none">
+            <div className="space-y-8 pb-16">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                  AI-Powered Tools
+                </h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                  Interactive tools powered by Gemini 2.5 Flash to help you build, analyze, and test prompts in real-time
+                </p>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <PromptBuilder />
+                <PromptAnalyzer />
+              </div>
+              <PromptTester />
+            </div>
           </TabsContent>
           <TabsContent value="videos" className="focus:outline-none">
             <Videos />
