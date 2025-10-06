@@ -2,8 +2,11 @@
 import { Separator } from "@/components/ui/separator";
 import { Brain, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export const Footer = () => {
+  const navigate = useNavigate();
+  
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -216,7 +219,7 @@ export const Footer = () => {
             </button>
             <button 
               className="hover:text-white transition-colors"
-              onClick={() => handlePolicyClick('Terms of Service')}
+              onClick={() => navigate('/terms')}
             >
               Terms of Service
             </button>
