@@ -3,13 +3,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, PlayCircle } from "lucide-react";
+import { Loader2, PlayCircle, Brain, BookOpen } from "lucide-react";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const PromptTester = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
+  const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [mode, setMode] = useState<"test" | "rag">("test");
 
   const testPrompt = async () => {
     if (!prompt.trim()) {
@@ -19,18 +22,19 @@ export const PromptTester = () => {
 
     setLoading(true);
     setResponse("");
+    setSources([]);
     
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/prompt-ai`,
+        `https://xnkedyucvknvzrkvogog.supabase.co/functions/v1/prompt-ai`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhua2VkeXVjdmtudnpya3ZvZ29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwMDc1OTEsImV4cCI6MjA2NTU4MzU5MX0.vd7dHv2A70g7pFFRhUwJgl-ykt4VylfKocVV7TUb9Jg`,
           },
           body: JSON.stringify({
-            action: "test",
+            action: mode,
             prompt: prompt,
           }),
         }
@@ -43,7 +47,10 @@ export const PromptTester = () => {
 
       const data = await res.json();
       setResponse(data.result);
-      toast.success("Test complete!");
+      if (data.sources) {
+        setSources(data.sources);
+      }
+      toast.success(mode === "rag" ? "RAG search complete!" : "Test complete!");
     } catch (error) {
       console.error("Test error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to test prompt");
@@ -64,12 +71,43 @@ export const PromptTester = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        <Tabs value={mode} onValueChange={(v) => setMode(v as "test" | "rag")}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="test">
+              <PlayCircle className="w-4 h-4 mr-2" />
+              Standard Test
+            </TabsTrigger>
+            <TabsTrigger value="rag">
+              <Brain className="w-4 h-4 mr-2" />
+              RAG Mode
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="test" className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Test prompts with direct AI responses (no knowledge base)
+            </p>
+          </TabsContent>
+          
+          <TabsContent value="rag" className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Ask questions and get answers based on your knowledge base content
+            </p>
+          </TabsContent>
+        </Tabs>
+
         <div>
-          <label className="font-semibold mb-2 block">Test Your Prompt:</label>
+          <label className="font-semibold mb-2 block">
+            {mode === "rag" ? "Ask a Question:" : "Test Your Prompt:"}
+          </label>
           <Textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter your prompt to see how AI responds..."
+            placeholder={
+              mode === "rag"
+                ? "Ask a question about your knowledge base content..."
+                : "Enter your prompt to see how AI responds..."
+            }
             className="min-h-[120px]"
           />
         </div>
@@ -78,24 +116,57 @@ export const PromptTester = () => {
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Testing...
+              {mode === "rag" ? "Searching..." : "Testing..."}
             </>
           ) : (
             <>
-              <PlayCircle className="w-4 h-4 mr-2" />
-              Test Prompt
+              {mode === "rag" ? (
+                <>
+                  <Brain className="w-4 h-4 mr-2" />
+                  Ask with RAG
+                </>
+              ) : (
+                <>
+                  <PlayCircle className="w-4 h-4 mr-2" />
+                  Test Prompt
+                </>
+              )}
             </>
           )}
         </Button>
 
         {response && (
-          <div className="mt-4 p-4 bg-muted rounded-lg space-y-2">
-            <div className="flex items-center gap-2 mb-2">
-              <Badge>AI Response</Badge>
+          <div className="mt-4 space-y-4">
+            <div className="p-4 bg-muted rounded-lg space-y-2">
+              <div className="flex items-center gap-2 mb-2">
+                <Badge>AI Response</Badge>
+              </div>
+              <div className="prose prose-sm max-w-none whitespace-pre-wrap">
+                {response}
+              </div>
             </div>
-            <div className="prose prose-sm max-w-none whitespace-pre-wrap">
-              {response}
-            </div>
+
+            {sources.length > 0 && (
+              <div className="p-4 border rounded-lg space-y-2">
+                <h4 className="font-semibold text-sm flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Sources Used ({sources.length})
+                </h4>
+                <div className="space-y-2">
+                  {sources.map((source, idx) => (
+                    <div key={idx} className="text-sm p-2 bg-muted rounded">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{source.title}</span>
+                        <Badge variant="outline">{source.category}</Badge>
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        Similarity: {(source.similarity * 100).toFixed(1)}%
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </CardContent>

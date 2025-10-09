@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -11,14 +12,20 @@ serve(async (req) => {
   }
 
   try {
-    const { action, prompt } = await req.json();
+    const { action, prompt, addToKnowledge } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
     if (!LOVABLE_API_KEY) {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
+    const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
+
     let systemPrompt = "";
+    let userPrompt = prompt;
+    let sources = [];
     
     if (action === "analyze") {
       systemPrompt = `You are an expert prompt engineering analyst. Analyze the given prompt and provide:
@@ -31,6 +38,98 @@ serve(async (req) => {
 Be concise but insightful. Format your response in clear sections.`;
     } else if (action === "test") {
       systemPrompt = "You are a helpful AI assistant. Respond to the user's prompt naturally and helpfully.";
+    } else if (action === "rag") {
+      // RAG: Generate embedding for the query
+      const embeddingResponse = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "text-embedding-004",
+          input: prompt,
+        }),
+      });
+
+      if (!embeddingResponse.ok) {
+        throw new Error("Failed to generate embedding");
+      }
+
+      const embeddingData = await embeddingResponse.json();
+      const queryEmbedding = embeddingData.data[0].embedding;
+
+      // Search for similar content in knowledge base
+      const { data: similarDocs, error: searchError } = await supabase.rpc(
+        "match_knowledge_base",
+        {
+          query_embedding: queryEmbedding,
+          match_threshold: 0.7,
+          match_count: 5,
+        }
+      );
+
+      if (searchError) {
+        console.error("Search error:", searchError);
+        throw new Error("Failed to search knowledge base");
+      }
+
+      if (!similarDocs || similarDocs.length === 0) {
+        systemPrompt = "You are a helpful AI assistant. The user asked a question but no relevant context was found in the knowledge base. Politely inform them that you don't have information about this topic in your knowledge base.";
+      } else {
+        // Compile context from retrieved documents
+        const context = similarDocs
+          .map((doc: any) => `Title: ${doc.title}\n${doc.content}`)
+          .join("\n\n---\n\n");
+
+        sources = similarDocs.map((doc: any) => ({
+          title: doc.title,
+          category: doc.category,
+          similarity: doc.similarity,
+        }));
+
+        systemPrompt = `You are a helpful AI assistant. Answer the user's question based ONLY on the following context from the knowledge base. If the answer cannot be found in the context, say you don't have that information in your knowledge base.
+
+Context:
+${context}`;
+      }
+    } else if (action === "embed" && addToKnowledge) {
+      // Generate embedding for content to add to knowledge base
+      const embeddingResponse = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "text-embedding-004",
+          input: addToKnowledge.content,
+        }),
+      });
+
+      if (!embeddingResponse.ok) {
+        throw new Error("Failed to generate embedding");
+      }
+
+      const embeddingData = await embeddingResponse.json();
+      const embedding = embeddingData.data[0].embedding;
+
+      // Insert into knowledge base
+      const { error: insertError } = await supabase.from("knowledge_base").insert({
+        title: addToKnowledge.title,
+        content: addToKnowledge.content,
+        category: addToKnowledge.category,
+        embedding: embedding,
+      });
+
+      if (insertError) {
+        throw new Error("Failed to add to knowledge base");
+      }
+
+      return new Response(
+        JSON.stringify({ result: "Successfully added to knowledge base" }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -71,7 +170,7 @@ Be concise but insightful. Format your response in clear sections.`;
     const result = data.choices?.[0]?.message?.content;
 
     return new Response(
-      JSON.stringify({ result }),
+      JSON.stringify({ result, sources }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
