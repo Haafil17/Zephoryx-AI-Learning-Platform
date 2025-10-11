@@ -1,10 +1,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
+
+// Input validation schema
+const requestSchema = z.object({
+  action: z.enum(['analyze', 'test', 'rag', 'embed']),
+  prompt: z.string().max(5000).optional(),
+  addToKnowledge: z.object({
+    title: z.string().trim().min(1).max(200),
+    content: z.string().trim().min(1).max(10000),
+    category: z.string().trim().max(50)
+  }).optional()
+});
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -12,7 +24,22 @@ serve(async (req) => {
   }
 
   try {
-    const { action, prompt, addToKnowledge } = await req.json();
+    const rawBody = await req.json();
+    
+    // Validate input
+    const validationResult = requestSchema.safeParse(rawBody);
+    if (!validationResult.success) {
+      console.error("Validation error:", validationResult.error.errors);
+      return new Response(
+        JSON.stringify({ 
+          error: "Invalid input", 
+          details: validationResult.error.errors 
+        }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    const { action, prompt, addToKnowledge } = validationResult.data;
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -47,13 +74,14 @@ Be concise but insightful. Format your response in clear sections.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "text-embedding-004",
           input: prompt,
         }),
       });
 
       if (!embeddingResponse.ok) {
-        throw new Error("Failed to generate embedding");
+        const errorText = await embeddingResponse.text();
+        console.error("Embedding API error:", embeddingResponse.status, errorText);
+        throw new Error(`Failed to generate embedding: ${embeddingResponse.status}`);
       }
 
       const embeddingData = await embeddingResponse.json();
@@ -102,13 +130,14 @@ ${context}`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "text-embedding-004",
           input: addToKnowledge.content,
         }),
       });
 
       if (!embeddingResponse.ok) {
-        throw new Error("Failed to generate embedding");
+        const errorText = await embeddingResponse.text();
+        console.error("Embedding API error:", embeddingResponse.status, errorText);
+        throw new Error(`Failed to generate embedding: ${embeddingResponse.status}`);
       }
 
       const embeddingData = await embeddingResponse.json();

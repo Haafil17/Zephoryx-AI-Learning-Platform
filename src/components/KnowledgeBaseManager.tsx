@@ -56,24 +56,15 @@ export const KnowledgeBaseManager = () => {
 
     setAdding(true);
     try {
-      const res = await fetch(
-        `https://xnkedyucvknvzrkvogog.supabase.co/functions/v1/prompt-ai`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            action: "embed",
-            addToKnowledge: newItem,
-          }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke("prompt-ai", {
+        body: {
+          action: "embed",
+          addToKnowledge: newItem,
+        },
+      });
 
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to add to knowledge base");
+      if (error) {
+        throw error;
       }
 
       toast.success("Added to knowledge base!");

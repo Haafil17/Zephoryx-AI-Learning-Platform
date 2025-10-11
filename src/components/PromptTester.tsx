@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, PlayCircle, Brain, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
 
 export const PromptTester = () => {
   const [prompt, setPrompt] = useState("");
@@ -25,27 +26,17 @@ export const PromptTester = () => {
     setSources([]);
     
     try {
-      const res = await fetch(
-        `https://xnkedyucvknvzrkvogog.supabase.co/functions/v1/prompt-ai`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhua2VkeXVjdmtudnpya3ZvZ29nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwMDc1OTEsImV4cCI6MjA2NTU4MzU5MX0.vd7dHv2A70g7pFFRhUwJgl-ykt4VylfKocVV7TUb9Jg`,
-          },
-          body: JSON.stringify({
-            action: mode,
-            prompt: prompt,
-          }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke("prompt-ai", {
+        body: {
+          action: mode,
+          prompt: prompt,
+        },
+      });
 
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to test prompt");
+      if (error) {
+        throw error;
       }
 
-      const data = await res.json();
       setResponse(data.result);
       if (data.sources) {
         setSources(data.sources);

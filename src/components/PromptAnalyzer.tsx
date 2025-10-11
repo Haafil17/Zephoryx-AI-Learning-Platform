@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const PromptAnalyzer = () => {
   const [prompt, setPrompt] = useState("");
@@ -19,27 +20,17 @@ export const PromptAnalyzer = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/prompt-ai`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
-            action: "analyze",
-            prompt: prompt,
-          }),
-        }
-      );
+      const { data, error } = await supabase.functions.invoke("prompt-ai", {
+        body: {
+          action: "analyze",
+          prompt: prompt,
+        },
+      });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || "Failed to analyze prompt");
+      if (error) {
+        throw error;
       }
 
-      const data = await response.json();
       setAnalysis(data.result);
       toast.success("Analysis complete!");
     } catch (error) {
