@@ -79,8 +79,6 @@ Be concise but insightful. Format your response in clear sections.`;
       });
 
       if (!embeddingResponse.ok) {
-        const errorText = await embeddingResponse.text();
-        console.error("Embedding API error:", embeddingResponse.status, errorText);
         throw new Error(`Failed to generate embedding: ${embeddingResponse.status}`);
       }
 
@@ -98,7 +96,6 @@ Be concise but insightful. Format your response in clear sections.`;
       );
 
       if (searchError) {
-        console.error("Search error:", searchError);
         throw new Error("Failed to search knowledge base");
       }
 
@@ -136,8 +133,6 @@ ${context}`;
       });
 
       if (!embeddingResponse.ok) {
-        const errorText = await embeddingResponse.text();
-        console.error("Embedding API error:", embeddingResponse.status, errorText);
         throw new Error(`Failed to generate embedding: ${embeddingResponse.status}`);
       }
 
@@ -191,8 +186,6 @@ ${context}`;
         );
       }
       
-      const errorText = await response.text();
-      console.error("AI gateway error:", response.status, errorText);
       throw new Error("AI gateway error");
     }
 

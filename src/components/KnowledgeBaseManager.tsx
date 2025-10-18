@@ -41,7 +41,6 @@ export const KnowledgeBaseManager = () => {
       if (error) throw error;
       setItems(data || []);
     } catch (error) {
-      console.error("Load error:", error);
       toast.error("Failed to load knowledge base");
     } finally {
       setLoading(false);
@@ -71,7 +70,6 @@ export const KnowledgeBaseManager = () => {
       setNewItem({ title: "", content: "", category: "general" });
       loadKnowledgeBase();
     } catch (error) {
-      console.error("Add error:", error);
       toast.error(error instanceof Error ? error.message : "Failed to add to knowledge base");
     } finally {
       setAdding(false);
@@ -86,7 +84,6 @@ export const KnowledgeBaseManager = () => {
       toast.success("Deleted from knowledge base");
       loadKnowledgeBase();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error("Failed to delete");
     }
   };

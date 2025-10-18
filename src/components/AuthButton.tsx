@@ -6,6 +6,16 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LogIn, LogOut, User, Mail, Lock, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { z } from 'zod';
+
+const authSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+    .regex(/[a-z]/, 'Password must contain a lowercase letter')
+    .regex(/[0-9]/, 'Password must contain a number')
+});
 
 export const AuthButton = () => {
   const { user, signIn, signUp, signOut, loading } = useAuth();
@@ -17,6 +27,13 @@ export const AuthButton = () => {
 
   const handleAuth = async () => {
     if (!email || !password) return;
+    
+    // Validate input
+    const result = authSchema.safeParse({ email, password });
+    if (!result.success) {
+      toast.error(result.error.errors[0].message);
+      return;
+    }
     
     setAuthLoading(true);
     const { error } = isSignUp 
