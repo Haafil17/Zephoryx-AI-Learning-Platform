@@ -103,7 +103,8 @@ Be concise but insightful. Format your response in clear sections.`;
       }
 
       if (!similarDocs || similarDocs.length === 0) {
-        systemPrompt = "You are a helpful AI assistant. The user asked a question but no relevant context was found in the knowledge base. Politely inform them that you don't have information about this topic in your knowledge base.";
+        // If no knowledge base results, use general AI knowledge
+        systemPrompt = "You are a helpful AI assistant. Answer the user's question using your general knowledge. Be informative and accurate.";
       } else {
         // Compile context from retrieved documents
         const context = similarDocs
