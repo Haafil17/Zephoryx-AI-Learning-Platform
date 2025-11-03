@@ -5,6 +5,7 @@ import { useState } from "react";
 import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
 import { AuthButton } from "./AuthButton";
+import aionyxLogo from "@/assets/aionyx-logo.png";
 
 export const Hero = () => {
   const scrollToSection = (sectionId: string) => {
@@ -62,9 +63,13 @@ export const Hero = () => {
               Master AI Interactions
             </div>
             
+            <div className="flex items-center justify-center lg:justify-start gap-6 mb-4">
+              <img src={aionyxLogo} alt="AIONYX Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain" />
+            </div>
+            
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Clavis AI
+                AIONYX
               </span>
               <br />
               <span className="text-slate-800 dark:text-slate-100">

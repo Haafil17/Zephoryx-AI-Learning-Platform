@@ -160,11 +160,12 @@ export const AITopics = () => {
               </div>
               <div className="aspect-video bg-black">
                 <iframe
-                  src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1&start=0&title=Clavis AI`}
+                  src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1&start=0&title=AIONYX`}
                   className="w-full h-full"
                   allowFullScreen
+                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={`Clavis AI - ${currentVideo.title}`}
+                  title={`AIONYX - ${currentVideo.title}`}
                 />
               </div>
             </div>

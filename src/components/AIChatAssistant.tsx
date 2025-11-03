@@ -105,7 +105,7 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
     }
     
     if (message.includes('hello') || message.includes('hi') || message.includes('start')) {
-      return "👋 **Welcome to Clavis AI!**\n\nI'm your intelligent assistant with deep knowledge of this entire platform. I can help you with:\n\n🎯 **Prompt Engineering**: Advanced techniques, templates, and optimization\n🤖 **AI & ML**: Machine learning, neural networks, and applications\n🎨 **Generative AI**: Creative applications and content generation\n⚛️ **Quantum Computing**: Quantum algorithms and AI applications\n💻 **Coding**: Programming, development, and best practices\n⚡ **Interactive Tools**: Builders, analyzers, and simulators\n\n**Quick Start:**\n• Ask me about any topic on this website\n• Request specific examples or templates\n• Get personalized learning recommendations\n• Explore interactive features and tools\n\nWhat would you like to explore today?";
+      return "👋 **Welcome to AIONYX!**\n\nI'm your intelligent assistant with deep knowledge of this entire platform. I can help you with:\n\n🎯 **Prompt Engineering**: Advanced techniques, templates, and optimization\n🤖 **AI & ML**: Machine learning, neural networks, and applications\n🎨 **Generative AI**: Creative applications and content generation\n⚛️ **Quantum Computing**: Quantum algorithms and AI applications\n💻 **Coding**: Programming, development, and best practices\n⚡ **Interactive Tools**: Builders, analyzers, and simulators\n\n**Quick Start:**\n• Ask me about any topic on this website\n• Request specific examples or templates\n• Get personalized learning recommendations\n• Explore interactive features and tools\n\nWhat would you like to explore today?";
     }
     
     if (message.includes('dark mode') || message.includes('theme')) {
@@ -238,7 +238,7 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                 <Bot className="w-4 h-4" />
               </div>
               <div>
-                <CardTitle className="text-sm font-semibold">Clavis AI Assistant</CardTitle>
+                <CardTitle className="text-sm font-semibold">AIONYX Assistant</CardTitle>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="text-xs opacity-90">Full Website Knowledge</span>
@@ -274,7 +274,7 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                   <Bot className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="font-semibold text-slate-800 dark:text-slate-100 mb-2">
-                  Welcome to Clavis AI!
+                  Welcome to AIONYX!
                 </h3>
                 <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
                   I have complete knowledge of this platform - from prompt engineering to quantum computing!
