@@ -73,7 +73,7 @@ export const Hero = () => {
               </span>
               <br />
               <span className="text-slate-800 dark:text-slate-100">
-                Prompt Engineering
+                AI Learning Platform
               </span>
             </h1>
             
