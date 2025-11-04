@@ -27,10 +27,13 @@ import {
   RotateCcw,
   TrendingUp,
   ThumbsUp,
-  ThumbsDown
+  ThumbsDown,
+  Database
 } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { KnowledgePopulator } from "./KnowledgePopulator";
+import { KnowledgeBaseManager } from "./KnowledgeBaseManager";
 
 export const EnhancedInteractiveFeatures = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -452,7 +455,7 @@ Make it compelling and results-driven.`,
 
         {/* Interactive Features */}
         <Tabs defaultValue="analyzer" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 mb-8 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
             <TabsTrigger value="analyzer" className="flex items-center gap-2">
               <Calculator className="w-4 h-4" />
               Analyzer
@@ -464,6 +467,14 @@ Make it compelling and results-driven.`,
             <TabsTrigger value="templates" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
               Templates
+            </TabsTrigger>
+            <TabsTrigger value="knowledge" className="flex items-center gap-2">
+              <Database className="w-4 h-4" />
+              Knowledge
+            </TabsTrigger>
+            <TabsTrigger value="populate" className="flex items-center gap-2">
+              <Brain className="w-4 h-4" />
+              Populate
             </TabsTrigger>
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
@@ -733,6 +744,14 @@ Make it compelling and results-driven.`,
                 </Card>
               ))}
             </div>
+          </TabsContent>
+
+          <TabsContent value="knowledge" className="space-y-6">
+            <KnowledgeBaseManager />
+          </TabsContent>
+
+          <TabsContent value="populate" className="space-y-6">
+            <KnowledgePopulator />
           </TabsContent>
 
           <TabsContent value="overview" className="space-y-8">
