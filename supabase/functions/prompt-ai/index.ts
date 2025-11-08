@@ -74,6 +74,7 @@ Be concise but insightful. Format your response in clear sections.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          model: "text-embedding-3-small",
           input: prompt,
         }),
       });
@@ -128,6 +129,7 @@ ${context}`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          model: "text-embedding-3-small",
           input: addToKnowledge.content,
         }),
       });

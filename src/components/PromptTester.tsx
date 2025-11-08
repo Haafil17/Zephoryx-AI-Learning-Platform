@@ -13,7 +13,7 @@ export const PromptTester = () => {
   const [response, setResponse] = useState("");
   const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<"test" | "rag">("test");
+  const [mode, setMode] = useState<"test" | "rag">("rag");
 
   const testPrompt = async () => {
     if (!prompt.trim()) {
@@ -54,11 +54,11 @@ export const PromptTester = () => {
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <PlayCircle className="w-5 h-5 text-primary" />
-          Real-Time Prompt Tester
+          <Brain className="w-5 h-5 text-primary" />
+          AIONYX AI Assistant
         </CardTitle>
         <CardDescription>
-          Test your prompts with live AI responses powered by Gemini 2.5 Flash
+          Ask questions about AI, prompting techniques, and get answers based on our complete knowledge base
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
