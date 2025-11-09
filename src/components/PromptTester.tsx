@@ -5,7 +5,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, PlayCircle, Brain, BookOpen } from "lucide-react";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 
 export const PromptTester = () => {
@@ -13,7 +12,6 @@ export const PromptTester = () => {
   const [response, setResponse] = useState("");
   const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [mode, setMode] = useState<"test" | "rag">("rag");
 
   const testPrompt = async () => {
     if (!prompt.trim()) {
@@ -28,7 +26,7 @@ export const PromptTester = () => {
     try {
       const { data, error } = await supabase.functions.invoke("prompt-ai", {
         body: {
-          action: mode,
+          action: "rag",
           prompt: prompt,
         },
       });
@@ -41,10 +39,10 @@ export const PromptTester = () => {
       if (data.sources) {
         setSources(data.sources);
       }
-      toast.success(mode === "rag" ? "RAG search complete!" : "Test complete!");
+      toast.success("AI search complete!");
     } catch (error) {
       console.error("Test error:", error);
-      toast.error(error instanceof Error ? error.message : "Failed to test prompt");
+      toast.error(error instanceof Error ? error.message : "Failed to process request");
     } finally {
       setLoading(false);
     }
@@ -62,43 +60,14 @@ export const PromptTester = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Tabs value={mode} onValueChange={(v) => setMode(v as "test" | "rag")}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="test">
-              <PlayCircle className="w-4 h-4 mr-2" />
-              Standard Test
-            </TabsTrigger>
-            <TabsTrigger value="rag">
-              <Brain className="w-4 h-4 mr-2" />
-              RAG Mode
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="test" className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Test prompts with direct AI responses (no knowledge base)
-            </p>
-          </TabsContent>
-          
-          <TabsContent value="rag" className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Ask questions and get answers based on your knowledge base content
-            </p>
-          </TabsContent>
-        </Tabs>
-
         <div>
           <label className="font-semibold mb-2 block">
-            {mode === "rag" ? "Ask a Question:" : "Test Your Prompt:"}
+            Ask a Question:
           </label>
           <Textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder={
-              mode === "rag"
-                ? "Ask a question about your knowledge base content..."
-                : "Enter your prompt to see how AI responds..."
-            }
+            placeholder="Ask a question about AI, prompting techniques, or any topic in our knowledge base..."
             className="min-h-[120px]"
           />
         </div>
@@ -107,21 +76,12 @@ export const PromptTester = () => {
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              {mode === "rag" ? "Searching..." : "Testing..."}
+              Thinking...
             </>
           ) : (
             <>
-              {mode === "rag" ? (
-                <>
-                  <Brain className="w-4 h-4 mr-2" />
-                  Ask with RAG
-                </>
-              ) : (
-                <>
-                  <PlayCircle className="w-4 h-4 mr-2" />
-                  Test Prompt
-                </>
-              )}
+              <Brain className="w-4 h-4 mr-2" />
+              Ask AI Assistant
             </>
           )}
         </Button>
