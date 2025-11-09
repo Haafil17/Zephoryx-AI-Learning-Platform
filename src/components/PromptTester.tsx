@@ -26,7 +26,7 @@ export const PromptTester = () => {
     try {
       const { data, error } = await supabase.functions.invoke("prompt-ai", {
         body: {
-          action: "rag",
+          action: "test",
           prompt: prompt,
         },
       });
