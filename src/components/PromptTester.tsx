@@ -100,7 +100,7 @@ export const PromptTester = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="w-5 h-5 text-primary" />
-            <CardTitle>AIONYX AI Assistant</CardTitle>
+            <CardTitle>ZEPHORYX AI Assistant</CardTitle>
           </div>
           {messages.length > 0 && (
             <Button

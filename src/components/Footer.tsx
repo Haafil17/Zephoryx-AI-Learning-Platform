@@ -23,7 +23,7 @@ export const Footer = () => {
       github: 'https://github.com',
       twitter: 'https://twitter.com',
       linkedin: 'https://linkedin.com',
-      mail: 'mailto:hello@aionyx.com'
+      mail: 'mailto:hello@zephoryxailab.com'
     };
     
     if (platform === 'mail') {
@@ -49,7 +49,7 @@ export const Footer = () => {
               <div className="p-2 bg-indigo-600 rounded-lg">
                 <Brain className="w-6 h-6" />
               </div>
-              <span className="text-xl font-bold">AIONYX</span>
+              <span className="text-xl font-bold">ZEPHORYX AI LAB</span>
             </div>
             <p className="text-slate-400 text-sm">
               Master the art of prompt engineering and unlock the full potential of AI systems.
@@ -207,7 +207,7 @@ export const Footer = () => {
         <Separator className="bg-slate-700 mb-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
-          <p>&copy; 2024 AIONYX. All rights reserved.</p>
+          <p>&copy; 2024 ZEPHORYX AI LAB. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <button 
               className="hover:text-white transition-colors"

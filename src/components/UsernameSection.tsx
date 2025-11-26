@@ -48,7 +48,7 @@ export const UsernameSection = () => {
         <div className="flex items-center justify-center gap-3 mb-3">
           <Sparkles className="w-8 h-8 text-indigo-500 animate-pulse drop-shadow-lg" />
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent drop-shadow-lg">
-            Welcome to AIONYX
+            Welcome to ZEPHORYX AI LAB
           </CardTitle>
         </div>
 
