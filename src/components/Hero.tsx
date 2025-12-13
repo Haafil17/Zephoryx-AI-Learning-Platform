@@ -72,6 +72,9 @@ export const Hero = () => {
                 ZEPHORYX AI LAB
               </span>
             </h1>
+            <p className="text-lg md:text-xl font-medium text-indigo-600 dark:text-indigo-400 tracking-wide">
+              AI Learning Platform
+            </p>
             
             <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed">
               Master the art of AI communication with advanced prompting techniques, 
