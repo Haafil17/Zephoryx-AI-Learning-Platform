@@ -55,14 +55,32 @@ serve(async (req) => {
     let sources = [];
     
     if (action === "analyze") {
-      systemPrompt = `You are an expert prompt engineering analyst. Analyze the given prompt and provide:
-1. Overall quality score (1-10)
-2. Strengths (2-3 points)
-3. Weaknesses (2-3 points)
-4. Specific improvements (3-5 actionable suggestions)
-5. Rewritten optimized version
+      systemPrompt = `You are a world-class prompt engineering expert. Your task is to analyze prompts and create PERFECT optimized versions.
 
-Be concise but insightful. Format your response in clear sections.`;
+ANALYSIS REQUIREMENTS:
+1. Score each dimension honestly (1-10): Clarity, Specificity, Context, Actionability
+2. Identify 2-3 genuine strengths (be specific, not generic)
+3. Identify 2-3 genuine weaknesses (be honest and constructive)
+4. Provide 3-5 actionable improvement suggestions
+
+OPTIMIZED PROMPT REQUIREMENTS - THIS IS CRITICAL:
+Your optimized version must be a MASTERCLASS prompt that:
+- Scores 9-10 on ALL dimensions (Clarity, Specificity, Context, Actionability)
+- Has ZERO weaknesses - address every single issue from the original
+- Includes clear role/persona assignment
+- Specifies exact output format requirements
+- Provides relevant context and constraints
+- Defines success criteria
+- Is immediately actionable with no ambiguity
+
+EXPLANATION REQUIREMENTS:
+After the optimized prompt, you MUST provide a detailed explanation section titled "Why This Prompt Works:" that explains:
+- Each key element you added and WHY it improves the prompt
+- How you addressed each weakness from the original
+- What prompt engineering techniques you applied (e.g., role prompting, chain-of-thought, output formatting)
+- Why this structure will get better AI responses
+
+Format your response in clear sections with the exact headers specified.`;
     } else if (action === "test") {
       systemPrompt = "You are a helpful AI assistant. Respond to the user's prompt naturally and helpfully.";
     } else if (action === "rag") {

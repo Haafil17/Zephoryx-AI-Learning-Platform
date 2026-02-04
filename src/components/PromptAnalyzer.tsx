@@ -21,6 +21,7 @@ interface AnalysisResult {
   category: string;
   complexity: string;
   optimizedPrompt: string;
+  promptExplanation: string;
 }
 
 export const PromptAnalyzer = () => {
@@ -43,15 +44,25 @@ export const PromptAnalyzer = () => {
     const contextMatch = text.match(/context[:\s]+(\d+)/i);
     const actionabilityMatch = text.match(/actionability[:\s]+(\d+)/i);
     
-    const strengthsSection = text.match(/strengths?[:\s]+([\s\S]*?)(?=weaknesses?|improvements?|suggestions?|\n\n|$)/i);
-    const weaknessesSection = text.match(/weaknesses?[:\s]+([\s\S]*?)(?=improvements?|suggestions?|rewritten|$)/i);
-    const suggestionsSection = text.match(/(?:improvements?|suggestions?)[:\s]+([\s\S]*?)(?=rewritten|optimized|$)/i);
-    const optimizedSection = text.match(/(?:rewritten|optimized)[:\s]+([\s\S]*?)$/i);
+    const strengthsSection = text.match(/strengths?[:\s]+([\s\S]*?)(?=weaknesses?|areas for improvement|improvements?|suggestions?|\n\n|$)/i);
+    const weaknessesSection = text.match(/(?:weaknesses?|areas for improvement)[:\s]+([\s\S]*?)(?=improvements?|suggestions?|actionable|rewritten|optimized|$)/i);
+    const suggestionsSection = text.match(/(?:improvements?|actionable suggestions?|suggestions?)[:\s]+([\s\S]*?)(?=rewritten|optimized|$)/i);
+    
+    // Extract optimized prompt - stop at explanation section
+    const optimizedSection = text.match(/(?:rewritten|optimized)[^:]*(?:version|prompt)?[:\s]+([\s\S]*?)(?=why this prompt works|explanation|$)/i);
+    
+    // Extract the explanation section
+    const explanationSection = text.match(/(?:why this prompt works|explanation)[:\s]*([\s\S]*?)$/i);
 
     const extractItems = (section: string | undefined) => {
       if (!section) return [];
       return section.split(/\n/).filter(line => line.trim() && line.match(/^[-•*\d.]/)).map(line => line.replace(/^[-•*\d.\s]+/, '').trim());
     };
+
+    // Clean up the optimized prompt
+    let optimizedPrompt = optimizedSection?.[1]?.trim() || "";
+    // Remove any trailing explanation text that might have slipped in
+    optimizedPrompt = optimizedPrompt.replace(/\n\n(?:why|this|explanation|note)[\s\S]*$/i, '').trim();
 
     return {
       score: scoreMatch ? parseInt(scoreMatch[1]) : 7,
@@ -64,7 +75,8 @@ export const PromptAnalyzer = () => {
       suggestions: extractItems(suggestionsSection?.[1]),
       category: text.match(/category[:\s]+(\w+)/i)?.[1] || "General",
       complexity: text.match(/complexity[:\s]+(\w+)/i)?.[1] || "Medium",
-      optimizedPrompt: optimizedSection?.[1]?.trim() || ""
+      optimizedPrompt,
+      promptExplanation: explanationSection?.[1]?.trim() || ""
     };
   };
 
@@ -86,34 +98,38 @@ export const PromptAnalyzer = () => {
       const { data, error } = await supabase.functions.invoke("prompt-ai", {
         body: {
           action: "analyze",
-          prompt: `Analyze this prompt in detail with specific scores and sections:
+          prompt: `Analyze this prompt and create a PERFECT optimized version:
 
-${prompt}
+"${prompt}"
 
-Provide analysis in this exact format:
-Score: [1-10]
+Provide analysis in this EXACT format:
+
+Score: [1-10 overall]
 Clarity: [1-10]
 Specificity: [1-10]
 Context: [1-10]
 Actionability: [1-10]
-Category: [type]
+Category: [General/Technical/Creative/Business/Academic]
 Complexity: [Simple/Medium/Complex]
 
 Strengths:
-- [point 1]
-- [point 2]
+- [specific strength 1]
+- [specific strength 2]
 
 Weaknesses:
-- [point 1]
-- [point 2]
+- [specific weakness 1]
+- [specific weakness 2]
 
-Suggestions:
-- [improvement 1]
-- [improvement 2]
-- [improvement 3]
+Actionable Suggestions:
+- [specific improvement 1]
+- [specific improvement 2]
+- [specific improvement 3]
 
 Optimized Version:
-[rewritten improved prompt]`,
+[Write a MASTERCLASS prompt that scores 9-10 on all dimensions. Include: clear role assignment, specific output format, relevant context, constraints, and success criteria. This must have ZERO weaknesses.]
+
+Why This Prompt Works:
+[Explain each key element you added: what prompt engineering techniques you used (role prompting, output formatting, constraints, examples, etc.), how you addressed each weakness, and why this structure produces better AI responses. Be specific and educational.]`,
         },
       });
 
@@ -309,14 +325,18 @@ Optimized Version:
               <div className="space-y-3">
                 <h3 className="text-lg font-bold flex items-center gap-2 text-primary">
                   <Sparkles className="w-5 h-5" />
-                  Optimized Version
+                  ✨ Masterclass Optimized Prompt
                 </h3>
-                <div className="p-4 bg-primary/5 border-2 border-primary/20 rounded-lg">
-                  <p className="text-base leading-relaxed">{analysis.optimizedPrompt}</p>
+                <div className="p-4 bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 rounded-lg">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge className="bg-green-600">Score: 9-10/10</Badge>
+                    <Badge variant="outline">Zero Weaknesses</Badge>
+                  </div>
+                  <p className="text-base leading-relaxed whitespace-pre-wrap font-medium">{analysis.optimizedPrompt}</p>
                   <Button
-                    variant="outline"
+                    variant="default"
                     size="sm"
-                    className="mt-3"
+                    className="mt-4"
                     onClick={() => {
                       navigator.clipboard.writeText(analysis.optimizedPrompt);
                       toast.success("Optimized prompt copied!");
@@ -324,6 +344,19 @@ Optimized Version:
                   >
                     Copy Optimized Prompt
                   </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Prompt Explanation */}
+            {analysis.promptExplanation && (
+              <div className="space-y-3">
+                <h3 className="text-lg font-bold flex items-center gap-2 text-purple-600 dark:text-purple-400">
+                  <Target className="w-5 h-5" />
+                  Why This Prompt Works
+                </h3>
+                <div className="p-4 bg-purple-50 dark:bg-purple-900/10 border border-purple-200 dark:border-purple-800 rounded-lg">
+                  <p className="text-base leading-relaxed whitespace-pre-wrap">{analysis.promptExplanation}</p>
                 </div>
               </div>
             )}
