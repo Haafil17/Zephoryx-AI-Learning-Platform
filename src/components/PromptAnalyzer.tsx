@@ -8,6 +8,9 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2, Sparkles, CheckCircle2, AlertCircle, TrendingUp, Target, Zap, Award } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useAuth } from "@/contexts/AuthContext";
+import { UsageGate } from "./UsageGate";
 
 interface AnalysisResult {
   score: number;
@@ -25,12 +28,17 @@ interface AnalysisResult {
 }
 
 export const PromptAnalyzer = () => {
+  const { user } = useAuth();
+  const { canUseFeature, trackUsage, getRemainingUses } = useSubscription();
   const [prompt, setPrompt] = useState("");
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [rawAnalysis, setRawAnalysis] = useState("");
   const [loading, setLoading] = useState(false);
   const [charCount, setCharCount] = useState(0);
   const [wordCount, setWordCount] = useState(0);
+  
+  const remaining = getRemainingUses("prompt_analyzer");
+  const isUnlimited = remaining === -1;
 
   useEffect(() => {
     setCharCount(prompt.length);
@@ -89,6 +97,21 @@ export const PromptAnalyzer = () => {
     if (wordCount < 3) {
       toast.error("Prompt is too short. Please provide more details.");
       return;
+    }
+
+    // Check usage limits for logged in users
+    if (user && !canUseFeature("prompt_analyzer")) {
+      toast.error("You've reached your daily limit. Upgrade for more!");
+      return;
+    }
+
+    // Track usage before making the API call
+    if (user) {
+      const tracked = await trackUsage("prompt_analyzer");
+      if (!tracked) {
+        toast.error("Unable to track usage. Please try again.");
+        return;
+      }
     }
 
     setLoading(true);
@@ -169,13 +192,25 @@ Why This Prompt Works:
   return (
     <Card className="shadow-lg border-2 border-primary/20">
       <CardHeader className="bg-gradient-to-r from-primary/10 to-primary/5">
-        <CardTitle className="flex items-center gap-2 text-2xl">
-          <Sparkles className="w-6 h-6 text-primary animate-pulse" />
-          Advanced AI Prompt Analyzer
-        </CardTitle>
-        <CardDescription className="text-base">
-          Get comprehensive analysis with scoring, insights, and optimization suggestions
-        </CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2 text-2xl">
+              <Sparkles className="w-6 h-6 text-primary animate-pulse" />
+              Advanced AI Prompt Analyzer
+            </CardTitle>
+            <CardDescription className="text-base">
+              Get comprehensive analysis with scoring, insights, and optimization suggestions
+            </CardDescription>
+          </div>
+          {user && (
+            <Badge 
+              variant={!isUnlimited && remaining <= 1 ? "destructive" : remaining <= 3 ? "secondary" : "outline"}
+              className="text-xs"
+            >
+              {isUnlimited ? "Unlimited" : `${remaining} uses left today`}
+            </Badge>
+          )}
+        </div>
       </CardHeader>
       <CardContent className="space-y-6 pt-6">
         <div className="space-y-2">

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,6 +23,8 @@ import {
   Palette
 } from "lucide-react";
 import { toast } from "sonner";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ChatMessage {
   id: string;
@@ -39,6 +40,8 @@ interface AIChatAssistantProps {
 }
 
 export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onToggle, position }) => {
+  const { user } = useAuth();
+  const { canUseFeature, trackUsage, getRemainingUses } = useSubscription();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -52,6 +55,9 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
     offsetY: 0
   });
   const [chatPosition, setChatPosition] = useState(position);
+
+  const remaining = getRemainingUses("chat_assistant");
+  const isUnlimited = remaining === -1;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -130,6 +136,21 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
+
+    // Check usage limits for logged in users
+    if (user && !canUseFeature("chat_assistant")) {
+      toast.error("You've reached your daily limit. Upgrade for more!");
+      return;
+    }
+
+    // Track usage before processing
+    if (user) {
+      const tracked = await trackUsage("chat_assistant");
+      if (!tracked) {
+        toast.error("Unable to track usage. Please try again.");
+        return;
+      }
+    }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -241,7 +262,9 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                 <CardTitle className="text-sm font-semibold">ZEPHORYX Assistant</CardTitle>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs opacity-90">Full Website Knowledge</span>
+                  <span className="text-xs opacity-90">
+                    {user ? (isUnlimited ? "Unlimited" : `${remaining} left`) : "Full Website Knowledge"}
+                  </span>
                 </div>
               </div>
             </div>
