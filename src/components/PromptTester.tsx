@@ -7,6 +7,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Loader2, Brain, Copy, Trash2, Sparkles, Check } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Message {
   role: "user" | "assistant";
@@ -22,11 +24,16 @@ const SUGGESTED_PROMPTS = [
 ];
 
 export const PromptTester = () => {
+  const { user } = useAuth();
+  const { canUseFeature, trackUsage, getRemainingUses } = useSubscription();
   const [prompt, setPrompt] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const remaining = getRemainingUses("prompt_tester");
+  const isUnlimited = remaining === -1;
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -38,6 +45,21 @@ export const PromptTester = () => {
     if (!prompt.trim()) {
       toast.error("Please enter a message");
       return;
+    }
+
+    // Check usage limits for logged in users
+    if (user && !canUseFeature("prompt_tester")) {
+      toast.error("You've reached your daily limit. Upgrade for more!");
+      return;
+    }
+
+    // Track usage before making the API call
+    if (user) {
+      const tracked = await trackUsage("prompt_tester");
+      if (!tracked) {
+        toast.error("Unable to track usage. Please try again.");
+        return;
+      }
     }
 
     const userMessage: Message = {
@@ -102,16 +124,26 @@ export const PromptTester = () => {
             <Brain className="w-5 h-5 text-primary" />
             <CardTitle>ZEPHORYX AI Assistant</CardTitle>
           </div>
-          {messages.length > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={clearChat}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {user && (
+              <Badge 
+                variant={!isUnlimited && remaining <= 1 ? "destructive" : remaining <= 3 ? "secondary" : "outline"}
+                className="text-xs"
+              >
+                {isUnlimited ? "Unlimited" : `${remaining} uses left`}
+              </Badge>
+            )}
+            {messages.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearChat}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
         </div>
         <CardDescription>
           Get instant answers about AI, prompting techniques, and more
