@@ -16,11 +16,19 @@ import {
   BookOpen,
   Zap,
   Users,
-  Atom
+  Atom,
+  Lock,
+  Crown
 } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useSubscription } from "@/hooks/useSubscription";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const Videos = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { getFeatureLimit, currentPlan } = useSubscription();
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -250,9 +258,22 @@ export const Videos = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const handleVideoPlay = (video: typeof allVideos[0]) => {
+  const videoLimit = user ? getFeatureLimit("video_limit") : 3;
+  const isUnlimitedVideos = videoLimit === -1;
+
+  const handleVideoPlay = (video: typeof allVideos[0], index: number) => {
+    // Check if user has access to this video
+    if (!isUnlimitedVideos && index >= videoLimit) {
+      toast.error("Upgrade your plan to access more videos!");
+      return;
+    }
     setPlayingVideoId(video.id);
     toast.success(`Now playing: ${video.title}`);
+  };
+
+  const isVideoLocked = (index: number) => {
+    if (!user) return index >= 3; // Non-logged users get 3 videos
+    return !isUnlimitedVideos && index >= videoLimit;
   };
 
   const closeVideo = () => {
@@ -278,9 +299,43 @@ export const Videos = () => {
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Video Library
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
             Comprehensive video tutorials covering everything from AI fundamentals to advanced techniques
           </p>
+          {user && (
+            <div className="flex justify-center gap-2">
+              <Badge variant="outline" className="text-sm">
+                {isUnlimitedVideos ? (
+                  <span className="flex items-center gap-1">
+                    <Crown className="w-3 h-3" />
+                    All {allVideos.length} Videos Unlocked
+                  </span>
+                ) : (
+                  <span>{videoLimit} of {allVideos.length} videos available</span>
+                )}
+              </Badge>
+              {!isUnlimitedVideos && (
+                <Button variant="link" size="sm" className="text-primary p-0 h-auto" onClick={() => navigate("/pricing")}>
+                  Upgrade for more →
+                </Button>
+              )}
+            </div>
+          )}
+          {!user && (
+            <div className="flex justify-center gap-2">
+              <Badge variant="secondary" className="text-sm">
+                3 free videos available
+              </Badge>
+              <Button 
+                variant="link" 
+                size="sm" 
+                className="text-primary p-0 h-auto"
+                onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal'))}
+              >
+                Sign in for more →
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Search and Filter */}
@@ -316,50 +371,71 @@ export const Videos = () => {
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredVideos.map((video) => (
-            <Card key={video.id} className="group hover:shadow-lg transition-all duration-300 border-border/50">
-              <div className="relative overflow-hidden rounded-t-lg">
-                <img
-                  src={video.thumbnail}
-                  alt={video.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <Button
-                    onClick={() => handleVideoPlay(video)}
-                    size="sm"
-                    className="bg-white/20 hover:bg-white/30 backdrop-blur-sm"
-                  >
-                    <Play className="h-4 w-4 mr-2" />
-                    Play
-                  </Button>
+          {filteredVideos.map((video, index) => {
+            const locked = isVideoLocked(index);
+            
+            return (
+              <Card key={video.id} className={`group hover:shadow-lg transition-all duration-300 border-border/50 ${locked ? 'opacity-75' : ''}`}>
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <img
+                    src={video.thumbnail}
+                    alt={video.title}
+                    className={`w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300 ${locked ? 'grayscale' : ''}`}
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    {locked ? (
+                      <Button
+                        onClick={() => navigate("/pricing")}
+                        size="sm"
+                        className="bg-primary hover:bg-primary/90"
+                      >
+                        <Lock className="h-4 w-4 mr-2" />
+                        Upgrade to Watch
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => handleVideoPlay(video, index)}
+                        size="sm"
+                        className="bg-white/20 hover:bg-white/30 backdrop-blur-sm"
+                      >
+                        <Play className="h-4 w-4 mr-2" />
+                        Play
+                      </Button>
+                    )}
+                  </div>
+                  <div className="absolute top-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs font-medium">
+                    <Clock className="h-3 w-3 inline mr-1" />
+                    {video.duration}
+                  </div>
+                  <div className="absolute top-2 left-2 flex gap-1">
+                    <Badge className={getLevelColor(video.level)}>
+                      {video.level}
+                    </Badge>
+                    {locked && (
+                      <Badge className="bg-amber-500/90 text-white">
+                        <Lock className="h-3 w-3 mr-1" />
+                        Premium
+                      </Badge>
+                    )}
+                  </div>
                 </div>
-                <div className="absolute top-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs font-medium">
-                  <Clock className="h-3 w-3 inline mr-1" />
-                  {video.duration}
-                </div>
-                <div className="absolute top-2 left-2">
-                  <Badge className={getLevelColor(video.level)}>
-                    {video.level}
-                  </Badge>
-                </div>
-              </div>
-              <CardContent className="p-4">
-                <h3 className="font-semibold text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                  {video.title}
-                </h3>
-                <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
-                  {video.description}
-                </p>
-                <div className="flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{video.views} views</span>
-                  <Badge variant="outline" className="text-xs">
-                    {categories.find(cat => cat.id === video.category)?.label}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent className="p-4">
+                  <h3 className="font-semibold text-sm mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    {video.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-3 line-clamp-2">
+                    {video.description}
+                  </p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>{video.views} views</span>
+                    <Badge variant="outline" className="text-xs">
+                      {categories.find(cat => cat.id === video.category)?.label}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* No Results */}

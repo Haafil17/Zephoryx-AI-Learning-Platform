@@ -47,19 +47,24 @@ export const PromptTester = () => {
       return;
     }
 
-    // Check usage limits for logged in users
-    if (user && !canUseFeature("prompt_tester")) {
+    // Non-logged in users can't use tester
+    if (!user) {
+      toast.error("Please sign in to use the Prompt Tester");
+      window.dispatchEvent(new CustomEvent('openAuthModal'));
+      return;
+    }
+
+    // Check usage limits
+    if (!canUseFeature("prompt_tester")) {
       toast.error("You've reached your daily limit. Upgrade for more!");
       return;
     }
 
     // Track usage before making the API call
-    if (user) {
-      const tracked = await trackUsage("prompt_tester");
-      if (!tracked) {
-        toast.error("Unable to track usage. Please try again.");
-        return;
-      }
+    const tracked = await trackUsage("prompt_tester");
+    if (!tracked) {
+      toast.error("Unable to track usage. Please try again.");
+      return;
     }
 
     const userMessage: Message = {

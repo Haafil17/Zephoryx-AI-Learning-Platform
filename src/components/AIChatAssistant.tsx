@@ -137,19 +137,24 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
+    // Non-logged in users can't use chat
+    if (!user) {
+      toast.error("Please sign in to use the AI Chat Assistant");
+      window.dispatchEvent(new CustomEvent('openAuthModal'));
+      return;
+    }
+
     // Check usage limits for logged in users
-    if (user && !canUseFeature("chat_assistant")) {
+    if (!canUseFeature("chat_assistant")) {
       toast.error("You've reached your daily limit. Upgrade for more!");
       return;
     }
 
     // Track usage before processing
-    if (user) {
-      const tracked = await trackUsage("chat_assistant");
-      if (!tracked) {
-        toast.error("Unable to track usage. Please try again.");
-        return;
-      }
+    const tracked = await trackUsage("chat_assistant");
+    if (!tracked) {
+      toast.error("Unable to track usage. Please try again.");
+      return;
     }
 
     const userMessage: ChatMessage = {
