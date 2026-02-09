@@ -14,6 +14,7 @@ import { Footer } from "@/components/Footer";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
+import { UsageGate } from "@/components/UsageGate";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -164,8 +165,22 @@ const Index = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <PromptAnalyzer />
-            <PromptTester />
+            <UsageGate 
+              feature="prompt_analyzer" 
+              showCounter={false}
+              title="AI Prompt Analyzer"
+              description="Get comprehensive analysis of your prompts with scoring and optimization suggestions"
+            >
+              <PromptAnalyzer />
+            </UsageGate>
+            <UsageGate 
+              feature="prompt_tester" 
+              showCounter={false}
+              title="AI Prompt Tester"
+              description="Test your prompts with our AI assistant and get instant feedback"
+            >
+              <PromptTester />
+            </UsageGate>
           </div>
         </div>
       </section>
