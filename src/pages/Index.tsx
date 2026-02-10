@@ -52,8 +52,11 @@ import { useSubscription } from "@/hooks/useSubscription";
 import { useNavigate } from "react-router-dom";
 
 // Define which tabs are available per plan
+// Guests (not logged in) see NO tabs - must sign up first
+// Free (signed up, no payment) sees only "Techniques"
 const TAB_ACCESS: Record<string, string[]> = {
-  free: ["techniques", "examples"],
+  guest: [],
+  free: ["techniques"],
   basic: ["techniques", "examples", "bestpractices", "features", "videos"],
   premium: ["techniques", "examples", "bestpractices", "features", "ai", "genai", "quantum", "coding", "aitools", "videos", "resources"],
   elite: ["techniques", "examples", "bestpractices", "features", "ai", "genai", "quantum", "coding", "aitools", "videos", "resources"],
@@ -80,8 +83,8 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState("techniques");
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
-  const plan = user ? currentPlan : "free";
-  const allowedTabs = useMemo(() => TAB_ACCESS[plan] || TAB_ACCESS.free, [plan]);
+  const plan = user ? currentPlan : "guest";
+  const allowedTabs = useMemo(() => TAB_ACCESS[plan] || TAB_ACCESS.guest, [plan]);
 
   useEffect(() => {
     const handleTabChange = (event: CustomEvent) => {
@@ -367,16 +370,18 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Plan-Based Access Banner for Free Users */}
+      {/* Plan-Based Access Banner for Guests & Free Users */}
       {(!user || plan === "free") && (
-        <section className="py-12 px-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-y border-primary/20">
+        <section className="py-16 px-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-y border-primary/20">
           <div className="max-w-4xl mx-auto text-center">
             <Crown className="w-12 h-12 mx-auto mb-4 text-primary" />
-            <h2 className="text-3xl font-bold mb-3">Unlock All Content</h2>
+            <h2 className="text-3xl font-bold mb-3">
+              {!user ? "Sign Up to Start Learning" : "Upgrade to Unlock More Content"}
+            </h2>
             <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
               {!user 
-                ? "Sign in to get free access to Techniques & Examples, or upgrade to unlock all 11 content sections, AI tools, and the full video library."
-                : "You're on the Free plan with access to Techniques & Examples. Upgrade to unlock all 11 content sections, unlimited AI tools, and the full video library."
+                ? "Create a free account to access the Techniques section. Upgrade to Basic, Premium, or Elite to unlock Examples, Best Practices, Videos, AI Tools, and more."
+                : "You're on the Free plan with access to Techniques only. Upgrade to unlock Examples, Best Practices, Videos, AI Tools, and all 11 content sections."
               }
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -387,7 +392,7 @@ const Index = () => {
                   className="gap-2"
                 >
                   <LogIn className="w-5 h-5" />
-                  Sign In for Free Access
+                  Sign Up for Free
                 </Button>
               )}
               <Button 
@@ -403,7 +408,8 @@ const Index = () => {
           </div>
         </section>
       )}
-
+      {/* Only show tabs section if user has access to at least one tab */}
+      {allowedTabs.length > 0 && (
       <div className="max-w-7xl mx-auto px-4 pt-8">
         <Tabs value={activeTab} onValueChange={(val) => {
           if (allowedTabs.includes(val)) {
@@ -486,6 +492,7 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </div>
+      )}
       <Footer />
     </div>
   );
