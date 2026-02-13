@@ -5,9 +5,14 @@ import { useState } from "react";
 import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
 import { AuthButton } from "./AuthButton";
+import { useAdmin } from "@/hooks/useAdmin";
+import { useNavigate } from "react-router-dom";
+import { Shield } from "lucide-react";
 import zephoryxLogo from "@/assets/zephoryx-logo.png";
 
 export const Hero = () => {
+  const { isAdmin } = useAdmin();
+  const navigate = useNavigate();
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -43,6 +48,11 @@ export const Hero = () => {
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
       {/* Auth and Theme Toggle - Positioned in top right */}
       <div className="fixed top-6 right-6 z-50 flex items-center gap-3">
+        {isAdmin && (
+          <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="border-primary/50 bg-primary/10 hover:bg-primary/20">
+            <Shield className="w-4 h-4 mr-1" /> Admin
+          </Button>
+        )}
         <AuthButton />
         <ThemeToggle />
       </div>
