@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { LogIn, LogOut, User, Mail, Lock, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
@@ -145,6 +146,28 @@ export const AuthButton = () => {
             >
               {isSignUp ? 'Already have an account? Sign in' : 'Need an account? Sign up'}
             </Button>
+            {!isSignUp && (
+              <Button 
+                variant="link" 
+                onClick={async () => {
+                  if (!email) {
+                    toast.error('Please enter your email first');
+                    return;
+                  }
+                  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: `${window.location.origin}/`,
+                  });
+                  if (error) {
+                    toast.error(error.message);
+                  } else {
+                    toast.success('Password reset email sent! Check your inbox.');
+                  }
+                }}
+                className="w-full text-cyan-400 hover:text-cyan-300"
+              >
+                Forgot password?
+              </Button>
+            )}
             <Button 
               variant="outline" 
               onClick={() => setShowAuth(false)}
