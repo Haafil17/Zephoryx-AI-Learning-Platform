@@ -14,7 +14,6 @@ import { Footer } from "@/components/Footer";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
-import { UsageGate } from "@/components/UsageGate";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from "@/components/ui/tabs";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { 
   Brain, 
   Zap, 
@@ -41,71 +40,22 @@ import {
   Rocket,
   Settings,
   Play,
-  X,
-  Lock,
-  Crown,
-  LogIn
+  X
 } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
-import { useSubscription } from "@/hooks/useSubscription";
-import { useNavigate } from "react-router-dom";
-
-// Define which tabs are available per plan
-// Guests (not logged in) see NO tabs - must sign up first
-// Free (signed up, no payment) sees only "Techniques"
-const TAB_ACCESS: Record<string, string[]> = {
-  guest: [],
-  free: ["techniques"],
-  basic: ["techniques", "examples", "bestpractices", "features", "videos"],
-  premium: ["techniques", "examples", "bestpractices", "features", "ai", "genai", "quantum", "coding", "aitools", "videos", "resources"],
-  elite: ["techniques", "examples", "bestpractices", "features", "ai", "genai", "quantum", "coding", "aitools", "videos", "resources"],
-};
-
-const ALL_TABS = [
-  { value: "techniques", label: "🎯 Techniques" },
-  { value: "examples", label: "💡 Examples" },
-  { value: "bestpractices", label: "🏆 Best Practices" },
-  { value: "features", label: "⚡ Features" },
-  { value: "ai", label: "🤖 AI" },
-  { value: "genai", label: "🎨 Gen AI" },
-  { value: "quantum", label: "⚛️ Quantum" },
-  { value: "coding", label: "💻 Coding" },
-  { value: "aitools", label: "🔧 AI Tools" },
-  { value: "videos", label: "🎥 Videos" },
-  { value: "resources", label: "📚 Resources" },
-];
 
 const Index = () => {
-  const { user } = useAuth();
-  const { currentPlan } = useSubscription();
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("techniques");
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
-  const plan = user ? currentPlan : "guest";
-  const allowedTabs = useMemo(() => TAB_ACCESS[plan] || TAB_ACCESS.guest, [plan]);
-
   useEffect(() => {
     const handleTabChange = (event: CustomEvent) => {
-      const tab = event.detail;
-      if (allowedTabs.includes(tab)) {
-        setActiveTab(tab);
-      } else {
-        toast.error("Upgrade your plan to access this content");
-      }
+      setActiveTab(event.detail);
     };
 
     window.addEventListener('changeTab', handleTabChange as EventListener);
     return () => window.removeEventListener('changeTab', handleTabChange as EventListener);
-  }, [allowedTabs]);
-
-  // Reset to allowed tab if current is no longer accessible
-  useEffect(() => {
-    if (!allowedTabs.includes(activeTab)) {
-      setActiveTab(allowedTabs[0] || "techniques");
-    }
-  }, [allowedTabs, activeTab]);
+  }, []);
 
   const features = [
     {
@@ -198,16 +148,6 @@ const Index = () => {
 
   const currentVideo = homeVideos.find(v => v.id === playingVideoId);
 
-  const handleLockedTab = (tabValue: string) => {
-    if (!user) {
-      window.dispatchEvent(new CustomEvent('openAuthModal'));
-      toast.error("Sign in to access this content");
-    } else {
-      toast.error("Upgrade your plan to unlock this content");
-      navigate("/pricing");
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
       <Hero />
@@ -224,22 +164,8 @@ const Index = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <UsageGate 
-              feature="prompt_analyzer" 
-              showCounter={false}
-              title="AI Prompt Analyzer"
-              description="Get comprehensive analysis of your prompts with scoring and optimization suggestions"
-            >
-              <PromptAnalyzer />
-            </UsageGate>
-            <UsageGate 
-              feature="prompt_tester" 
-              showCounter={false}
-              title="AI Prompt Tester"
-              description="Test your prompts with our AI assistant and get instant feedback"
-            >
-              <PromptTester />
-            </UsageGate>
+            <PromptAnalyzer />
+            <PromptTester />
           </div>
         </div>
       </section>
@@ -370,78 +296,42 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Plan-Based Access Banner for Guests & Free Users */}
-      {(!user || plan === "free") && (
-        <section className="py-16 px-4 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 border-y border-primary/20">
-          <div className="max-w-4xl mx-auto text-center">
-            <Crown className="w-12 h-12 mx-auto mb-4 text-primary" />
-            <h2 className="text-3xl font-bold mb-3">
-              {!user ? "Sign Up to Start Learning" : "Upgrade to Unlock More Content"}
-            </h2>
-            <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-              {!user 
-                ? "Create a free account to access the Techniques section. Upgrade to Basic, Premium, or Elite to unlock Examples, Best Practices, Videos, AI Tools, and more."
-                : "You're on the Free plan with access to Techniques only. Upgrade to unlock Examples, Best Practices, Videos, AI Tools, and all 11 content sections."
-              }
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              {!user && (
-                <Button 
-                  size="lg"
-                  onClick={() => window.dispatchEvent(new CustomEvent('openAuthModal'))}
-                  className="gap-2"
-                >
-                  <LogIn className="w-5 h-5" />
-                  Sign Up for Free
-                </Button>
-              )}
-              <Button 
-                size="lg"
-                variant={user ? "default" : "outline"}
-                onClick={() => navigate("/pricing")}
-                className="gap-2"
-              >
-                <Crown className="w-5 h-5" />
-                View Upgrade Plans
-              </Button>
-            </div>
-          </div>
-        </section>
-      )}
-      {/* Only show tabs section if user has access to at least one tab */}
-      {allowedTabs.length > 0 && (
       <div className="max-w-7xl mx-auto px-4 pt-8">
-        <Tabs value={activeTab} onValueChange={(val) => {
-          if (allowedTabs.includes(val)) {
-            setActiveTab(val);
-          } else {
-            handleLockedTab(val);
-          }
-        }} className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="flex justify-center mb-12 gap-3 bg-muted/30 dark:bg-muted/10 rounded-full shadow-sm flex-wrap p-3 border border-border/50 backdrop-blur-sm">
-            {ALL_TABS.map((tab) => {
-              const isLocked = !allowedTabs.includes(tab.value);
-              return (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  disabled={isLocked}
-                  onClick={(e) => {
-                    if (isLocked) {
-                      e.preventDefault();
-                      handleLockedTab(tab.value);
-                    }
-                  }}
-                  className={`px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 
-                    data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md 
-                    data-[state=inactive]:text-muted-foreground hover:text-foreground
-                    ${isLocked ? "opacity-50 cursor-not-allowed relative" : ""}`}
-                >
-                  {tab.label}
-                  {isLocked && <Lock className="w-3 h-3 ml-1 inline-block" />}
-                </TabsTrigger>
-              );
-            })}
+            <TabsTrigger value="techniques" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🎯 Techniques
+            </TabsTrigger>
+            <TabsTrigger value="examples" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              💡 Examples
+            </TabsTrigger>
+            <TabsTrigger value="bestpractices" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🏆 Best Practices
+            </TabsTrigger>
+            <TabsTrigger value="features" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              ⚡ Features
+            </TabsTrigger>
+            <TabsTrigger value="ai" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🤖 AI
+            </TabsTrigger>
+            <TabsTrigger value="genai" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🎨 Gen AI
+            </TabsTrigger>
+            <TabsTrigger value="quantum" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              ⚛️ Quantum
+            </TabsTrigger>
+            <TabsTrigger value="coding" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              💻 Coding
+            </TabsTrigger>
+            <TabsTrigger value="aitools" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🔧 AI Tools
+            </TabsTrigger>
+            <TabsTrigger value="videos" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              🎥 Videos
+            </TabsTrigger>
+            <TabsTrigger value="resources" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+              📚 Resources
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="techniques" className="focus:outline-none">
             <ExpandedTechniques />
@@ -492,7 +382,6 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </div>
-      )}
       <Footer />
     </div>
   );

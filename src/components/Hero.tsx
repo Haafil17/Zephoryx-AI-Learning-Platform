@@ -1,13 +1,13 @@
+
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Zap, Target, Crown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowRight, Sparkles, Brain, Zap, Target } from "lucide-react";
+import { useState } from "react";
 import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
 import { AuthButton } from "./AuthButton";
 import zephoryxLogo from "@/assets/zephoryx-logo.png";
 
 export const Hero = () => {
-  const navigate = useNavigate();
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -124,15 +124,6 @@ export const Hero = () => {
               className="h-14 px-8 border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-300"
             >
               Explore Tools
-            </Button>
-            <Button 
-              variant="default" 
-              size="lg"
-              onClick={() => navigate("/pricing")}
-              className="h-14 px-8 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-            >
-              <Crown className="mr-2 w-5 h-5" />
-              View Pricing
             </Button>
           </div>
         </div>

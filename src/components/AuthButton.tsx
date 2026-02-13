@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,16 +24,6 @@ export const AuthButton = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
-
-  // Listen for openAuthModal event from other components
-  useEffect(() => {
-    const handleOpenAuthModal = () => {
-      setShowAuth(true);
-    };
-
-    window.addEventListener('openAuthModal', handleOpenAuthModal);
-    return () => window.removeEventListener('openAuthModal', handleOpenAuthModal);
-  }, []);
 
   const handleAuth = async () => {
     if (!email || !password) return;
