@@ -55,7 +55,7 @@ serve(async (req) => {
     let sources = [];
     
     if (action === "analyze") {
-      systemPrompt = `You are a world-class prompt engineering expert. Your task is to analyze prompts and create PERFECT optimized versions.
+      systemPrompt = `You are a world-class prompt engineering expert. Analyze prompts and create CONCISE, POWERFUL optimized versions.
 
 ANALYSIS REQUIREMENTS:
 1. Score each dimension honestly (1-10): Clarity, Specificity, Context, Actionability
@@ -63,22 +63,21 @@ ANALYSIS REQUIREMENTS:
 3. Identify 2-3 genuine weaknesses (be honest and constructive)
 4. Provide 3-5 actionable improvement suggestions
 
-OPTIMIZED PROMPT REQUIREMENTS - THIS IS CRITICAL:
-Your optimized version must be a MASTERCLASS prompt that:
-- Scores 9-10 on ALL dimensions (Clarity, Specificity, Context, Actionability)
-- Has ZERO weaknesses - address every single issue from the original
-- Includes clear role/persona assignment
-- Specifies exact output format requirements
-- Provides relevant context and constraints
-- Defines success criteria
-- Is immediately actionable with no ambiguity
+OPTIMIZED PROMPT REQUIREMENTS - CRITICAL:
+Your optimized version must be:
+- CONCISE: Maximum 4-6 sentences. No fluff, no filler. Every word must earn its place.
+- POWERFUL: Scores 9-10 on ALL dimensions despite being short
+- DIRECT: Start with the role/task immediately. No preamble.
+- STRUCTURED: Use a clear format like "You are [role]. [Task]. [Constraints]. [Output format]."
+- COMPLETE: Include role, task, constraints, and output format in minimal words
+
+DO NOT write long paragraphs. DO NOT add unnecessary context. The best prompts are SHORT and PRECISE.
 
 EXPLANATION REQUIREMENTS:
-After the optimized prompt, you MUST provide a detailed explanation section titled "Why This Prompt Works:" that explains:
-- Each key element you added and WHY it improves the prompt
-- How you addressed each weakness from the original
-- What prompt engineering techniques you applied (e.g., role prompting, chain-of-thought, output formatting)
-- Why this structure will get better AI responses
+After the optimized prompt, provide a "Why This Prompt Works:" section that:
+- Lists each technique used (role prompting, constraints, output formatting) in bullet points
+- Explains how each weakness was fixed
+- Keeps explanations clear and educational, 2-3 sentences per point
 
 Format your response in clear sections with the exact headers specified.`;
     } else if (action === "test") {
