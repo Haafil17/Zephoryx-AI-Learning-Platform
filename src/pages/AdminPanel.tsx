@@ -21,6 +21,7 @@ interface UserProfile {
   id: string;
   email: string | null;
   full_name: string | null;
+  phone_number: string | null;
   xp: number | null;
   level: string | null;
   created_at: string | null;
@@ -253,6 +254,7 @@ const AdminPanel = () => {
                       <TableRow>
                         <TableHead>Email</TableHead>
                         <TableHead>Name</TableHead>
+                        <TableHead>Phone</TableHead>
                         <TableHead>Level</TableHead>
                         <TableHead>XP</TableHead>
                         <TableHead>Joined</TableHead>
@@ -263,6 +265,7 @@ const AdminPanel = () => {
                         <TableRow key={u.id}>
                           <TableCell className="font-medium">{u.email || '-'}</TableCell>
                           <TableCell>{u.full_name || '-'}</TableCell>
+                          <TableCell>{u.phone_number || '-'}</TableCell>
                           <TableCell><Badge variant="outline">{u.level || 'AI Beginner'}</Badge></TableCell>
                           <TableCell>{u.xp || 0}</TableCell>
                           <TableCell>{u.created_at ? new Date(u.created_at).toLocaleDateString() : '-'}</TableCell>
@@ -270,7 +273,7 @@ const AdminPanel = () => {
                       ))}
                       {filteredUsers.length === 0 && (
                         <TableRow>
-                          <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">No users found</TableCell>
+                          <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No users found</TableCell>
                         </TableRow>
                       )}
                     </TableBody>
