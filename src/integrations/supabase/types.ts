@@ -106,6 +106,7 @@ export type Database = {
           full_name: string | null
           id: string
           level: string | null
+          phone_number: string | null
           updated_at: string | null
           xp: number | null
         }
@@ -116,6 +117,7 @@ export type Database = {
           full_name?: string | null
           id: string
           level?: string | null
+          phone_number?: string | null
           updated_at?: string | null
           xp?: number | null
         }
@@ -126,6 +128,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           level?: string | null
+          phone_number?: string | null
           updated_at?: string | null
           xp?: number | null
         }
