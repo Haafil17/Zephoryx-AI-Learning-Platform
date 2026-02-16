@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { 
   Shield, Users, CreditCard, FileText, Settings, ArrowLeft, 
-  Ban, CheckCircle, Loader2, RefreshCw, Pencil, Trash2, Plus, Search
+  Ban, CheckCircle, Loader2, RefreshCw, Pencil, Trash2, Plus, Search, UserX, UserCheck
 } from 'lucide-react';
 
 interface UserProfile {
@@ -25,6 +25,7 @@ interface UserProfile {
   xp: number | null;
   level: string | null;
   created_at: string | null;
+  blocked: boolean;
 }
 
 interface Subscription {
@@ -46,6 +47,7 @@ interface LessonRow {
   category: string;
   difficulty: string;
   xp_reward: number;
+  content: string;
   created_at: string;
 }
 
@@ -85,11 +87,21 @@ const AdminPanel = () => {
       supabase.from('subscription_plans').select('*').order('price'),
     ]);
     
-    if (profilesRes.data) setUsers(profilesRes.data);
+    if (profilesRes.data) setUsers(profilesRes.data as UserProfile[]);
     if (subsRes.data) setSubscriptions(subsRes.data);
-    if (lessonsRes.data) setLessons(lessonsRes.data);
+    if (lessonsRes.data) setLessons(lessonsRes.data as LessonRow[]);
     if (plansRes.data) setPlans(plansRes.data);
     setLoadingData(false);
+  };
+
+  const handleBlockUser = async (userId: string, blocked: boolean) => {
+    const { error } = await supabase.from('profiles').update({ blocked }).eq('id', userId);
+    if (error) {
+      toast.error(`Failed to ${blocked ? 'block' : 'unblock'} user`);
+    } else {
+      toast.success(`User ${blocked ? 'blocked' : 'unblocked'} successfully`);
+      fetchAllData();
+    }
   };
 
   const handleUpdatePlanPrice = async (planId: string, newPrice: number) => {
@@ -132,6 +144,25 @@ const AdminPanel = () => {
       toast.success('Lesson added');
       setNewLesson({ title: '', description: '', category: 'general', difficulty: 'beginner', content: '', xp_reward: 100 });
       setShowAddLesson(false);
+      fetchAllData();
+    }
+  };
+
+  const handleUpdateLesson = async () => {
+    if (!editingLesson) return;
+    const { error } = await supabase.from('lessons').update({
+      title: editingLesson.title,
+      description: editingLesson.description,
+      category: editingLesson.category,
+      difficulty: editingLesson.difficulty,
+      content: editingLesson.content,
+      xp_reward: editingLesson.xp_reward,
+    }).eq('id', editingLesson.id);
+    if (error) {
+      toast.error('Failed to update lesson');
+    } else {
+      toast.success('Lesson updated');
+      setEditingLesson(null);
       fetchAllData();
     }
   };
@@ -190,6 +221,17 @@ const AdminPanel = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
+                <UserX className="w-8 h-8 text-red-500" />
+                <div>
+                  <p className="text-2xl font-bold">{users.filter(u => u.blocked).length}</p>
+                  <p className="text-sm text-muted-foreground">Blocked</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
                 <CreditCard className="w-8 h-8 text-green-500" />
                 <div>
                   <p className="text-2xl font-bold">{subscriptions.filter(s => s.status === 'active').length}</p>
@@ -209,17 +251,6 @@ const AdminPanel = () => {
               </div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <Settings className="w-8 h-8 text-orange-500" />
-                <div>
-                  <p className="text-2xl font-bold">{plans.length}</p>
-                  <p className="text-sm text-muted-foreground">Plans</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <Tabs defaultValue="users">
@@ -235,6 +266,7 @@ const AdminPanel = () => {
             <Card>
               <CardHeader>
                 <CardTitle>User Management</CardTitle>
+                <CardDescription>Manage users, block/unblock accounts</CardDescription>
                 <div className="relative mt-2">
                   <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                   <Input 
@@ -257,23 +289,47 @@ const AdminPanel = () => {
                         <TableHead>Phone</TableHead>
                         <TableHead>Level</TableHead>
                         <TableHead>XP</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead>Joined</TableHead>
+                        <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredUsers.map(u => (
-                        <TableRow key={u.id}>
+                        <TableRow key={u.id} className={u.blocked ? 'opacity-60 bg-red-50 dark:bg-red-950/20' : ''}>
                           <TableCell className="font-medium">{u.email || '-'}</TableCell>
                           <TableCell>{u.full_name || '-'}</TableCell>
                           <TableCell>{u.phone_number || '-'}</TableCell>
                           <TableCell><Badge variant="outline">{u.level || 'AI Beginner'}</Badge></TableCell>
                           <TableCell>{u.xp || 0}</TableCell>
+                          <TableCell>
+                            {u.blocked ? (
+                              <Badge variant="destructive" className="gap-1"><Ban className="w-3 h-3" /> Blocked</Badge>
+                            ) : (
+                              <Badge variant="default" className="gap-1 bg-green-600"><CheckCircle className="w-3 h-3" /> Active</Badge>
+                            )}
+                          </TableCell>
                           <TableCell>{u.created_at ? new Date(u.created_at).toLocaleDateString() : '-'}</TableCell>
+                          <TableCell>
+                            {u.email !== 'haafil006@gmail.com' && (
+                              <Button
+                                variant={u.blocked ? "outline" : "destructive"}
+                                size="sm"
+                                onClick={() => handleBlockUser(u.id, !u.blocked)}
+                              >
+                                {u.blocked ? (
+                                  <><UserCheck className="w-4 h-4 mr-1" /> Unblock</>
+                                ) : (
+                                  <><UserX className="w-4 h-4 mr-1" /> Block</>
+                                )}
+                              </Button>
+                            )}
+                          </TableCell>
                         </TableRow>
                       ))}
                       {filteredUsers.length === 0 && (
                         <TableRow>
-                          <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No users found</TableCell>
+                          <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No users found</TableCell>
                         </TableRow>
                       )}
                     </TableBody>
@@ -297,7 +353,7 @@ const AdminPanel = () => {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>User ID</TableHead>
+                        <TableHead>User</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Payment Provider</TableHead>
                         <TableHead>Period End</TableHead>
@@ -305,19 +361,22 @@ const AdminPanel = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {subscriptions.map(s => (
-                        <TableRow key={s.id}>
-                          <TableCell className="font-mono text-xs">{s.user_id.slice(0, 8)}...</TableCell>
-                          <TableCell>
-                            <Badge variant={s.status === 'active' ? 'default' : 'destructive'}>
-                              {s.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell>{s.payment_provider || 'None'}</TableCell>
-                          <TableCell>{new Date(s.current_period_end).toLocaleDateString()}</TableCell>
-                          <TableCell>{new Date(s.created_at).toLocaleDateString()}</TableCell>
-                        </TableRow>
-                      ))}
+                      {subscriptions.map(s => {
+                        const subUser = users.find(u => u.id === s.user_id);
+                        return (
+                          <TableRow key={s.id}>
+                            <TableCell className="font-medium">{subUser?.email || s.user_id.slice(0, 8) + '...'}</TableCell>
+                            <TableCell>
+                              <Badge variant={s.status === 'active' ? 'default' : 'destructive'}>
+                                {s.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>{s.payment_provider || 'None'}</TableCell>
+                            <TableCell>{new Date(s.current_period_end).toLocaleDateString()}</TableCell>
+                            <TableCell>{new Date(s.created_at).toLocaleDateString()}</TableCell>
+                          </TableRow>
+                        );
+                      })}
                       {subscriptions.length === 0 && (
                         <TableRow>
                           <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">No subscriptions</TableCell>
@@ -362,6 +421,29 @@ const AdminPanel = () => {
                   </Card>
                 )}
 
+                {/* Editing Lesson */}
+                {editingLesson && (
+                  <Card className="border-2 border-primary/50 bg-primary/5">
+                    <CardHeader>
+                      <CardTitle className="text-lg">Editing: {editingLesson.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <Input placeholder="Title" value={editingLesson.title} onChange={e => setEditingLesson({...editingLesson, title: e.target.value})} />
+                      <Input placeholder="Description" value={editingLesson.description || ''} onChange={e => setEditingLesson({...editingLesson, description: e.target.value})} />
+                      <div className="grid grid-cols-3 gap-3">
+                        <Input placeholder="Category" value={editingLesson.category} onChange={e => setEditingLesson({...editingLesson, category: e.target.value})} />
+                        <Input placeholder="Difficulty" value={editingLesson.difficulty} onChange={e => setEditingLesson({...editingLesson, difficulty: e.target.value})} />
+                        <Input type="number" placeholder="XP" value={editingLesson.xp_reward} onChange={e => setEditingLesson({...editingLesson, xp_reward: parseInt(e.target.value) || 100})} />
+                      </div>
+                      <Textarea placeholder="Content..." value={editingLesson.content} onChange={e => setEditingLesson({...editingLesson, content: e.target.value})} className="min-h-[150px]" />
+                      <div className="flex gap-2">
+                        <Button onClick={handleUpdateLesson}>Save Changes</Button>
+                        <Button variant="outline" onClick={() => setEditingLesson(null)}>Cancel</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
                 {loadingData ? (
                   <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin" /></div>
                 ) : (
@@ -382,7 +464,10 @@ const AdminPanel = () => {
                           <TableCell><Badge variant="outline">{l.category}</Badge></TableCell>
                           <TableCell><Badge variant="secondary">{l.difficulty}</Badge></TableCell>
                           <TableCell>{l.xp_reward}</TableCell>
-                          <TableCell>
+                          <TableCell className="flex gap-1">
+                            <Button variant="ghost" size="sm" onClick={() => setEditingLesson(l)}>
+                              <Pencil className="w-4 h-4" />
+                            </Button>
                             <Button variant="ghost" size="sm" onClick={() => handleDeleteLesson(l.id)}>
                               <Trash2 className="w-4 h-4 text-red-500" />
                             </Button>

@@ -15,7 +15,12 @@ const authSchema = z.object({
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain an uppercase letter')
     .regex(/[a-z]/, 'Password must contain a lowercase letter')
-    .regex(/[0-9]/, 'Password must contain a number')
+    .regex(/[0-9]/, 'Password must contain a number'),
+  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits').optional(),
+});
+
+const signUpSchema = authSchema.extend({
+  phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
 });
 
 export const AuthButton = () => {
@@ -31,9 +36,15 @@ export const AuthButton = () => {
     if (!email || !password) return;
     
     // Validate input
-    const result = authSchema.safeParse({ email, password });
+    const schema = isSignUp ? signUpSchema : authSchema;
+    const result = schema.safeParse({ email, password, phoneNumber: phoneNumber || undefined });
     if (!result.success) {
       toast.error(result.error.errors[0].message);
+      return;
+    }
+    
+    if (isSignUp && !phoneNumber) {
+      toast.error('Phone number is required');
       return;
     }
     
