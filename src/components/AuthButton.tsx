@@ -45,6 +45,10 @@ export const AuthButton = () => {
     if (error) {
       if (error.message === 'Email not confirmed') {
         toast.error('Please check your email and click the confirmation link to verify your account');
+      } else if (error.message === 'Invalid login credentials') {
+        toast.error('Wrong email or password. Try "Forgot password?" to reset it.', { duration: 6000 });
+      } else if (error.message?.includes('rate limit')) {
+        toast.error('Too many attempts. Please wait a minute and try again.', { duration: 6000 });
       } else {
         toast.error(error.message);
       }
