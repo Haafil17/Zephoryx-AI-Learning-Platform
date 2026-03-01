@@ -11,6 +11,9 @@ import { QuantumTopics } from "@/components/QuantumTopics";
 import { CodingTopics } from "@/components/CodingTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
+import { StatsCounter } from "@/components/StatsCounter";
+import { Testimonials } from "@/components/Testimonials";
+import { Newsletter } from "@/components/Newsletter";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
@@ -391,6 +394,10 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      <StatsCounter />
+      <Testimonials />
+      <Newsletter />
       <Footer />
     </div>
   );

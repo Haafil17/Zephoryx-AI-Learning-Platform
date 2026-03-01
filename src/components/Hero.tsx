@@ -113,7 +113,7 @@ export const Hero = () => {
               />
             </motion.div>
 
-            <motion.h1 custom={2} variants={fadeUp} className="text-5xl md:text-7xl font-bold leading-tight">
+            <motion.h1 custom={2} variants={fadeUp} className="text-5xl md:text-7xl font-bold leading-tight font-display">
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 ZEPHORYX AI LAB
               </span>
