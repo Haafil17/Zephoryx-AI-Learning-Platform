@@ -143,12 +143,13 @@ const AdminPanel = () => {
 
   const fetchAllData = async () => {
     setLoadingData(true);
-    const [profilesRes, subsRes, lessonsRes, plansRes, kbRes] = await Promise.all([
+    const [profilesRes, subsRes, lessonsRes, plansRes, kbRes, certsRes] = await Promise.all([
       supabase.from('profiles').select('*').order('created_at', { ascending: false }),
       supabase.from('subscriptions').select('*').order('created_at', { ascending: false }),
       supabase.from('lessons').select('*').order('created_at', { ascending: false }),
       supabase.from('subscription_plans').select('*').order('price'),
       supabase.from('knowledge_base').select('id, title, content, category, created_at').order('created_at', { ascending: false }),
+      supabase.from('certifications').select('*').order('required_xp'),
     ]);
     
     if (profilesRes.data) setUsers(profilesRes.data as UserProfile[]);
@@ -156,6 +157,7 @@ const AdminPanel = () => {
     if (lessonsRes.data) setLessons(lessonsRes.data as LessonRow[]);
     if (plansRes.data) setPlans(plansRes.data);
     if (kbRes.data) setKnowledgeBase(kbRes.data as KnowledgeItem[]);
+    if (certsRes.data) setCertifications(certsRes.data as CertificationRow[]);
     setLoadingData(false);
   };
 
