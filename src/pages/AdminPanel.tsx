@@ -64,6 +64,16 @@ interface KnowledgeItem {
   created_at: string | null;
 }
 
+interface CertificationRow {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  required_xp: number;
+  badge_color: string;
+  created_at: string;
+}
+
 const ADMIN_EMAILS = ['haafil006@gmail.com', 'syedmusheer982@gmail.com'];
 
 const StatCard = ({ icon: Icon, title, value, subtitle, color, trend }: { 
@@ -102,15 +112,19 @@ const AdminPanel = () => {
   const [lessons, setLessons] = useState<LessonRow[]>([]);
   const [plans, setPlans] = useState<any[]>([]);
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeItem[]>([]);
+  const [certifications, setCertifications] = useState<CertificationRow[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingPlan, setEditingPlan] = useState<any>(null);
   const [editingLesson, setEditingLesson] = useState<LessonRow | null>(null);
   const [editingKB, setEditingKB] = useState<KnowledgeItem | null>(null);
+  const [editingCert, setEditingCert] = useState<CertificationRow | null>(null);
   const [newLesson, setNewLesson] = useState({ title: '', description: '', category: 'general', difficulty: 'beginner', content: '', xp_reward: 100 });
   const [newKB, setNewKB] = useState({ title: '', content: '', category: '' });
+  const [newCert, setNewCert] = useState({ title: '', description: '', category: 'general', required_xp: 500, badge_color: 'blue' });
   const [showAddLesson, setShowAddLesson] = useState(false);
   const [showAddKB, setShowAddKB] = useState(false);
+  const [showAddCert, setShowAddCert] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked'>('all');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
