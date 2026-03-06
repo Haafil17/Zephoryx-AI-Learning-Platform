@@ -14,6 +14,9 @@ import { Footer } from "@/components/Footer";
 import { StatsCounter } from "@/components/StatsCounter";
 import { Testimonials } from "@/components/Testimonials";
 import { Newsletter } from "@/components/Newsletter";
+import { Certifications } from "@/components/Certifications";
+import { LearningPaths } from "@/components/LearningPaths";
+import { CommunitySection } from "@/components/CommunitySection";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
@@ -395,6 +398,9 @@ const Index = () => {
         </Tabs>
       </div>
 
+      <LearningPaths />
+      <Certifications />
+      <CommunitySection />
       <StatsCounter />
       <Testimonials />
       <Newsletter />
