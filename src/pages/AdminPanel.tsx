@@ -19,7 +19,7 @@ import {
   Ban, CheckCircle, Loader2, RefreshCw, Pencil, Trash2, Plus, Search, UserX, UserCheck,
   BarChart3, BookOpen, Activity, TrendingUp, Clock, Download, Database,
   AlertTriangle, Eye, Mail, Phone, Star, Zap, Globe, Lock, Unlock,
-  ChevronDown, ChevronUp, Copy, ExternalLink, Filter
+  ChevronDown, ChevronUp, Copy, ExternalLink, Filter, Award
 } from 'lucide-react';
 
 interface UserProfile {
