@@ -228,6 +228,33 @@ const AdminPanel = () => {
     else { toast.success('Updated'); setEditingKB(null); fetchAllData(); }
   };
 
+  // Certification CRUD
+  const handleAddCert = async () => {
+    if (!newCert.title) { toast.error('Title required'); return; }
+    const { error } = await supabase.from('certifications').insert({
+      title: newCert.title, description: newCert.description || null,
+      category: newCert.category, required_xp: newCert.required_xp, badge_color: newCert.badge_color,
+    });
+    if (error) toast.error('Failed to add certification');
+    else { toast.success('Certification added'); setNewCert({ title: '', description: '', category: 'general', required_xp: 500, badge_color: 'blue' }); setShowAddCert(false); fetchAllData(); }
+  };
+
+  const handleDeleteCert = async (id: string) => {
+    const { error } = await supabase.from('certifications').delete().eq('id', id);
+    if (error) toast.error('Failed to delete');
+    else { toast.success('Deleted'); fetchAllData(); }
+  };
+
+  const handleUpdateCert = async () => {
+    if (!editingCert) return;
+    const { error } = await supabase.from('certifications').update({
+      title: editingCert.title, description: editingCert.description,
+      category: editingCert.category, required_xp: editingCert.required_xp, badge_color: editingCert.badge_color,
+    }).eq('id', editingCert.id);
+    if (error) toast.error('Failed to update');
+    else { toast.success('Updated'); setEditingCert(null); fetchAllData(); }
+  };
+
   const exportUsersCSV = () => {
     const headers = ['Email', 'Name', 'Phone', 'Level', 'XP', 'Status', 'Joined'];
     const rows = users.map(u => [
@@ -334,6 +361,9 @@ const AdminPanel = () => {
             </TabsTrigger>
             <TabsTrigger value="knowledge" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <BookOpen className="w-4 h-4" /> Knowledge ({knowledgeBase.length})
+            </TabsTrigger>
+            <TabsTrigger value="certifications" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Award className="w-4 h-4" /> Certs ({certifications.length})
             </TabsTrigger>
             <TabsTrigger value="subscriptions" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <CreditCard className="w-4 h-4" /> Billing
