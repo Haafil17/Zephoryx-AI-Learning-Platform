@@ -19,7 +19,7 @@ import {
   Ban, CheckCircle, Loader2, RefreshCw, Pencil, Trash2, Plus, Search, UserX, UserCheck,
   BarChart3, BookOpen, Activity, TrendingUp, Clock, Download, Database,
   AlertTriangle, Eye, Mail, Phone, Star, Zap, Globe, Lock, Unlock,
-  ChevronDown, ChevronUp, Copy, ExternalLink, Filter
+  ChevronDown, ChevronUp, Copy, ExternalLink, Filter, Award
 } from 'lucide-react';
 
 interface UserProfile {
@@ -64,6 +64,16 @@ interface KnowledgeItem {
   created_at: string | null;
 }
 
+interface CertificationRow {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string;
+  required_xp: number;
+  badge_color: string;
+  created_at: string;
+}
+
 const ADMIN_EMAILS = ['haafil006@gmail.com', 'syedmusheer982@gmail.com'];
 
 const StatCard = ({ icon: Icon, title, value, subtitle, color, trend }: { 
@@ -102,15 +112,19 @@ const AdminPanel = () => {
   const [lessons, setLessons] = useState<LessonRow[]>([]);
   const [plans, setPlans] = useState<any[]>([]);
   const [knowledgeBase, setKnowledgeBase] = useState<KnowledgeItem[]>([]);
+  const [certifications, setCertifications] = useState<CertificationRow[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingPlan, setEditingPlan] = useState<any>(null);
   const [editingLesson, setEditingLesson] = useState<LessonRow | null>(null);
   const [editingKB, setEditingKB] = useState<KnowledgeItem | null>(null);
+  const [editingCert, setEditingCert] = useState<CertificationRow | null>(null);
   const [newLesson, setNewLesson] = useState({ title: '', description: '', category: 'general', difficulty: 'beginner', content: '', xp_reward: 100 });
   const [newKB, setNewKB] = useState({ title: '', content: '', category: '' });
+  const [newCert, setNewCert] = useState({ title: '', description: '', category: 'general', required_xp: 500, badge_color: 'blue' });
   const [showAddLesson, setShowAddLesson] = useState(false);
   const [showAddKB, setShowAddKB] = useState(false);
+  const [showAddCert, setShowAddCert] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [userFilter, setUserFilter] = useState<'all' | 'active' | 'blocked'>('all');
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
@@ -129,12 +143,13 @@ const AdminPanel = () => {
 
   const fetchAllData = async () => {
     setLoadingData(true);
-    const [profilesRes, subsRes, lessonsRes, plansRes, kbRes] = await Promise.all([
+    const [profilesRes, subsRes, lessonsRes, plansRes, kbRes, certsRes] = await Promise.all([
       supabase.from('profiles').select('*').order('created_at', { ascending: false }),
       supabase.from('subscriptions').select('*').order('created_at', { ascending: false }),
       supabase.from('lessons').select('*').order('created_at', { ascending: false }),
       supabase.from('subscription_plans').select('*').order('price'),
       supabase.from('knowledge_base').select('id, title, content, category, created_at').order('created_at', { ascending: false }),
+      supabase.from('certifications').select('*').order('required_xp'),
     ]);
     
     if (profilesRes.data) setUsers(profilesRes.data as UserProfile[]);
@@ -142,6 +157,7 @@ const AdminPanel = () => {
     if (lessonsRes.data) setLessons(lessonsRes.data as LessonRow[]);
     if (plansRes.data) setPlans(plansRes.data);
     if (kbRes.data) setKnowledgeBase(kbRes.data as KnowledgeItem[]);
+    if (certsRes.data) setCertifications(certsRes.data as CertificationRow[]);
     setLoadingData(false);
   };
 
@@ -210,6 +226,33 @@ const AdminPanel = () => {
     }).eq('id', editingKB.id);
     if (error) toast.error('Failed to update');
     else { toast.success('Updated'); setEditingKB(null); fetchAllData(); }
+  };
+
+  // Certification CRUD
+  const handleAddCert = async () => {
+    if (!newCert.title) { toast.error('Title required'); return; }
+    const { error } = await supabase.from('certifications').insert({
+      title: newCert.title, description: newCert.description || null,
+      category: newCert.category, required_xp: newCert.required_xp, badge_color: newCert.badge_color,
+    });
+    if (error) toast.error('Failed to add certification');
+    else { toast.success('Certification added'); setNewCert({ title: '', description: '', category: 'general', required_xp: 500, badge_color: 'blue' }); setShowAddCert(false); fetchAllData(); }
+  };
+
+  const handleDeleteCert = async (id: string) => {
+    const { error } = await supabase.from('certifications').delete().eq('id', id);
+    if (error) toast.error('Failed to delete');
+    else { toast.success('Deleted'); fetchAllData(); }
+  };
+
+  const handleUpdateCert = async () => {
+    if (!editingCert) return;
+    const { error } = await supabase.from('certifications').update({
+      title: editingCert.title, description: editingCert.description,
+      category: editingCert.category, required_xp: editingCert.required_xp, badge_color: editingCert.badge_color,
+    }).eq('id', editingCert.id);
+    if (error) toast.error('Failed to update');
+    else { toast.success('Updated'); setEditingCert(null); fetchAllData(); }
   };
 
   const exportUsersCSV = () => {
@@ -318,6 +361,9 @@ const AdminPanel = () => {
             </TabsTrigger>
             <TabsTrigger value="knowledge" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <BookOpen className="w-4 h-4" /> Knowledge ({knowledgeBase.length})
+            </TabsTrigger>
+            <TabsTrigger value="certifications" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+              <Award className="w-4 h-4" /> Certs ({certifications.length})
             </TabsTrigger>
             <TabsTrigger value="subscriptions" className="gap-1.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
               <CreditCard className="w-4 h-4" /> Billing
@@ -770,6 +816,126 @@ const AdminPanel = () => {
                     )}
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* ==================== CERTIFICATIONS ==================== */}
+          <TabsContent value="certifications" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <CardTitle className="flex items-center gap-2"><Award className="w-5 h-5" /> Certification Management</CardTitle>
+                    <CardDescription>{certifications.length} certifications available</CardDescription>
+                  </div>
+                  <Button onClick={() => setShowAddCert(!showAddCert)} className="gap-1">
+                    <Plus className="w-4 h-4" /> Add Certification
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {showAddCert && (
+                  <Card className="border-dashed border-2 border-primary/30 bg-primary/5">
+                    <CardHeader className="pb-3"><CardTitle className="text-base">New Certification</CardTitle></CardHeader>
+                    <CardContent className="space-y-3">
+                      <Input placeholder="Certification title" value={newCert.title} onChange={e => setNewCert({...newCert, title: e.target.value})} />
+                      <Textarea placeholder="Description" value={newCert.description} onChange={e => setNewCert({...newCert, description: e.target.value})} />
+                      <div className="grid grid-cols-3 gap-3">
+                        <Input placeholder="Category" value={newCert.category} onChange={e => setNewCert({...newCert, category: e.target.value})} />
+                        <Input type="number" placeholder="Required XP" value={newCert.required_xp} onChange={e => setNewCert({...newCert, required_xp: parseInt(e.target.value) || 500})} />
+                        <select
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                          value={newCert.badge_color}
+                          onChange={e => setNewCert({...newCert, badge_color: e.target.value})}
+                        >
+                          <option value="blue">Blue</option>
+                          <option value="purple">Purple</option>
+                          <option value="pink">Pink</option>
+                          <option value="cyan">Cyan</option>
+                          <option value="green">Green</option>
+                          <option value="gold">Gold</option>
+                        </select>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button onClick={handleAddCert} className="gap-1"><Plus className="w-4 h-4" /> Save</Button>
+                        <Button variant="outline" onClick={() => setShowAddCert(false)}>Cancel</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {editingCert && (
+                  <Card className="border-2 border-primary/50 bg-primary/5">
+                    <CardHeader className="pb-3"><CardTitle className="text-base">Editing: {editingCert.title}</CardTitle></CardHeader>
+                    <CardContent className="space-y-3">
+                      <Input value={editingCert.title} onChange={e => setEditingCert({...editingCert, title: e.target.value})} />
+                      <Textarea value={editingCert.description || ''} onChange={e => setEditingCert({...editingCert, description: e.target.value})} />
+                      <div className="grid grid-cols-3 gap-3">
+                        <Input value={editingCert.category} onChange={e => setEditingCert({...editingCert, category: e.target.value})} />
+                        <Input type="number" value={editingCert.required_xp} onChange={e => setEditingCert({...editingCert, required_xp: parseInt(e.target.value) || 500})} />
+                        <select
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                          value={editingCert.badge_color}
+                          onChange={e => setEditingCert({...editingCert, badge_color: e.target.value})}
+                        >
+                          <option value="blue">Blue</option>
+                          <option value="purple">Purple</option>
+                          <option value="pink">Pink</option>
+                          <option value="cyan">Cyan</option>
+                          <option value="green">Green</option>
+                          <option value="gold">Gold</option>
+                        </select>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button onClick={handleUpdateCert}>Save Changes</Button>
+                        <Button variant="outline" onClick={() => setEditingCert(null)}>Cancel</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                <div className="grid gap-3">
+                  {certifications.map(cert => (
+                    <div key={cert.id} className="flex items-center gap-4 p-4 rounded-lg border bg-card hover:shadow-sm transition-shadow">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                        cert.badge_color === 'gold' ? 'bg-amber-100 dark:bg-amber-900/30' :
+                        cert.badge_color === 'purple' ? 'bg-purple-100 dark:bg-purple-900/30' :
+                        cert.badge_color === 'pink' ? 'bg-pink-100 dark:bg-pink-900/30' :
+                        cert.badge_color === 'cyan' ? 'bg-cyan-100 dark:bg-cyan-900/30' :
+                        cert.badge_color === 'green' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
+                        'bg-blue-100 dark:bg-blue-900/30'
+                      }`}>
+                        <Award className={`w-6 h-6 ${
+                          cert.badge_color === 'gold' ? 'text-amber-600' :
+                          cert.badge_color === 'purple' ? 'text-purple-600' :
+                          cert.badge_color === 'pink' ? 'text-pink-600' :
+                          cert.badge_color === 'cyan' ? 'text-cyan-600' :
+                          cert.badge_color === 'green' ? 'text-emerald-600' :
+                          'text-blue-600'
+                        }`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-medium truncate">{cert.title}</h4>
+                          <Badge variant="outline" className="text-xs capitalize shrink-0">{cert.category}</Badge>
+                        </div>
+                        {cert.description && <p className="text-sm text-muted-foreground truncate">{cert.description}</p>}
+                      </div>
+                      <Badge className="font-mono shrink-0">{cert.required_xp} XP</Badge>
+                      <div className="flex gap-1 shrink-0">
+                        <Button variant="ghost" size="icon" onClick={() => setEditingCert(cert)}><Pencil className="w-4 h-4" /></Button>
+                        <Button variant="ghost" size="icon" onClick={() => handleDeleteCert(cert.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                      </div>
+                    </div>
+                  ))}
+                  {certifications.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <Award className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                      <p>No certifications yet.</p>
+                    </div>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

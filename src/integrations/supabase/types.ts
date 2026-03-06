@@ -32,6 +32,39 @@ export type Database = {
         }
         Relationships: []
       }
+      certifications: {
+        Row: {
+          badge_color: string
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          required_xp: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          badge_color?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          required_xp?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          badge_color?: string
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          required_xp?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       knowledge_base: {
         Row: {
           category: string | null
@@ -240,6 +273,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_certifications: {
+        Row: {
+          certificate_number: string
+          certification_id: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          certificate_number?: string
+          certification_id: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          certificate_number?: string
+          certification_id?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_certifications_certification_id_fkey"
+            columns: ["certification_id"]
+            isOneToOne: false
+            referencedRelation: "certifications"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_lesson_progress: {
         Row: {
