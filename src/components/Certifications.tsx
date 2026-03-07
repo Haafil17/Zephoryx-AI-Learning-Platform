@@ -2,11 +2,10 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
-import { Award, CheckCircle, Lock, Download, Sparkles } from 'lucide-react';
+import { Award, CheckCircle, Lock, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Certification {
@@ -14,7 +13,6 @@ interface Certification {
   title: string;
   description: string | null;
   category: string;
-  required_xp: number;
   badge_color: string;
 }
 
@@ -46,7 +44,6 @@ export const Certifications = () => {
   const { user } = useAuth();
   const [certs, setCerts] = useState<Certification[]>([]);
   const [userCerts, setUserCerts] = useState<UserCert[]>([]);
-  const [userXP, setUserXP] = useState(0);
   const [claiming, setClaiming] = useState<string | null>(null);
 
   useEffect(() => {
@@ -55,18 +52,17 @@ export const Certifications = () => {
   }, [user]);
 
   const fetchCerts = async () => {
-    const { data } = await supabase.from('certifications').select('*').order('required_xp');
+    const { data } = await supabase.from('certifications').select('id, title, description, category, badge_color');
     if (data) setCerts(data);
   };
 
   const fetchUserData = async () => {
     if (!user) return;
-    const [profileRes, userCertsRes] = await Promise.all([
-      supabase.from('profiles').select('xp').eq('id', user.id).single(),
-      supabase.from('user_certifications').select('certification_id, earned_at, certificate_number').eq('user_id', user.id),
-    ]);
-    if (profileRes.data) setUserXP(profileRes.data.xp || 0);
-    if (userCertsRes.data) setUserCerts(userCertsRes.data);
+    const { data } = await supabase
+      .from('user_certifications')
+      .select('certification_id, earned_at, certificate_number')
+      .eq('user_id', user.id);
+    if (data) setUserCerts(data);
   };
 
   const claimCert = async (certId: string) => {
@@ -100,14 +96,12 @@ export const Certifications = () => {
               Earn Your AI Certifications
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Prove your AI expertise with industry-recognized certifications. Earn XP through lessons and unlock badges.
+              Complete learning paths and claim your certificates. Each certification validates your expertise in a specific AI domain.
             </p>
             {user && (
               <div className="mt-6 inline-flex items-center gap-3 bg-card/80 backdrop-blur-sm rounded-full px-6 py-3 border border-border">
                 <Sparkles className="w-5 h-5 text-amber-500" />
-                <span className="font-semibold">Your XP: <span className="font-mono text-amber-600 dark:text-amber-400">{userXP}</span></span>
-                <span className="text-muted-foreground">•</span>
-                <span className="text-sm text-muted-foreground">{userCerts.length}/{certs.length} earned</span>
+                <span className="font-semibold">{userCerts.length}/{certs.length} certifications earned</span>
               </div>
             )}
           </motion.div>
@@ -117,8 +111,6 @@ export const Certifications = () => {
           {certs.map((cert, i) => {
             const earned = isEarned(cert.id);
             const certData = getCertData(cert.id);
-            const progress = Math.min((userXP / cert.required_xp) * 100, 100);
-            const canClaim = userXP >= cert.required_xp && !earned;
             const gradient = colorMap[cert.badge_color] || colorMap.blue;
             const borderColor = borderColorMap[cert.badge_color] || borderColorMap.blue;
 
@@ -131,7 +123,6 @@ export const Certifications = () => {
                 transition={{ delay: i * 0.1 }}
               >
                 <Card className={`relative overflow-hidden h-full transition-all duration-300 hover:shadow-xl ${earned ? `border-2 ${borderColor} shadow-lg` : 'border border-border/50'}`}>
-                  {/* Top gradient bar */}
                   <div className={`h-2 bg-gradient-to-r ${gradient}`} />
                   
                   {earned && (
@@ -152,16 +143,6 @@ export const Certifications = () => {
 
                   <CardContent className="space-y-4">
                     <p className="text-sm text-muted-foreground leading-relaxed">{cert.description}</p>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Required XP</span>
-                        <span className="font-mono font-semibold">{cert.required_xp} XP</span>
-                      </div>
-                      {user && (
-                        <Progress value={progress} className="h-2" />
-                      )}
-                    </div>
 
                     {earned && certData ? (
                       <div className="space-y-2 p-3 rounded-lg bg-muted/50">
@@ -172,7 +153,7 @@ export const Certifications = () => {
                         <p className="text-xs text-muted-foreground">Certificate: <span className="font-mono">{certData.certificate_number}</span></p>
                         <p className="text-xs text-muted-foreground">Date: {new Date(certData.earned_at).toLocaleDateString()}</p>
                       </div>
-                    ) : canClaim ? (
+                    ) : user ? (
                       <Button
                         className={`w-full bg-gradient-to-r ${gradient} text-white hover:opacity-90 shadow-md`}
                         onClick={() => claimCert(cert.id)}
@@ -183,7 +164,7 @@ export const Certifications = () => {
                     ) : (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground p-3 rounded-lg bg-muted/30">
                         <Lock className="w-4 h-4" />
-                        <span>{user ? `Need ${cert.required_xp - userXP} more XP` : 'Sign in to track progress'}</span>
+                        <span>Sign in to earn certifications</span>
                       </div>
                     )}
                   </CardContent>
