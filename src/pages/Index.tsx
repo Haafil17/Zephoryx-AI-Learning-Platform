@@ -9,10 +9,13 @@ import { AITopics } from "@/components/AITopics";
 import { GenAITopics } from "@/components/GenAITopics";
 import { QuantumTopics } from "@/components/QuantumTopics";
 import { CodingTopics } from "@/components/CodingTopics";
+import { RAGTopics } from "@/components/RAGTopics";
+import { MCPTopics } from "@/components/MCPTopics";
+import { OrchestratorTopics } from "@/components/OrchestratorTopics";
+import { AIModelsTopics } from "@/components/AIModelsTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
-import { StatsCounter } from "@/components/StatsCounter";
-import { Testimonials } from "@/components/Testimonials";
+
 import { Newsletter } from "@/components/Newsletter";
 import { Certifications } from "@/components/Certifications";
 import { LearningPaths } from "@/components/LearningPaths";
@@ -34,20 +37,19 @@ import { motion } from "framer-motion";
 import { 
   Brain, 
   Zap, 
-  MessageSquare, 
   Search, 
-  BookOpen, 
   Trophy, 
-  Users, 
   Code, 
   Atom, 
   Sparkles,
   Target,
   Lightbulb,
-  Rocket,
-  Settings,
   Play,
-  X
+  X,
+  Database,
+  Plug,
+  Network,
+  Cpu
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -84,22 +86,22 @@ const Index = () => {
       color: "from-green-500 to-emerald-500"
     },
     {
-      icon: Lightbulb,
-      title: "Practical Examples",
-      description: "Learn from real-world examples and templates for various AI applications",
+      icon: Database,
+      title: "RAG & Retrieval",
+      description: "Learn Retrieval-Augmented Generation — the standard pattern for grounding AI in real data",
+      color: "from-emerald-500 to-teal-500"
+    },
+    {
+      icon: Plug,
+      title: "MCP Protocol",
+      description: "Model Context Protocol — the universal standard for connecting AI to external tools",
+      color: "from-violet-500 to-purple-500"
+    },
+    {
+      icon: Network,
+      title: "AI Orchestrators",
+      description: "Build agent systems that reason, plan, use tools, and complete complex tasks",
       color: "from-orange-500 to-red-500"
-    },
-    {
-      icon: Trophy,
-      title: "Best Practices",
-      description: "Industry-proven strategies for consistent and reliable AI interactions",
-      color: "from-yellow-500 to-orange-500"
-    },
-    {
-      icon: Zap,
-      title: "Interactive Features",
-      description: "Hands-on tools and generators to practice and refine your prompting skills",
-      color: "from-indigo-500 to-purple-500"
     },
     {
       icon: Code,
@@ -144,9 +146,7 @@ const Index = () => {
 
   const handleVideoPlay = (video: typeof homeVideos[0]) => {
     setPlayingVideoId(video.id);
-    toast.success(`Playing: ${video.title}`, {
-      description: "Loading video tutorial"
-    });
+    toast.success(`Playing: ${video.title}`, { description: "Loading video tutorial" });
   };
 
   const closeVideo = () => {
@@ -166,7 +166,7 @@ const Index = () => {
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
               AI-Powered Tools
             </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Interactive AI tools powered by Gemini 2.5 Flash with full access to our knowledge base
             </p>
           </div>
@@ -180,28 +180,24 @@ const Index = () => {
       {/* Video Modal */}
       {playingVideoId && currentVideo && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
-            <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+          <div className="bg-card rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-border">
+            <div className="flex justify-between items-center p-6 border-b border-border bg-muted/50">
               <div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-                  {currentVideo.title}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                  {currentVideo.description}
-                </p>
+                <h3 className="text-xl font-bold text-foreground">{currentVideo.title}</h3>
+                <p className="text-sm text-muted-foreground mt-1">{currentVideo.description}</p>
               </div>
-              <Button variant="ghost" size="sm" onClick={closeVideo} className="hover:bg-slate-200 dark:hover:bg-slate-700">
+              <Button variant="ghost" size="sm" onClick={closeVideo}>
                 <X className="w-5 h-5" />
               </Button>
             </div>
             <div className="aspect-video bg-black">
               <iframe
-                src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1&start=0&title=ZEPHORYX%20AI%20LAB`}
+                src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
                 className="w-full h-full"
                 allowFullScreen
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                title={`ZEPHORYX AI LAB - ${currentVideo.title}`}
+                title={currentVideo.title}
               />
             </div>
           </div>
@@ -215,15 +211,14 @@ const Index = () => {
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
               Everything You Need to Master AI
             </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed mb-8">
-              Discover all the powerful tools, techniques, and resources available on ZEPHORYX AI LAB. 
-              From prompt analysis to quantum computing, we have everything you need to master AI.
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
+              From prompt engineering to RAG, MCP, AI agents, and quantum computing — real content, real resources, no fluff.
             </p>
             
-            {/* Fixed Video Section */}
+            {/* Video Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               {homeVideos.map((video) => (
-                <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2 cursor-pointer" onClick={() => handleVideoPlay(video)}>
+                <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-card/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2 cursor-pointer" onClick={() => handleVideoPlay(video)}>
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img 
                       src={video.thumbnail} 
@@ -231,49 +226,21 @@ const Index = () => {
                       className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <Button
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleVideoPlay(video);
-                        }}
-                      >
+                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300">
                         <Play className="w-6 h-6" />
                       </Button>
                     </div>
                     <Badge className="absolute top-3 right-3 bg-black/80 text-white font-semibold px-2 py-1">
                       {video.duration}
                     </Badge>
-                    <div className="absolute top-3 left-3">
-                      <Badge variant="secondary" className="bg-indigo-100 text-indigo-800 font-medium">
-                        HD Quality
-                      </Badge>
-                    </div>
                   </div>
                   <CardContent className="p-6">
-                    <h4 className="font-bold text-lg mb-2 text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <h4 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
                       {video.title}
                     </h4>
-                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {video.description}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <Badge variant="outline" className="text-xs">
-                        Tutorial
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:text-indigo-300 dark:hover:bg-indigo-900/30"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleVideoPlay(video);
-                        }}
-                      >
-                        <Play className="w-4 h-4 mr-1" />
-                        Watch
-                      </Button>
-                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -289,18 +256,18 @@ const Index = () => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: index * 0.08, duration: 0.5 }}
               >
-                <Card className="group relative overflow-hidden bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 h-full">
+                <Card className="group relative overflow-hidden bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 h-full">
                   <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
                   <CardHeader className="pb-4">
                     <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
                       <feature.icon className="w-7 h-7 text-white" />
                     </div>
-                    <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-indigo-600 group-hover:to-purple-600 transition-all duration-300">
+                    <CardTitle className="text-xl font-bold text-foreground">
                       {feature.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                    <p className="text-muted-foreground leading-relaxed">
                       {feature.description}
                     </p>
                   </CardContent>
@@ -313,65 +280,46 @@ const Index = () => {
 
       <div className="max-w-7xl mx-auto px-4 pt-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex justify-center mb-12 gap-3 bg-muted/30 dark:bg-muted/10 rounded-full shadow-sm flex-wrap p-3 border border-border/50 backdrop-blur-sm">
-            <TabsTrigger value="techniques" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              🎯 Techniques
-            </TabsTrigger>
-            <TabsTrigger value="examples" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              💡 Examples
-            </TabsTrigger>
-            <TabsTrigger value="bestpractices" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              🏆 Best Practices
-            </TabsTrigger>
-            <TabsTrigger value="features" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              ⚡ Features
-            </TabsTrigger>
-            <TabsTrigger value="ai" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              🤖 AI
-            </TabsTrigger>
-            <TabsTrigger value="genai" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              🎨 Gen AI
-            </TabsTrigger>
-            <TabsTrigger value="quantum" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              ⚛️ Quantum
-            </TabsTrigger>
-            <TabsTrigger value="coding" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              💻 Coding
-            </TabsTrigger>
-            <TabsTrigger value="aitools" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              🔧 AI Tools
-            </TabsTrigger>
-            <TabsTrigger value="videos" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              🎥 Videos
-            </TabsTrigger>
-            <TabsTrigger value="resources" className="px-6 py-3 text-base font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
-              📚 Resources
-            </TabsTrigger>
+          <TabsList className="flex justify-center mb-12 gap-2 bg-muted/30 dark:bg-muted/10 rounded-full shadow-sm flex-wrap p-3 border border-border/50 backdrop-blur-sm">
+            {[
+              { value: "techniques", label: "🎯 Techniques" },
+              { value: "examples", label: "💡 Examples" },
+              { value: "bestpractices", label: "🏆 Best Practices" },
+              { value: "rag", label: "🔍 RAG" },
+              { value: "mcp", label: "🔌 MCP" },
+              { value: "orchestrators", label: "🤖 Agents" },
+              { value: "models", label: "🧠 Models" },
+              { value: "ai", label: "🤖 AI" },
+              { value: "genai", label: "🎨 Gen AI" },
+              { value: "quantum", label: "⚛️ Quantum" },
+              { value: "coding", label: "💻 Coding" },
+              { value: "features", label: "⚡ Features" },
+              { value: "aitools", label: "🔧 AI Tools" },
+              { value: "videos", label: "🎥 Videos" },
+              { value: "resources", label: "📚 Resources" },
+            ].map(tab => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="px-4 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
-          <TabsContent value="techniques" className="focus:outline-none">
-            <ExpandedTechniques />
-          </TabsContent>
-          <TabsContent value="examples" className="focus:outline-none">
-            <Examples />
-          </TabsContent>
-          <TabsContent value="bestpractices" className="focus:outline-none">
-            <EnhancedBestPractices />
-          </TabsContent>
-          <TabsContent value="features" className="focus:outline-none">
-            <EnhancedInteractiveFeatures />
-          </TabsContent>
-          <TabsContent value="ai" className="focus:outline-none">
-            <AITopics />
-          </TabsContent>
-          <TabsContent value="genai" className="focus:outline-none">
-            <GenAITopics />
-          </TabsContent>
-          <TabsContent value="quantum" className="focus:outline-none">
-            <QuantumTopics />
-          </TabsContent>
-          <TabsContent value="coding" className="focus:outline-none">
-            <CodingTopics />
-          </TabsContent>
+
+          <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /></TabsContent>
+          <TabsContent value="examples" className="focus:outline-none"><Examples /></TabsContent>
+          <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
+          <TabsContent value="rag" className="focus:outline-none"><RAGTopics /></TabsContent>
+          <TabsContent value="mcp" className="focus:outline-none"><MCPTopics /></TabsContent>
+          <TabsContent value="orchestrators" className="focus:outline-none"><OrchestratorTopics /></TabsContent>
+          <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /></TabsContent>
+          <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
+          <TabsContent value="genai" className="focus:outline-none"><GenAITopics /></TabsContent>
+          <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
+          <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
+          <TabsContent value="features" className="focus:outline-none"><EnhancedInteractiveFeatures /></TabsContent>
           <TabsContent value="aitools" className="focus:outline-none">
             <div className="space-y-8 pb-16">
               <div className="text-center mb-12">
@@ -389,20 +337,14 @@ const Index = () => {
               <PromptTester />
             </div>
           </TabsContent>
-          <TabsContent value="videos" className="focus:outline-none">
-            <Videos />
-          </TabsContent>
-          <TabsContent value="resources" className="focus:outline-none">
-            <Resources />
-          </TabsContent>
+          <TabsContent value="videos" className="focus:outline-none"><Videos /></TabsContent>
+          <TabsContent value="resources" className="focus:outline-none"><Resources /></TabsContent>
         </Tabs>
       </div>
 
       <LearningPaths />
       <Certifications />
       <CommunitySection />
-      <StatsCounter />
-      <Testimonials />
       <Newsletter />
       <Footer />
     </div>
