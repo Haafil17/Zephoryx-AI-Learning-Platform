@@ -15,7 +15,7 @@ import { OrchestratorTopics } from "@/components/OrchestratorTopics";
 import { AIModelsTopics } from "@/components/AIModelsTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
-import { Testimonials } from "@/components/Testimonials";
+
 import { Newsletter } from "@/components/Newsletter";
 import { Certifications } from "@/components/Certifications";
 import { LearningPaths } from "@/components/LearningPaths";
