@@ -345,7 +345,6 @@ const Index = () => {
       <LearningPaths />
       <Certifications />
       <CommunitySection />
-      <Testimonials />
       <Newsletter />
       <Footer />
     </div>
