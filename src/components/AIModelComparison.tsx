@@ -258,7 +258,7 @@ export const AIModelComparison = () => {
                 </tr>
                 <tr className="border-b border-border/50 hover:bg-muted/30">
                   <td className="p-3 font-medium text-muted-foreground">Multimodal</td>
-                  {filteredModels.map(m => <td key={m.name} className="p-3 text-center">{m.multimodal ? <CheckCircle className="w-5 h-5 text-green-500 mx-auto" /> : <XCircle className="w-5 h-5 text-muted-foreground/40 mx-auto" />}</td>)}
+                  {filteredModels.map(m => <td key={m.name} className="p-3 text-center">{m.multimodal ? <CheckCircle className="w-5 h-5 text-emerald-500 mx-auto" /> : <XCircle className="w-5 h-5 text-muted-foreground/40 mx-auto" />}</td>)}
                 </tr>
                 <tr className="border-b border-border/50 hover:bg-muted/30">
                   <td className="p-3 font-medium text-muted-foreground">Reasoning</td>
