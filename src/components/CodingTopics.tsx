@@ -1,395 +1,227 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Code, Zap, Brain, Target, ChevronRight, Star, Video, Play, X } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Code, ChevronRight, BookOpen, Terminal, GitBranch, Bug, FileCode, Wrench, Zap, Shield, TestTube, Layers } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const CodingTopics = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
-
-  const codingConcepts = [
+  const concepts = [
     {
       title: "AI-Powered Code Generation",
-      description: "Using AI tools like GitHub Copilot and ChatGPT to write code faster and more efficiently",
-      category: "ai-tools",
-      level: "Beginner",
-      languages: ["Python", "JavaScript", "Java", "C++"],
+      description: "AI code generation tools predict and write code from natural language descriptions or partial code context. GitHub Copilot (powered by Codex/GPT-4) integrates directly into VS Code and JetBrains IDEs, providing real-time suggestions as you type. Cursor is an AI-native IDE built around Claude and GPT-4 with full codebase awareness. Amazon Q Developer (formerly CodeWhisperer) is optimized for AWS services. Studies show these tools can increase developer productivity by 30-55% (GitHub, 2023).",
+      icon: Code,
+      keyPoints: [
+        "GitHub Copilot: 55% faster task completion (GitHub research with Accenture)",
+        "Cursor: AI-native IDE with full project context, multi-file editing, and terminal integration",
+        "Codeium: free alternative to Copilot with support for 70+ languages"
+      ],
       learnMoreUrl: "https://github.com/features/copilot"
     },
     {
       title: "Prompt Engineering for Code",
-      description: "Crafting effective prompts to generate high-quality, maintainable code",
-      category: "prompting",
-      level: "Intermediate",
-      languages: ["Any Language", "Pseudocode", "Documentation"],
+      description: "Writing effective prompts for code generation is a distinct skill from prompting for text. Best practices: (1) Specify the language, framework, and version explicitly. (2) Describe the function signature, inputs, outputs, and edge cases. (3) Provide context about the surrounding codebase — what imports are available, what patterns are used. (4) Ask for tests alongside implementation. (5) Use few-shot examples showing your coding style. For complex features, break into smaller functions and generate each separately.",
+      icon: Terminal,
+      keyPoints: [
+        "Always specify: language, framework version, coding style, error handling approach",
+        "Include the function signature, types, and expected behavior for edge cases",
+        "Ask for unit tests in the same prompt — 'Write the function AND its tests'"
+      ],
+      example: {
+        bad: "Write a function to process user data.",
+        good: "Write a TypeScript function `processUserData` that:\n- Takes a `UserInput` object with `name: string`, `email: string`, `age?: number`\n- Validates email format using regex\n- Returns `{ valid: boolean, errors: string[], sanitized: UserInput }`\n- Trims whitespace from string fields\n- Throws if name is empty\n- Include unit tests using Vitest"
+      },
       learnMoreUrl: "https://docs.github.com/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot"
     },
     {
+      title: "AI-Assisted Debugging",
+      description: "AI transforms debugging from a time-consuming investigation into a conversation. Paste an error message, stack trace, or buggy code into Claude or ChatGPT and get immediate analysis of the root cause, explanation of why it happens, and a fix. Advanced patterns: (1) Rubber duck debugging with AI — explain the problem and let the AI ask clarifying questions. (2) Ask 'What are all the ways this code could fail?' for proactive bug finding. (3) Use AI to read unfamiliar codebases — 'Explain what this function does and identify any bugs.'",
+      icon: Bug,
+      keyPoints: [
+        "Paste the full error message + relevant code context for accurate diagnosis",
+        "Ask 'What are all the ways this could fail?' for proactive bug hunting",
+        "Use AI to explain unfamiliar code before modifying it — reduces introduction of new bugs"
+      ],
+      learnMoreUrl: "https://docs.cursor.com/"
+    },
+    {
       title: "Code Review with AI",
-      description: "Leveraging AI for automated code review, bug detection, and optimization suggestions",
-      category: "quality",
-      level: "Intermediate",
-      languages: ["Multi-language", "Static Analysis", "Best Practices"],
-      learnMoreUrl: "https://www.deepcode.ai/"
+      description: "AI code review tools analyze pull requests for bugs, security vulnerabilities, performance issues, and style violations. CodeRabbit reviews PRs on GitHub/GitLab with contextual comments. Amazon CodeGuru identifies expensive code patterns and security issues. SonarQube with AI plugins detects code smells and technical debt. Best practice: use AI review as a first pass before human review — it catches obvious issues and frees human reviewers to focus on architecture and logic decisions.",
+      icon: GitBranch,
+      keyPoints: [
+        "CodeRabbit: AI-powered PR reviews with line-by-line comments on GitHub/GitLab",
+        "Amazon CodeGuru: detects expensive operations, concurrency issues, security vulnerabilities",
+        "AI review catches ~30% of bugs that human reviewers miss (Microsoft Research)"
+      ],
+      learnMoreUrl: "https://www.coderabbit.ai/"
     },
     {
-      title: "Algorithm Design & Optimization",
-      description: "Using AI to design efficient algorithms and optimize existing code performance",
-      category: "algorithms",
-      level: "Advanced",
-      languages: ["Python", "C++", "Rust", "Go"],
-      learnMoreUrl: "https://leetcode.com/explore/learn/"
+      title: "AI Test Generation",
+      description: "AI can generate comprehensive test suites from code or specifications. Approaches: (1) Generate unit tests from function implementations — AI reads the code and generates tests covering happy paths, edge cases, and error conditions. (2) Generate tests from requirements — describe what the function should do, AI writes tests before implementation (TDD with AI). (3) Mutation testing — AI creates variations of code to verify test coverage. Tools: Copilot generates inline tests, Codium AI specializes in test generation, and Diffblue Cover generates Java unit tests automatically.",
+      icon: TestTube,
+      keyPoints: [
+        "CodiumAI: generates comprehensive test suites with edge cases from function code",
+        "TDD with AI: write the requirement → AI generates tests → then implement to pass",
+        "Always review AI-generated tests — they may miss domain-specific edge cases"
+      ],
+      learnMoreUrl: "https://www.codium.ai/"
     },
     {
-      title: "Documentation Generation",
-      description: "Automatically generating comprehensive documentation from code and comments",
-      category: "documentation",
-      level: "Beginner",
-      languages: ["Markdown", "API Docs", "README", "Comments"],
-      learnMoreUrl: "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes"
+      title: "Full-Stack AI Development",
+      description: "AI-first development platforms generate entire applications from descriptions. Lovable generates full React + Tailwind + Supabase applications from natural language. Vercel's v0 generates React components from prompts using shadcn/ui. Bolt.new by StackBlitz generates and deploys full-stack apps in the browser. Replit Agent builds and deploys applications with an AI that can install packages, create files, and run the dev server. These tools are best for MVPs, prototypes, and learning.",
+      icon: Layers,
+      keyPoints: [
+        "Lovable: generates production React + TypeScript + Supabase apps from descriptions",
+        "v0 by Vercel: generates and previews React components using shadcn/ui",
+        "Bolt.new: full-stack app generation with in-browser dev environment and deployment"
+      ],
+      learnMoreUrl: "https://lovable.dev/"
     },
     {
-      title: "Testing & Debugging",
-      description: "AI-assisted test case generation, debugging strategies, and error resolution",
-      category: "testing",
-      level: "Intermediate",
-      languages: ["Unit Tests", "Integration", "E2E Testing"],
-      learnMoreUrl: "https://jestjs.io/docs/getting-started"
-    }
+      title: "AI for DevOps & Infrastructure",
+      description: "AI is automating infrastructure management and operations. GitHub Copilot for CLI suggests terminal commands from natural language. Amazon Q for AWS generates CloudFormation templates and troubleshoots AWS issues. Kubernetes Copilot helps manage clusters. AI-powered monitoring (Datadog AI, New Relic AI) detects anomalies, predicts incidents, and suggests root causes. For IaC (Infrastructure as Code), AI generates Terraform, Pulumi, and Docker configurations from descriptions.",
+      icon: Wrench,
+      keyPoints: [
+        "GitHub Copilot CLI: natural language → shell commands (with explanation before execution)",
+        "AI-powered observability: automatic anomaly detection and root cause analysis",
+        "Generate Terraform, Docker, and CI/CD configs from natural language descriptions"
+      ],
+      learnMoreUrl: "https://docs.github.com/en/copilot/github-copilot-in-the-cli"
+    },
+    {
+      title: "Security-Focused AI Coding",
+      description: "AI can both introduce and detect security vulnerabilities. OWASP identifies 'insecure code generation' as a top LLM risk — AI may generate code with SQL injection, XSS, or insecure deserialization vulnerabilities. Mitigations: (1) Always review AI-generated code for security. (2) Use SAST tools (Snyk, Semgrep) on AI-generated code. (3) Ask AI to specifically review code for OWASP Top 10 vulnerabilities. (4) Use security-focused prompts: 'Write this with input validation, parameterized queries, and proper error handling.'",
+      icon: Shield,
+      keyPoints: [
+        "40% of Copilot-generated code contains potential vulnerabilities (Stanford study)",
+        "Always run SAST/DAST tools on AI-generated code before deployment",
+        "Prompt: 'Review this code for OWASP Top 10 vulnerabilities and fix any issues found'"
+      ],
+      learnMoreUrl: "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+    },
+    {
+      title: "Documentation with AI",
+      description: "AI generates and maintains documentation from code, reducing one of development's most neglected tasks. Use cases: (1) Generate JSDoc/docstrings from function implementations. (2) Create README files from project structure. (3) Generate API documentation from OpenAPI specs or route definitions. (4) Write architecture decision records (ADRs) from design discussions. (5) Keep docs in sync — AI detects when code changes make documentation outdated. Mintlify and Swimm specialize in AI-powered documentation.",
+      icon: FileCode,
+      keyPoints: [
+        "Mintlify: generates and hosts beautiful documentation from your codebase",
+        "Swimm: keeps documentation in sync with code changes automatically",
+        "Prompt: 'Generate comprehensive JSDoc for all exported functions in this file'"
+      ],
+      learnMoreUrl: "https://mintlify.com/"
+    },
+    {
+      title: "AI Coding Best Practices",
+      description: "To get maximum value from AI coding tools: (1) Understand the code AI generates — don't blindly copy-paste. (2) Write clear function signatures and types first, then let AI fill the implementation. (3) Use AI for boilerplate but write core business logic yourself. (4) Always test AI-generated code thoroughly. (5) Use AI to learn — ask 'Explain why this approach is better than X.' (6) Keep context small — AI performs better on focused, single-responsibility functions than on large, complex ones.",
+      icon: Zap,
+      keyPoints: [
+        "Type-first development: define interfaces/types → AI generates implementations",
+        "Small functions: AI writes better code for focused, single-purpose functions",
+        "Use AI to learn, not just to produce — ask 'why' and 'what are the trade-offs'"
+      ],
+      learnMoreUrl: "https://github.blog/2023-06-20-how-to-write-better-prompts-for-github-copilot/"
+    },
   ];
 
-  const codingVideos = [
-    {
-      id: "ai-coding-basics",
-      title: "AI-Powered Coding Fundamentals",
-      description: "Master GitHub Copilot and AI coding tools for maximum productivity",
-      thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=225&fit=crop&crop=center",
-      duration: "22:30",
-      category: "ai-tools",
-      embedId: "Fi3AJZZregI"
-    },
-    {
-      id: "prompt-engineering-code",
-      title: "Code Prompt Engineering Mastery",
-      description: "Write effective prompts for high-quality code generation",
-      thumbnail: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=225&fit=crop&crop=center",
-      duration: "17:45",
-      category: "prompting",
-      embedId: "GPqSoiOP3w8"
-    },
-    {
-      id: "ai-code-review",
-      title: "AI-Assisted Code Review",
-      description: "Leverage AI for comprehensive code quality and bug detection",
-      thumbnail: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=225&fit=crop&crop=center",
-      duration: "19:20",
-      category: "quality",
-      embedId: "1T6hAznFtP4"
-    },
-    {
-      id: "algorithm-optimization",
-      title: "AI Algorithm Optimization",
-      description: "Use AI to design and optimize algorithms for peak performance",
-      thumbnail: "https://images.unsplash.com/photo-1518432031352-d6fc5c10da5a?w=400&h=225&fit=crop&crop=center",
-      duration: "28:15",
-      category: "algorithms",
-      embedId: "Ven2P4IxJ_0"
-    },
-    {
-      id: "testing-debugging",
-      title: "AI Testing & Debugging",
-      description: "Automate test generation and debugging with AI assistance",
-      thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=225&fit=crop&crop=center",
-      duration: "24:40",
-      category: "testing",
-      embedId: "yR4hNBNS6yc"
-    }
+  const tools = [
+    { name: "GitHub Copilot", desc: "AI pair programmer — real-time code suggestions in your IDE", url: "https://github.com/features/copilot" },
+    { name: "Cursor", desc: "AI-native IDE with full codebase awareness and multi-file editing", url: "https://cursor.com/" },
+    { name: "Lovable", desc: "Generate full-stack React + Supabase apps from natural language", url: "https://lovable.dev/" },
+    { name: "v0 by Vercel", desc: "Generate React components with shadcn/ui from prompts", url: "https://v0.dev/" },
+    { name: "Codeium", desc: "Free AI code completion for 70+ languages in any IDE", url: "https://codeium.com/" },
+    { name: "Bolt.new", desc: "Full-stack app generation with in-browser dev and deployment", url: "https://bolt.new/" },
   ];
-
-  const categories = [
-    { id: "all", name: "All Topics", count: codingConcepts.length },
-    { id: "ai-tools", name: "AI Tools", count: codingConcepts.filter(c => c.category === "ai-tools").length },
-    { id: "prompting", name: "Prompting", count: codingConcepts.filter(c => c.category === "prompting").length },
-    { id: "quality", name: "Code Quality", count: codingConcepts.filter(c => c.category === "quality").length },
-    { id: "algorithms", name: "Algorithms", count: codingConcepts.filter(c => c.category === "algorithms").length },
-    { id: "testing", name: "Testing", count: codingConcepts.filter(c => c.category === "testing").length }
-  ];
-
-  const filteredConcepts = selectedCategory === "all" 
-    ? codingConcepts 
-    : codingConcepts.filter(concept => concept.category === selectedCategory);
-
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case "Beginner": return "bg-green-100 text-green-800";
-      case "Intermediate": return "bg-yellow-100 text-yellow-800";
-      case "Advanced": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const codingTools = [
-    { name: "GitHub Copilot", type: "IDE Extension", description: "AI pair programmer for real-time code suggestions" },
-    { name: "ChatGPT", type: "Conversational AI", description: "Code generation, debugging, and explanation" },
-    { name: "Claude", type: "Code Assistant", description: "Advanced reasoning for complex coding problems" },
-    { name: "Replit Ghostwriter", type: "Cloud IDE", description: "AI coding assistant in the browser" },
-    { name: "Tabnine", type: "Autocomplete", description: "AI-powered code completion for multiple languages" },
-    { name: "Amazon CodeWhisperer", type: "AWS Tool", description: "ML-powered coding companion for AWS" }
-  ];
-
-  const bestPractices = [
-    "Start with clear, specific prompts describing the desired functionality",
-    "Include context about the programming language, framework, and constraints",
-    "Ask for code comments and documentation alongside the implementation",
-    "Request multiple approaches and compare their trade-offs",
-    "Always review and test AI-generated code before production use",
-    "Use AI for learning by asking for explanations of complex concepts"
-  ];
-
-  const handleLearnMore = (concept: typeof codingConcepts[0]) => {
-    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
-    toast.success(`Opening ${concept.title} resources...`);
-  };
-
-  const handleVideoPlay = (video: typeof codingVideos[0]) => {
-    setPlayingVideoId(video.id);
-    toast.success(`Playing: ${video.title}`, {
-      description: "Loading coding tutorial"
-    });
-  };
-
-  const closeVideo = () => {
-    setPlayingVideoId(null);
-  };
-
-  const currentVideo = codingVideos.find(v => v.id === playingVideoId);
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950">
+    <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Enhanced Video Modal */}
-        {playingVideoId && currentVideo && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
-              <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-                    {currentVideo.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    {currentVideo.description}
-                  </p>
-                </div>
-                <Button variant="ghost" size="sm" onClick={closeVideo} className="hover:bg-slate-200 dark:hover:bg-slate-700">
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-              <div className="aspect-video bg-black">
-                <iframe
-                  src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1&start=0&title=AIONYX`}
-                  className="w-full h-full"
-                  allowFullScreen
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={`AIONYX - ${currentVideo.title}`}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-6">
+          <Badge className="mb-4 bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200 border-0 px-4 py-1.5">
+            <Code className="w-4 h-4 mr-1" /> Developer Productivity
+          </Badge>
+          <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
             AI-Powered Coding
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Revolutionize your development workflow with AI tools and techniques for faster, smarter coding
+          <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            Master AI coding tools, prompting techniques for code, AI-assisted debugging, test generation, and security — with real tools and research-backed practices.
           </p>
         </div>
 
-        {/* Enhanced Coding Video Tutorials */}
-        <div className="mb-16 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-3xl p-8 border border-green-100 dark:border-green-800/50">
-          <h3 className="text-3xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
-            💻 AI Coding Video Tutorials
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            {codingVideos.map((video) => (
-              <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img 
-                    src={video.thumbnail} 
-                    alt={video.title}
-                    className="w-full h-36 object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button
-                      onClick={() => handleVideoPlay(video)}
-                      className="bg-green-600 hover:bg-green-700 text-white rounded-full p-3 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300"
-                    >
-                      <Play className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  <Badge className="absolute top-2 right-2 bg-black/80 text-white text-xs font-semibold">
-                    {video.duration}
-                  </Badge>
-                </div>
-                <CardContent className="p-4">
-                  <h4 className="font-bold text-sm mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                    {video.title}
-                  </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {video.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`${
-                selectedCategory === category.id
-                  ? "bg-green-600 text-white shadow-lg"
-                  : "bg-white text-slate-700 hover:bg-green-50 border-green-200"
-              } px-6 py-3 rounded-full border transition-all duration-200 hover:scale-105`}
+        <div className="space-y-8 mb-16">
+          {concepts.map((concept, i) => (
+            <motion.div
+              key={concept.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
             >
-              {category.name}
-              <Badge variant="secondary" className="ml-2 text-xs">
-                {category.count}
-              </Badge>
-            </Button>
-          ))}
-        </div>
+              <Card className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 shadow-md">
+                      <concept.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <CardTitle className="text-xl font-display">{concept.title}</CardTitle>
+                  </div>
+                  <CardDescription className="text-base leading-relaxed">
+                    {concept.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground mb-2">Key Points:</h4>
+                    <ul className="space-y-1.5">
+                      {concept.keyPoints.map((point, j) => (
+                        <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2 shrink-0" />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-        {/* Coding Concepts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredConcepts.map((concept, index) => (
-            <Card key={index} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-1">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-4 bg-green-100 dark:bg-green-900/50 rounded-2xl group-hover:bg-green-200 dark:group-hover:bg-green-800/70 transition-colors group-hover:scale-110 duration-300">
-                    <Code className="w-7 h-7 text-green-600 dark:text-green-400" />
-                  </div>
-                  <Badge className={getLevelColor(concept.level)}>
-                    {concept.level}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                  {concept.title}
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                  {concept.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Technologies:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {concept.languages.map((lang, langIndex) => (
-                      <Badge key={langIndex} variant="outline" className="text-xs hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors">
-                        {lang}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="ghost" 
-                    className="flex-1 justify-between text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-900/30 font-medium"
-                    onClick={() => handleLearnMore(concept)}
+                  {/* Example comparison if available */}
+                  {'example' in concept && concept.example && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50">
+                        <p className="text-xs font-semibold text-red-600 dark:text-red-400 mb-2">❌ Vague Prompt</p>
+                        <p className="text-sm text-muted-foreground font-mono whitespace-pre-wrap">{(concept as any).example.bad}</p>
+                      </div>
+                      <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900/50">
+                        <p className="text-xs font-semibold text-green-600 dark:text-green-400 mb-2">✅ Specific Prompt</p>
+                        <p className="text-sm text-muted-foreground font-mono whitespace-pre-wrap">{(concept as any).example.good}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/30"
+                    onClick={() => window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer')}
                   >
-                    Learn More
+                    <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" /> Learn More</span>
                     <ChevronRight className="w-4 h-4" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="hover:bg-green-50 dark:hover:bg-green-900/30"
-                    onClick={() => handleVideoPlay(codingVideos[index % codingVideos.length])}
-                  >
-                    <Video className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
         {/* AI Coding Tools */}
-        <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-3xl p-10 mb-12 border border-green-100 dark:border-green-800/50">
-          <h3 className="text-3xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">🛠️ Popular AI Coding Tools</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {codingTools.map((tool, index) => (
-              <div key={index} className="bg-white dark:bg-slate-700 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 border border-slate-100 dark:border-slate-600">
-                <div className="flex justify-between items-start mb-3">
-                  <h4 className="font-bold text-lg text-slate-800 dark:text-slate-100">{tool.name}</h4>
-                  <Badge variant="outline" className="text-xs font-medium">{tool.type}</Badge>
-                </div>
-                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{tool.description}</p>
-              </div>
+        <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl p-8 text-white">
+          <h3 className="text-2xl font-bold text-center mb-8">Essential AI Coding Tools</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {tools.map((tool) => (
+              <button
+                key={tool.name}
+                onClick={() => window.open(tool.url, '_blank', 'noopener,noreferrer')}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-left hover:bg-white/20 transition-colors"
+              >
+                <h4 className="font-bold text-lg mb-1">{tool.name}</h4>
+                <p className="text-sm text-white/80">{tool.desc}</p>
+              </button>
             ))}
-          </div>
-        </div>
-
-        {/* Best Practices */}
-        <div className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-3xl p-10 mb-12 border border-green-100 dark:border-green-800/50">
-          <h3 className="text-3xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">⭐ AI Coding Best Practices</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {bestPractices.map((practice, index) => (
-              <div key={index} className="flex items-start gap-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors">
-                <div className="w-3 h-3 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                <p className="text-slate-700 dark:text-slate-300 leading-relaxed font-medium">{practice}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Coding Impact Stats */}
-        <div className="bg-gradient-to-r from-green-600 to-emerald-700 rounded-3xl p-10 text-white shadow-2xl">
-          <div className="text-center mb-10">
-            <h3 className="text-4xl font-bold mb-4">AI Coding Revolution</h3>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto leading-relaxed">
-              AI is transforming software development, making coding more accessible and productive for developers worldwide
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Zap className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">55%</div>
-              <div className="text-lg opacity-90">Faster Development</div>
-            </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Target className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">73%</div>
-              <div className="text-lg opacity-90">Developers Using AI</div>
-            </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Brain className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">46%</div>
-              <div className="text-lg opacity-90">Code Completion Rate</div>
-            </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Star className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">88%</div>
-              <div className="text-lg opacity-90">Developer Satisfaction</div>
-            </div>
           </div>
         </div>
       </div>

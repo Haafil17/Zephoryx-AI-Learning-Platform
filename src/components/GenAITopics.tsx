@@ -1,327 +1,231 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Image, FileText, Mic, ChevronRight, Zap, Video, Play, X } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Sparkles, Image, FileText, Mic, ChevronRight, BookOpen, Video as VideoIcon, Wand2, Layers, Cpu, Paintbrush, Clapperboard } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const GenAITopics = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
-
-  const genAIConcepts = [
+  const concepts = [
     {
-      title: "Large Language Models (LLMs)",
-      description: "Understanding transformer architecture and how models like GPT generate human-like text",
-      category: "models",
-      icon: FileText,
-      capabilities: ["Text Generation", "Code Writing", "Translation", "Summarization"],
-      learnMoreUrl: "https://platform.openai.com/docs/guides/text-generation"
+      title: "What is Generative AI?",
+      description: "Generative AI refers to AI systems that create new content — text, images, audio, video, code, and 3D models — rather than just analyzing or classifying existing data. It's powered by foundation models (large neural networks pre-trained on massive datasets) that learn the statistical patterns of their training data and can generate novel outputs. The field exploded in 2022-2023 with ChatGPT, DALL-E, Stable Diffusion, and Midjourney, fundamentally changing how content is created.",
+      icon: Sparkles,
+      keyPoints: [
+        "Foundation models learn patterns from billions of examples, then generate new content",
+        "Key architectures: Transformers (text), Diffusion Models (images), GANs (images/video)",
+        "The market is projected to reach $1.3 trillion by 2032 (Bloomberg Intelligence)"
+      ],
+      learnMoreUrl: "https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier"
     },
     {
-      title: "Text-to-Image Generation",
-      description: "Creating stunning visuals from textual descriptions using diffusion models",
-      category: "creative",
+      title: "Transformer Architecture",
+      description: "The Transformer (Vaswani et al., 2017 — 'Attention Is All You Need') is the foundation of modern generative AI. It uses self-attention mechanisms to process entire sequences in parallel, unlike RNNs which process sequentially. Key components: Multi-Head Attention (learns different relationship types), Positional Encoding (captures word order), Feed-Forward Networks, and Layer Normalization. GPT uses decoder-only transformers (autoregressive, next-token prediction). BERT uses encoder-only. T5 uses encoder-decoder.",
+      icon: Cpu,
+      keyPoints: [
+        "Self-attention allows each token to attend to every other token in the sequence",
+        "GPT = decoder-only (generation), BERT = encoder-only (understanding), T5 = encoder-decoder",
+        "Scaling laws (Kaplan et al., 2020): larger models + more data = predictably better performance"
+      ],
+      learnMoreUrl: "https://arxiv.org/abs/1706.03762"
+    },
+    {
+      title: "Large Language Models (LLMs)",
+      description: "LLMs are transformer-based models trained on trillions of tokens of text data. The training process has two phases: (1) Pre-training — unsupervised next-token prediction on massive corpora (web text, books, code). This creates a base model with broad knowledge. (2) Post-training — supervised fine-tuning (SFT) on high-quality instruction-response pairs, then Reinforcement Learning from Human Feedback (RLHF) or Direct Preference Optimization (DPO) to align the model with human preferences. This produces a chat model.",
+      icon: FileText,
+      keyPoints: [
+        "Pre-training cost: GPT-4 estimated at $100M+, Llama 3.1 405B at ~$30M",
+        "RLHF/DPO alignment: humans rank model outputs to teach helpfulness and safety",
+        "Emergent abilities appear at scale: in-context learning, chain-of-thought reasoning"
+      ],
+      learnMoreUrl: "https://arxiv.org/abs/2303.18223"
+    },
+    {
+      title: "Diffusion Models for Image Generation",
+      description: "Diffusion models (Ho et al., 2020) generate images by learning to reverse a noise-adding process. Training: gradually add Gaussian noise to images until they become pure noise. Generation: start with random noise and iteratively denoise it into a coherent image, guided by a text prompt (via CLIP or T5 text encoders). Stable Diffusion uses a Latent Diffusion architecture — operating in a compressed latent space rather than pixel space, making it much faster. DALL-E 3 uses a similar approach with better prompt adherence.",
       icon: Image,
-      capabilities: ["Art Creation", "Product Design", "Marketing Assets", "Concept Art"],
+      keyPoints: [
+        "Forward process: image → noise (training). Reverse process: noise → image (generation)",
+        "Latent diffusion operates in compressed space (64x64 latent vs 512x512 pixels)",
+        "Classifier-Free Guidance (CFG) controls how closely the image follows the prompt"
+      ],
+      learnMoreUrl: "https://arxiv.org/abs/2006.11239"
+    },
+    {
+      title: "Text-to-Image: DALL-E, Midjourney, Flux",
+      description: "The three leading text-to-image systems each have distinct strengths. DALL-E 3 (OpenAI) excels at accurate text rendering in images and following complex prompts — it rewrites prompts internally using GPT-4 for better results. Midjourney v6 produces the most aesthetically pleasing, artistic outputs — popular with designers and artists. Flux by Black Forest Labs (from ex-Stability AI founders) offers the best open-source quality. Stable Diffusion 3 supports fine-tuning and local deployment for privacy.",
+      icon: Paintbrush,
+      keyPoints: [
+        "DALL-E 3: best text-in-image rendering, integrated with ChatGPT for iterative editing",
+        "Midjourney v6: highest aesthetic quality, strong at artistic styles and photorealism",
+        "Flux/SD3: open-source, can run locally, supports LoRA fine-tuning for custom styles"
+      ],
       learnMoreUrl: "https://openai.com/dall-e-3"
     },
     {
+      title: "AI Video Generation",
+      description: "Video generation AI creates clips from text prompts or images. OpenAI's Sora generates photorealistic videos up to 60 seconds using a diffusion transformer architecture that understands 3D space and physics. Runway Gen-3 Alpha offers professional video editing and generation tools used in Hollywood productions. Google's Veo 2 generates 4K videos with cinematic quality. Kling by Kuaishou and Pika Labs are strong competitors. The technology uses temporal attention to maintain consistency across frames.",
+      icon: Clapperboard,
+      keyPoints: [
+        "Sora uses spacetime patches — treating video as sequences of 3D patches, not frame-by-frame",
+        "Runway Gen-3 Alpha: used in actual film production, supports motion brush and camera control",
+        "Key challenge: temporal consistency — maintaining coherent objects and physics across frames"
+      ],
+      learnMoreUrl: "https://openai.com/sora"
+    },
+    {
       title: "Voice & Audio AI",
-      description: "Generating realistic speech, music, and sound effects from text or audio inputs",
-      category: "creative",
+      description: "AI audio generation has reached human-level quality. ElevenLabs leads in voice cloning — it can replicate any voice from a few seconds of audio and generates speech with natural emotions, pacing, and inflections. OpenAI's text-to-speech API offers 6 natural voices. For music, Suno v4 generates full songs with vocals from text descriptions — specify genre, mood, tempo, and lyrics. Udio focuses on production quality. Google's MusicLM and Meta's MusicGen are research-oriented alternatives.",
       icon: Mic,
-      capabilities: ["Voice Cloning", "Music Generation", "Podcast Creation", "Audio Enhancement"],
+      keyPoints: [
+        "ElevenLabs: voice cloning from 30 seconds of audio, 29 languages, emotional control",
+        "Suno v4: generates radio-quality songs with vocals, multiple genres, from text prompts",
+        "OpenAI Whisper: best open-source speech-to-text, supports 99 languages"
+      ],
       learnMoreUrl: "https://elevenlabs.io/"
     },
     {
-      title: "Prompt Engineering Mastery",
-      description: "Advanced techniques for crafting effective prompts to get optimal AI outputs",
-      category: "techniques",
+      title: "Fine-Tuning & Customization",
+      description: "Fine-tuning adapts a pre-trained model to a specific domain or task. Full fine-tuning updates all model weights — expensive and requires lots of data. LoRA (Low-Rank Adaptation) freezes the base model and trains small adapter layers — 100x cheaper, can be done on a single GPU. QLoRA combines LoRA with 4-bit quantization for even lower memory usage. For images, DreamBooth fine-tunes diffusion models on 5-20 images to learn a specific subject (person, product, style). Textual Inversion learns new 'concepts' as embeddings.",
+      icon: Wand2,
+      keyPoints: [
+        "LoRA: train 0.1% of parameters, achieve 90%+ of full fine-tuning quality",
+        "QLoRA: fine-tune a 70B model on a single 48GB GPU using 4-bit quantization",
+        "DreamBooth: teach a diffusion model a new subject from just 5-20 images"
+      ],
+      learnMoreUrl: "https://huggingface.co/docs/peft/main/en/index"
+    },
+    {
+      title: "Multimodal AI",
+      description: "Multimodal models process and generate multiple data types (text, images, audio, video) in a unified architecture. GPT-4o is natively multimodal — it processes text, images, and audio in a single model, not separate pipelines. Gemini 2.5 Pro handles text, images, video, and audio with a 1M+ token context window. Meta's ImageBind links 6 modalities (text, image, audio, depth, thermal, IMU) in a shared embedding space. The trend is toward unified models that handle all modalities natively.",
+      icon: Layers,
+      keyPoints: [
+        "GPT-4o: native multimodal — text, vision, audio in one model with low latency",
+        "Gemini 2.5: processes video natively (not frame-by-frame), 1M+ token context",
+        "Vision-Language Models (VLMs): connect image encoders to LLMs for visual understanding"
+      ],
+      learnMoreUrl: "https://ai.google.dev/gemini-api/docs"
+    },
+    {
+      title: "Synthetic Data Generation",
+      description: "Synthetic data is AI-generated data used to train other AI models, augment small datasets, or protect privacy. LLMs generate synthetic text for training classifiers, chatbots, and evaluation datasets. Diffusion models generate synthetic images for computer vision training — especially useful for rare edge cases. NVIDIA's Omniverse generates synthetic 3D environments for robotics and autonomous driving. Gretel.ai specializes in generating privacy-safe synthetic tabular data that preserves statistical properties.",
       icon: Sparkles,
-      capabilities: ["Chain-of-Thought", "Few-Shot Learning", "Role-Based Prompting", "Template Design"],
-      learnMoreUrl: "https://www.promptingguide.ai/"
+      keyPoints: [
+        "Alpaca, Orca, Phi datasets: high-quality synthetic data used to train smaller models",
+        "Synthetic data can introduce or amplify biases — validation against real data is critical",
+        "NVIDIA Omniverse: generates photorealistic synthetic training data for robotics"
+      ],
+      learnMoreUrl: "https://gretel.ai/"
     },
-    {
-      title: "AI Content Workflows",
-      description: "Building efficient pipelines for content creation across multiple AI models",
-      category: "workflow",
-      icon: Zap,
-      capabilities: ["Automation", "Quality Control", "Multi-Modal", "Batch Processing"],
-      learnMoreUrl: "https://zapier.com/blog/ai-automation/"
-    },
-    {
-      title: "Fine-tuning & Customization",
-      description: "Adapting pre-trained models for specific domains and use cases",
-      category: "advanced",
-      icon: Sparkles,
-      capabilities: ["Domain Adaptation", "Style Transfer", "Custom Training", "Model Optimization"],
-      learnMoreUrl: "https://huggingface.co/docs/transformers/training"
-    }
   ];
 
-  const genAIVideos = [
-    {
-      id: "gpt-tutorial",
-      title: "Mastering ChatGPT & LLMs",
-      description: "Complete guide to using large language models effectively",
-      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
-      duration: "28:15",
-      category: "models",
-      videoUrl: "https://www.youtube.com/embed/JTxsNm9IdYU?autoplay=1"
-    },
-    {
-      id: "dalle-masterclass",
-      title: "AI Art Creation with DALL-E",
-      description: "Creating stunning visuals with text-to-image AI",
-      thumbnail: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=225&fit=crop",
-      duration: "19:40",
-      category: "creative",
-      videoUrl: "https://www.youtube.com/embed/F1X4fHzF4mQ?autoplay=1"
-    },
-    {
-      id: "prompt-engineering",
-      title: "Advanced Prompt Engineering",
-      description: "Professional techniques for better AI outputs",
-      thumbnail: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=225&fit=crop",
-      duration: "35:20",
-      category: "techniques",
-      videoUrl: "https://www.youtube.com/embed/dOxUroR57xs?autoplay=1"
-    },
-    {
-      id: "ai-workflows",
-      title: "Building AI Content Workflows",
-      description: "Automating content creation with multiple AI tools",
-      thumbnail: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=400&h=225&fit=crop",
-      duration: "24:10",
-      category: "workflow",
-      videoUrl: "https://www.youtube.com/embed/ZuHf7_yWN0I?autoplay=1"
-    }
+  const resources = [
+    { name: "Attention Is All You Need", desc: "The original Transformer paper (Vaswani et al., 2017)", url: "https://arxiv.org/abs/1706.03762" },
+    { name: "Hugging Face Course", desc: "Free, comprehensive NLP and generative AI course", url: "https://huggingface.co/learn" },
+    { name: "Andrej Karpathy - Let's Build GPT", desc: "Build a GPT from scratch in code — best LLM tutorial", url: "https://www.youtube.com/watch?v=kCc8FmEb1nY" },
+    { name: "Stable Diffusion from Scratch", desc: "Understanding diffusion models step by step", url: "https://jalammar.github.io/illustrated-stable-diffusion/" },
+    { name: "Google Generative AI Learning Path", desc: "Free courses on GenAI fundamentals and applications", url: "https://www.cloudskillsboost.google/paths/118" },
+    { name: "DeepLearning.AI Short Courses", desc: "Free short courses by Andrew Ng on GenAI topics", url: "https://www.deeplearning.ai/short-courses/" },
   ];
-
-  const categories = [
-    { id: "all", name: "All Topics", count: genAIConcepts.length },
-    { id: "models", name: "AI Models", count: genAIConcepts.filter(c => c.category === "models").length },
-    { id: "creative", name: "Creative AI", count: genAIConcepts.filter(c => c.category === "creative").length },
-    { id: "techniques", name: "Techniques", count: genAIConcepts.filter(c => c.category === "techniques").length },
-    { id: "workflow", name: "Workflows", count: genAIConcepts.filter(c => c.category === "workflow").length },
-    { id: "advanced", name: "Advanced", count: genAIConcepts.filter(c => c.category === "advanced").length }
-  ];
-
-  const filteredConcepts = selectedCategory === "all" 
-    ? genAIConcepts 
-    : genAIConcepts.filter(concept => concept.category === selectedCategory);
-
-  const tools = [
-    { name: "ChatGPT", type: "Text", description: "Conversational AI for various tasks" },
-    { name: "DALL-E", type: "Image", description: "Text-to-image generation" },
-    { name: "Midjourney", type: "Image", description: "Artistic AI image creation" },
-    { name: "Claude", type: "Text", description: "Advanced reasoning and analysis" },
-    { name: "Stable Diffusion", type: "Image", description: "Open-source image generation" },
-    { name: "ElevenLabs", type: "Audio", description: "Voice cloning and generation" }
-  ];
-
-  const handleExploreClick = (concept: typeof genAIConcepts[0]) => {
-    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
-    toast.success(`Opening ${concept.title} resources...`);
-  };
-
-  const handleVideoPlay = (videoId: string) => {
-    setPlayingVideoId(videoId);
-    toast.success("Playing GenAI tutorial...", {
-      description: "Loading educational content"
-    });
-  };
-
-  const closeVideo = () => {
-    setPlayingVideoId(null);
-  };
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950 dark:to-pink-950">
+    <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Video Modal */}
-        {playingVideoId && (
-          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-800 rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
-              <div className="flex justify-between items-center p-4 border-b">
-                <h3 className="text-lg font-semibold">
-                  {genAIVideos.find(v => v.id === playingVideoId)?.title}
-                </h3>
-                <Button variant="ghost" size="sm" onClick={closeVideo}>
-                  <X className="w-4 h-4" />
-                </Button>
-              </div>
-              <div className="aspect-video">
-                <iframe
-                  src={genAIVideos.find(v => v.id === playingVideoId)?.videoUrl}
-                  className="w-full h-full"
-                  allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={genAIVideos.find(v => v.id === playingVideoId)?.title}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
-            Generative AI
+          <Badge className="mb-4 bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200 border-0 px-4 py-1.5">
+            <Sparkles className="w-4 h-4 mr-1" /> The AI Revolution
+          </Badge>
+          <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 bg-clip-text text-transparent mb-4">
+            Generative AI Deep Dive
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Master the art of creating content with AI - from text and images to audio and video generation
+          <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            From transformer architecture to diffusion models, voice cloning to video generation — understand the technology behind the AI revolution with real research and documentation.
           </p>
         </div>
 
-        {/* Featured Video Section */}
-        <div className="mb-16 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
-            GenAI Video Tutorials
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {genAIVideos.map((video) => (
-              <Card key={video.id} className="group hover:shadow-xl transition-all duration-300 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
-                <div className="relative">
-                  <img 
-                    src={video.thumbnail} 
-                    alt={video.title}
-                    className="w-full h-40 object-cover rounded-t-lg"
-                  />
-                  <div className="absolute inset-0 bg-black/30 rounded-t-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button
-                      onClick={() => handleVideoPlay(video.id)}
-                      className="bg-purple-600 hover:bg-purple-700 text-white rounded-full p-3"
-                    >
-                      <Play className="w-5 h-5" />
-                    </Button>
-                  </div>
-                  <Badge className="absolute top-2 right-2 bg-black/70 text-white text-xs">
-                    {video.duration}
-                  </Badge>
-                </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold text-sm mb-2">{video.title}</h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">{video.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`${
-                selectedCategory === category.id
-                  ? "bg-purple-600 text-white"
-                  : "bg-white text-slate-700 hover:bg-purple-50"
-              } px-4 py-2 rounded-full border transition-all duration-200`}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          {concepts.map((concept, i) => (
+            <motion.div
+              key={concept.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
             >
-              {category.name}
-              <Badge variant="secondary" className="ml-2 text-xs">
-                {category.count}
-              </Badge>
-            </Button>
-          ))}
-        </div>
-
-        {/* GenAI Concepts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredConcepts.map((concept, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-lg hover:scale-105">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 bg-purple-100 dark:bg-purple-900/50 rounded-full group-hover:bg-purple-200 dark:group-hover:bg-purple-800/70 transition-colors">
-                    <concept.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 shadow-md">
+                      <concept.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <CardTitle className="text-xl font-display">{concept.title}</CardTitle>
                   </div>
-                </div>
-                <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                  {concept.title}
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                  {concept.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Key Capabilities:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {concept.capabilities.map((capability, capIndex) => (
-                      <Badge key={capIndex} variant="outline" className="text-xs">
-                        {capability}
-                      </Badge>
-                    ))}
+                  <CardDescription className="text-base leading-relaxed">
+                    {concept.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground mb-2">Key Points:</h4>
+                    <ul className="space-y-1.5">
+                      {concept.keyPoints.map((point, j) => (
+                        <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <div className="w-1.5 h-1.5 rounded-full bg-purple-500 mt-2 shrink-0" />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="ghost" 
-                    className="flex-1 justify-between text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-900/30"
-                    onClick={() => handleExploreClick(concept)}
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:bg-purple-900/30"
+                    onClick={() => window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer')}
                   >
-                    Explore Topic
+                    <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" /> Read Research / Docs</span>
                     <ChevronRight className="w-4 h-4" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleVideoPlay(genAIVideos[index % genAIVideos.length].id)}
-                  >
-                    <Video className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
-        {/* Popular Tools Section */}
-        <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl p-8 mb-12">
-          <h3 className="text-2xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">Popular GenAI Tools</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool, index) => (
-              <div key={index} className="bg-white dark:bg-slate-700 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-semibold text-slate-800 dark:text-slate-100">{tool.name}</h4>
-                  <Badge variant="outline" className="text-xs">{tool.type}</Badge>
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">{tool.description}</p>
+        {/* GenAI Timeline */}
+        <div className="bg-slate-900 rounded-2xl p-8 text-white mb-12">
+          <h3 className="text-2xl font-bold mb-6">Generative AI Timeline: Key Milestones</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { year: "2017", event: "Transformer Architecture", detail: "Vaswani et al. publish 'Attention Is All You Need'" },
+              { year: "2020", event: "GPT-3 Launch", detail: "175B parameter model demonstrates few-shot learning" },
+              { year: "2022", event: "ChatGPT & Stable Diffusion", detail: "Generative AI goes mainstream with consumer products" },
+              { year: "2023", event: "GPT-4 & Multimodal", detail: "Models become natively multimodal (text + vision + audio)" },
+              { year: "2024", event: "Video Generation", detail: "Sora, Runway Gen-3, and Kling generate realistic video" },
+              { year: "2024", event: "Open-Source Catches Up", detail: "Llama 3.1 405B matches GPT-4 on many benchmarks" },
+              { year: "2025", event: "Reasoning Models", detail: "o1, o3, DeepSeek R1 bring chain-of-thought to production" },
+              { year: "2025", event: "Agentic AI", detail: "AI systems that plan, use tools, and complete tasks autonomously" },
+            ].map((item, i) => (
+              <div key={i} className="bg-white/10 rounded-xl p-4">
+                <Badge className="mb-2 bg-purple-600 text-white border-0">{item.year}</Badge>
+                <h4 className="font-bold text-lg mb-1">{item.event}</h4>
+                <p className="text-sm text-white/70">{item.detail}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* GenAI Impact Stats */}
-        <div className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl p-8 text-white">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold mb-4">The GenAI Revolution</h3>
-            <p className="text-lg opacity-90 max-w-2xl mx-auto">
-              Generative AI is transforming creative industries and democratizing content creation for everyone
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">1B+</div>
-              <div className="text-sm opacity-90">Images Generated Daily</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">90%</div>
-              <div className="text-sm opacity-90">Time Saved</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">50+</div>
-              <div className="text-sm opacity-90">AI Models Available</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold mb-2">24/7</div>
-              <div className="text-sm opacity-90">Creative Assistant</div>
-            </div>
+        {/* Resources */}
+        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-8 text-white">
+          <h3 className="text-2xl font-bold text-center mb-8">Essential Generative AI Resources</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {resources.map((r) => (
+              <button
+                key={r.name}
+                onClick={() => window.open(r.url, '_blank', 'noopener,noreferrer')}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-left hover:bg-white/20 transition-colors"
+              >
+                <h4 className="font-bold text-lg mb-1">{r.name}</h4>
+                <p className="text-sm text-white/80">{r.desc}</p>
+              </button>
+            ))}
           </div>
         </div>
       </div>
