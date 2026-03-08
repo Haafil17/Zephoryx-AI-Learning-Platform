@@ -12,6 +12,7 @@ import ResetPassword from "./pages/ResetPassword";
 import { lazy, Suspense } from "react";
 
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
 
 const queryClient = new QueryClient();
 
