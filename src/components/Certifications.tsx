@@ -25,6 +25,7 @@ export const Certifications = () => {
   const [userCert, setUserCert] = useState<UserCert | null>(null);
   const [claiming, setClaiming] = useState(false);
   const [recipientName, setRecipientName] = useState('');
+  const [nameLoaded, setNameLoaded] = useState(false);
   const certCanvasRef = useRef<HTMLCanvasElement>(null);
   const bgImgRef = useRef<HTMLImageElement | null>(null);
   const logoImgRef = useRef<HTMLImageElement | null>(null);
