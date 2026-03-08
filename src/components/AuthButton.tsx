@@ -39,7 +39,7 @@ export const AuthButton = () => {
     
     // Validate input
     const schema = isSignUp ? signUpSchema : authSchema;
-    const result = schema.safeParse({ email, password, phoneNumber: phoneNumber || undefined });
+    const result = schema.safeParse({ email, password, phoneNumber: phoneNumber || undefined, fullName: fullName || undefined });
     if (!result.success) {
       toast.error(result.error.errors[0].message);
       return;
