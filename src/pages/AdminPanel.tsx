@@ -256,10 +256,10 @@ const AdminPanel = () => {
   };
 
   const exportUsersCSV = () => {
-    const headers = ['Email', 'Name', 'Phone', 'Level', 'XP', 'Status', 'Joined'];
+    const headers = ['Email', 'Name', 'Phone', 'Level', 'Status', 'Joined'];
     const rows = users.map(u => [
       u.email || '', u.full_name || '', u.phone_number || '', u.level || '', 
-      String(u.xp || 0), u.blocked ? 'Blocked' : 'Active', u.created_at ? new Date(u.created_at).toLocaleDateString() : ''
+      u.blocked ? 'Blocked' : 'Active', u.created_at ? new Date(u.created_at).toLocaleDateString() : ''
     ]);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -282,7 +282,6 @@ const AdminPanel = () => {
   const lessonCategories = [...new Set(lessons.map(l => l.category))];
 
   // Analytics
-  const totalXP = users.reduce((sum, u) => sum + (u.xp || 0), 0);
   const activeUsers = users.filter(u => !u.blocked).length;
   const blockedUsers = users.filter(u => u.blocked).length;
   const newUsersThisMonth = users.filter(u => {
@@ -291,13 +290,12 @@ const AdminPanel = () => {
     const now = new Date();
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
   }).length;
-  const avgXP = users.length ? Math.round(totalXP / users.length) : 0;
   const levelDistribution = users.reduce((acc, u) => {
     const level = u.level || 'AI Beginner';
     acc[level] = (acc[level] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  const topUsers = [...users].sort((a, b) => (b.xp || 0) - (a.xp || 0)).slice(0, 5);
+  const topUsers = [...users].sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()).slice(0, 5);
   const difficultyDistribution = lessons.reduce((acc, l) => {
     acc[l.difficulty] = (acc[l.difficulty] || 0) + 1;
     return acc;
@@ -376,7 +374,7 @@ const AdminPanel = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard icon={Users} title="Total Users" value={users.length} subtitle={`${newUsersThisMonth} new this month`} color="border-l-blue-500" trend="up" />
               <StatCard icon={UserCheck} title="Active Users" value={activeUsers} subtitle={`${blockedUsers} blocked`} color="border-l-green-500" />
-              <StatCard icon={Zap} title="Total XP" value={totalXP.toLocaleString()} subtitle={`Avg: ${avgXP} per user`} color="border-l-amber-500" />
+              <StatCard icon={Award} title="Certifications" value={certifications.length} subtitle={`Available to earn`} color="border-l-amber-500" />
               <StatCard icon={Database} title="Content Items" value={lessons.length + knowledgeBase.length} subtitle={`${lessons.length} lessons · ${knowledgeBase.length} KB`} color="border-l-purple-500" />
             </div>
 
@@ -419,7 +417,7 @@ const AdminPanel = () => {
                           <p className="text-sm font-medium truncate">{u.email || 'Unknown'}</p>
                           <p className="text-xs text-muted-foreground">{u.level || 'AI Beginner'}</p>
                         </div>
-                        <Badge variant="secondary" className="font-mono">{u.xp || 0} XP</Badge>
+                        <Badge variant="secondary">{u.level || 'Beginner'}</Badge>
                       </div>
                     ))}
                   </div>
@@ -470,7 +468,7 @@ const AdminPanel = () => {
                       <TableHead>Email</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Level</TableHead>
-                      <TableHead>XP</TableHead>
+                      <TableHead>Certs</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Joined</TableHead>
                     </TableRow>
@@ -481,7 +479,7 @@ const AdminPanel = () => {
                         <TableCell className="font-medium">{u.email || '-'}</TableCell>
                         <TableCell>{u.full_name || '-'}</TableCell>
                         <TableCell><Badge variant="outline" className="text-xs">{u.level || 'AI Beginner'}</Badge></TableCell>
-                        <TableCell className="font-mono text-sm">{u.xp || 0}</TableCell>
+                        <TableCell className="text-sm">-</TableCell>
                         <TableCell>
                           {u.blocked ? (
                             <Badge variant="destructive" className="gap-1 text-xs"><Ban className="w-3 h-3" /> Blocked</Badge>

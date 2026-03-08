@@ -13,6 +13,9 @@ import { RAGTopics } from "@/components/RAGTopics";
 import { MCPTopics } from "@/components/MCPTopics";
 import { OrchestratorTopics } from "@/components/OrchestratorTopics";
 import { AIModelsTopics } from "@/components/AIModelsTopics";
+import { GuardrailsTopics } from "@/components/GuardrailsTopics";
+import { PromptEngineeringTopics } from "@/components/PromptEngineeringTopics";
+import { AgenticAITopics } from "@/components/AgenticAITopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 
@@ -38,23 +41,23 @@ import {
   Brain, 
   Zap, 
   Search, 
-  Trophy, 
   Code, 
   Atom, 
   Sparkles,
   Target,
-  Lightbulb,
   Play,
   X,
   Database,
   Plug,
   Network,
-  Cpu
+  Cpu,
+  Shield,
+  Bot
 } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState("techniques");
+  const [activeTab, setActiveTab] = useState("prompting");
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -68,52 +71,52 @@ const Index = () => {
 
   const features = [
     {
-      icon: Brain,
-      title: "AI Chat Assistant",
-      description: "Get instant help with your prompts and AI questions from our intelligent assistant",
-      color: "from-blue-500 to-cyan-500"
+      icon: Sparkles,
+      title: "Prompt Engineering",
+      description: "Master zero-shot, few-shot, chain-of-thought, ReAct, and every major prompting technique with real examples",
+      color: "from-amber-500 to-orange-500"
     },
     {
-      icon: Search,
-      title: "Prompt Analyzer",
-      description: "Analyze and optimize your prompts for better AI responses and performance",
-      color: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: Target,
-      title: "Advanced Techniques",
-      description: "Master zero-shot, few-shot, chain-of-thought, and other cutting-edge prompting methods",
-      color: "from-green-500 to-emerald-500"
+      icon: Bot,
+      title: "Agentic AI",
+      description: "Build AI systems that reason, plan, use tools, and complete complex tasks autonomously",
+      color: "from-indigo-500 to-violet-500"
     },
     {
       icon: Database,
       title: "RAG & Retrieval",
-      description: "Learn Retrieval-Augmented Generation — the standard pattern for grounding AI in real data",
+      description: "Learn Retrieval-Augmented Generation — embeddings, vector search, chunking, and production architectures",
       color: "from-emerald-500 to-teal-500"
     },
     {
       icon: Plug,
       title: "MCP Protocol",
-      description: "Model Context Protocol — the universal standard for connecting AI to external tools",
+      description: "Model Context Protocol — the universal standard for connecting AI to external tools and data",
       color: "from-violet-500 to-purple-500"
     },
     {
       icon: Network,
       title: "AI Orchestrators",
-      description: "Build agent systems that reason, plan, use tools, and complete complex tasks",
+      description: "LangChain, LangGraph, CrewAI — frameworks for building multi-agent systems and workflows",
       color: "from-orange-500 to-red-500"
     },
     {
-      icon: Code,
-      title: "Coding & Development",
-      description: "Specialized prompts for programming, debugging, and software development",
-      color: "from-teal-500 to-blue-500"
+      icon: Shield,
+      title: "Guardrails & Safety",
+      description: "Prompt injection defense, content moderation, PII protection, and AI red-teaming",
+      color: "from-red-500 to-rose-500"
     },
     {
-      icon: Atom,
-      title: "Quantum Computing",
-      description: "Explore the intersection of AI and quantum computing technologies",
-      color: "from-pink-500 to-rose-500"
+      icon: Brain,
+      title: "Gen AI & Models",
+      description: "GPT-4o, Claude, Gemini, Llama — understand every major model and when to use each one",
+      color: "from-purple-500 to-pink-500"
+    },
+    {
+      icon: Code,
+      title: "Coding & Quantum",
+      description: "AI-powered development, code generation, and the frontier of quantum computing + AI",
+      color: "from-teal-500 to-blue-500"
     }
   ];
 
@@ -212,7 +215,7 @@ const Index = () => {
               Everything You Need to Master AI
             </h2>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
-              From prompt engineering to RAG, MCP, AI agents, and quantum computing — real content, real resources, no fluff.
+              From prompt engineering to RAG, MCP, agentic AI, guardrails, and quantum computing — real content, real resources, no fluff.
             </p>
             
             {/* Video Section */}
@@ -282,18 +285,20 @@ const Index = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="flex justify-center mb-12 gap-2 bg-muted/30 dark:bg-muted/10 rounded-full shadow-sm flex-wrap p-3 border border-border/50 backdrop-blur-sm">
             {[
+              { value: "prompting", label: "✍️ Prompt Engineering" },
+              { value: "agentic", label: "🤖 Agentic AI" },
+              { value: "rag", label: "🔍 RAG" },
+              { value: "mcp", label: "🔌 MCP" },
+              { value: "orchestrators", label: "⚙️ Orchestrators" },
+              { value: "guardrails", label: "🛡️ Guardrails" },
+              { value: "genai", label: "🎨 Gen AI" },
+              { value: "models", label: "🧠 Models" },
               { value: "techniques", label: "🎯 Techniques" },
               { value: "examples", label: "💡 Examples" },
               { value: "bestpractices", label: "🏆 Best Practices" },
-              { value: "rag", label: "🔍 RAG" },
-              { value: "mcp", label: "🔌 MCP" },
-              { value: "orchestrators", label: "🤖 Agents" },
-              { value: "models", label: "🧠 Models" },
-              { value: "ai", label: "🤖 AI" },
-              { value: "genai", label: "🎨 Gen AI" },
-              { value: "quantum", label: "⚛️ Quantum" },
               { value: "coding", label: "💻 Coding" },
-              { value: "features", label: "⚡ Features" },
+              { value: "quantum", label: "⚛️ Quantum" },
+              { value: "ai", label: "📘 AI Basics" },
               { value: "aitools", label: "🔧 AI Tools" },
               { value: "videos", label: "🎥 Videos" },
               { value: "resources", label: "📚 Resources" },
@@ -308,18 +313,20 @@ const Index = () => {
             ))}
           </TabsList>
 
-          <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /></TabsContent>
-          <TabsContent value="examples" className="focus:outline-none"><Examples /></TabsContent>
-          <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
+          <TabsContent value="prompting" className="focus:outline-none"><PromptEngineeringTopics /></TabsContent>
+          <TabsContent value="agentic" className="focus:outline-none"><AgenticAITopics /></TabsContent>
           <TabsContent value="rag" className="focus:outline-none"><RAGTopics /></TabsContent>
           <TabsContent value="mcp" className="focus:outline-none"><MCPTopics /></TabsContent>
           <TabsContent value="orchestrators" className="focus:outline-none"><OrchestratorTopics /></TabsContent>
-          <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /></TabsContent>
-          <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
+          <TabsContent value="guardrails" className="focus:outline-none"><GuardrailsTopics /></TabsContent>
           <TabsContent value="genai" className="focus:outline-none"><GenAITopics /></TabsContent>
-          <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
+          <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /></TabsContent>
+          <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /></TabsContent>
+          <TabsContent value="examples" className="focus:outline-none"><Examples /></TabsContent>
+          <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
           <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
-          <TabsContent value="features" className="focus:outline-none"><EnhancedInteractiveFeatures /></TabsContent>
+          <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
+          <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
           <TabsContent value="aitools" className="focus:outline-none">
             <div className="space-y-8 pb-16">
               <div className="text-center mb-12">
