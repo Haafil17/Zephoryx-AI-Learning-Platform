@@ -126,6 +126,36 @@ const Index = () => {
       title: "Coding & Quantum",
       description: "AI-powered development, code generation, and the frontier of quantum computing + AI",
       color: "from-teal-500 to-blue-500"
+    },
+    {
+      icon: Settings,
+      title: "LLM Fine-Tuning",
+      description: "LoRA, QLoRA, RLHF, DPO — customize language models for your specific domain and use case",
+      color: "from-orange-500 to-red-500"
+    },
+    {
+      icon: FileText,
+      title: "NLP & Text Processing",
+      description: "Tokenization, embeddings, NER, sentiment analysis, and machine translation fundamentals",
+      color: "from-sky-500 to-blue-500"
+    },
+    {
+      icon: Eye,
+      title: "Computer Vision",
+      description: "CNNs, YOLO, SAM, Vision Transformers — image classification, detection, and generation",
+      color: "from-violet-500 to-fuchsia-500"
+    },
+    {
+      icon: Rocket,
+      title: "AI Deployment & MLOps",
+      description: "Model serving, monitoring, CI/CD for ML, quantization, and production AI security",
+      color: "from-lime-500 to-green-500"
+    },
+    {
+      icon: Brain,
+      title: "Deep Learning",
+      description: "Transformers, LSTMs, GRUs, attention mechanisms, embeddings, and foundation models",
+      color: "from-rose-500 to-pink-500"
     }
   ];
 
