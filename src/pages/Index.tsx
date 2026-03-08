@@ -20,7 +20,7 @@ import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 
 import { Newsletter } from "@/components/Newsletter";
-import { Certifications } from "@/components/Certifications";
+
 import { LearningPaths } from "@/components/LearningPaths";
 import { CommunitySection } from "@/components/CommunitySection";
 import { PromptBuilder } from "@/components/PromptBuilder";
