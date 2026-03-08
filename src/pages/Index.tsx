@@ -57,7 +57,11 @@ import {
   Network,
   Cpu,
   Shield,
-  Bot
+  Bot,
+  Eye,
+  FileText,
+  Rocket,
+  Settings
 } from "lucide-react";
 import { toast } from "sonner";
 
