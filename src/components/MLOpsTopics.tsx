@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Rocket, ChevronRight, BookOpen, Server, BarChart3, GitBranch, Shield, Monitor } from "lucide-react";
+import { Rocket, ChevronRight, BookOpen, Server, BarChart3, GitBranch, Shield, Monitor, Container, Cpu, Cloud, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const MLOpsTopics = () => {
