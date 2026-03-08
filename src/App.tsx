@@ -30,8 +30,7 @@ const App = () => (
               <Route path="/verify" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><VerifyCertificate /></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </BrowserRouter>
-        </AuthProvider>
+        </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
