@@ -74,6 +74,7 @@ export const AuthButton = () => {
       setEmail('');
       setPassword('');
       setPhoneNumber('');
+      setFullName('');
     }
     setAuthLoading(false);
   };
