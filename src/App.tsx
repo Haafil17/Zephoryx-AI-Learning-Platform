@@ -13,6 +13,7 @@ import { lazy, Suspense } from "react";
 
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
+const MyCertificate = lazy(() => import("./pages/MyCertificate"));
 
 const queryClient = new QueryClient();
 
