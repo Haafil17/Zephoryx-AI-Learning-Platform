@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Settings, ChevronRight, BookOpen, Cpu, Layers, Zap, Target, Database } from "lucide-react";
+import { Settings, ChevronRight, BookOpen, Cpu, Layers, Zap, Target, Database, GitMerge, FlaskConical, Scale, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const LLMFineTuningTopics = () => {
