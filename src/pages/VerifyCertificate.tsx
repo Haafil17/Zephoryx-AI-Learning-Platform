@@ -57,9 +57,9 @@ const VerifyCertificate = () => {
   };
 
   // Auto-verify if code is in URL
-  useState(() => {
+  useEffect(() => {
     if (initialCode) verify();
-  });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-background to-amber-50/30 dark:from-amber-950/20 dark:via-background dark:to-amber-950/10 flex items-center justify-center p-4">
