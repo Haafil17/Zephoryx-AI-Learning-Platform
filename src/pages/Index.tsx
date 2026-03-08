@@ -16,6 +16,11 @@ import { AIModelsTopics } from "@/components/AIModelsTopics";
 import { GuardrailsTopics } from "@/components/GuardrailsTopics";
 import { PromptEngineeringTopics } from "@/components/PromptEngineeringTopics";
 import { AgenticAITopics } from "@/components/AgenticAITopics";
+import { LLMFineTuningTopics } from "@/components/LLMFineTuningTopics";
+import { NLPTopics } from "@/components/NLPTopics";
+import { ComputerVisionTopics } from "@/components/ComputerVisionTopics";
+import { MLOpsTopics } from "@/components/MLOpsTopics";
+import { DeepLearningTopics } from "@/components/DeepLearningTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 
@@ -52,7 +57,11 @@ import {
   Network,
   Cpu,
   Shield,
-  Bot
+  Bot,
+  Eye,
+  FileText,
+  Rocket,
+  Settings
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -117,6 +126,36 @@ const Index = () => {
       title: "Coding & Quantum",
       description: "AI-powered development, code generation, and the frontier of quantum computing + AI",
       color: "from-teal-500 to-blue-500"
+    },
+    {
+      icon: Settings,
+      title: "LLM Fine-Tuning",
+      description: "LoRA, QLoRA, RLHF, DPO — customize language models for your specific domain and use case",
+      color: "from-orange-500 to-red-500"
+    },
+    {
+      icon: FileText,
+      title: "NLP & Text Processing",
+      description: "Tokenization, embeddings, NER, sentiment analysis, and machine translation fundamentals",
+      color: "from-sky-500 to-blue-500"
+    },
+    {
+      icon: Eye,
+      title: "Computer Vision",
+      description: "CNNs, YOLO, SAM, Vision Transformers — image classification, detection, and generation",
+      color: "from-violet-500 to-fuchsia-500"
+    },
+    {
+      icon: Rocket,
+      title: "AI Deployment & MLOps",
+      description: "Model serving, monitoring, CI/CD for ML, quantization, and production AI security",
+      color: "from-lime-500 to-green-500"
+    },
+    {
+      icon: Brain,
+      title: "Deep Learning",
+      description: "Transformers, LSTMs, GRUs, attention mechanisms, embeddings, and foundation models",
+      color: "from-rose-500 to-pink-500"
     }
   ];
 
@@ -298,8 +337,13 @@ const Index = () => {
               { value: "bestpractices", label: "🏆 Best Practices" },
               { value: "coding", label: "💻 Coding" },
               { value: "quantum", label: "⚛️ Quantum" },
+              { value: "finetuning", label: "🔧 Fine-Tuning" },
+              { value: "nlp", label: "📝 NLP" },
+              { value: "vision", label: "👁️ Vision" },
+              { value: "mlops", label: "🚀 MLOps" },
+              { value: "deeplearning", label: "🧬 Deep Learning" },
               { value: "ai", label: "📘 AI Basics" },
-              { value: "aitools", label: "🔧 AI Tools" },
+              { value: "aitools", label: "🛠️ AI Tools" },
               { value: "videos", label: "🎥 Videos" },
               { value: "resources", label: "📚 Resources" },
             ].map(tab => (
@@ -326,6 +370,11 @@ const Index = () => {
           <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
           <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
           <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
+          <TabsContent value="finetuning" className="focus:outline-none"><LLMFineTuningTopics /></TabsContent>
+          <TabsContent value="nlp" className="focus:outline-none"><NLPTopics /></TabsContent>
+          <TabsContent value="vision" className="focus:outline-none"><ComputerVisionTopics /></TabsContent>
+          <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
+          <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
           <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
           <TabsContent value="aitools" className="focus:outline-none">
             <div className="space-y-8 pb-16">
