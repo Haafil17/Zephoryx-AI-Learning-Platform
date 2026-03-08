@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
-import { Award, CheckCircle, Lock, Sparkles } from 'lucide-react';
+import { Award, CheckCircle, Lock, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import certificateImage from '@/assets/certificate-badge.png';
 
 interface Certification {
   id: string;
@@ -22,38 +23,28 @@ interface UserCert {
   certificate_number: string;
 }
 
-const colorMap: Record<string, string> = {
-  blue: 'from-blue-500 to-cyan-500',
-  purple: 'from-purple-500 to-indigo-500',
-  pink: 'from-pink-500 to-rose-500',
-  cyan: 'from-cyan-500 to-teal-500',
-  green: 'from-emerald-500 to-green-500',
-  gold: 'from-amber-400 to-yellow-500',
-};
-
-const borderColorMap: Record<string, string> = {
-  blue: 'border-blue-400/50',
-  purple: 'border-purple-400/50',
-  pink: 'border-pink-400/50',
-  cyan: 'border-cyan-400/50',
-  green: 'border-emerald-400/50',
-  gold: 'border-amber-400/50',
-};
-
 export const Certifications = () => {
   const { user } = useAuth();
-  const [certs, setCerts] = useState<Certification[]>([]);
-  const [userCerts, setUserCerts] = useState<UserCert[]>([]);
-  const [claiming, setClaiming] = useState<string | null>(null);
+  const [cert, setCert] = useState<Certification | null>(null);
+  const [userCert, setUserCert] = useState<UserCert | null>(null);
+  const [claiming, setClaiming] = useState(false);
+  const [accountAge, setAccountAge] = useState<number>(0);
 
   useEffect(() => {
-    fetchCerts();
-    if (user) fetchUserData();
+    fetchCert();
+    if (user) {
+      fetchUserData();
+      // Calculate account age in days
+      const createdAt = new Date(user.created_at);
+      const now = new Date();
+      const diffDays = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
+      setAccountAge(diffDays);
+    }
   }, [user]);
 
-  const fetchCerts = async () => {
-    const { data } = await supabase.from('certifications').select('id, title, description, category, badge_color');
-    if (data) setCerts(data);
+  const fetchCert = async () => {
+    const { data } = await supabase.from('certifications').select('id, title, description, category, badge_color').limit(1).single();
+    if (data) setCert(data);
   };
 
   const fetchUserData = async () => {
@@ -62,117 +53,140 @@ export const Certifications = () => {
       .from('user_certifications')
       .select('certification_id, earned_at, certificate_number')
       .eq('user_id', user.id);
-    if (data) setUserCerts(data);
+    if (data && data.length > 0) setUserCert(data[0]);
   };
 
-  const claimCert = async (certId: string) => {
-    if (!user) { toast.error('Sign in to claim certifications'); return; }
-    setClaiming(certId);
+  const claimCert = async () => {
+    if (!user || !cert) { toast.error('Sign in to claim your certification'); return; }
+    if (accountAge < 30) {
+      toast.error(`You need ${30 - accountAge} more days to earn this certificate. Keep learning!`);
+      return;
+    }
+    setClaiming(true);
     const { error } = await supabase.from('user_certifications').insert({
       user_id: user.id,
-      certification_id: certId,
+      certification_id: cert.id,
     });
     if (error) {
-      toast.error('Failed to claim certification');
+      if (error.code === '23505') {
+        toast.info('You already have this certification!');
+      } else {
+        toast.error('Failed to claim certification');
+      }
     } else {
       toast.success('🎉 Certification earned! Congratulations!');
       fetchUserData();
     }
-    setClaiming(null);
+    setClaiming(false);
   };
 
-  const isEarned = (certId: string) => userCerts.some(uc => uc.certification_id === certId);
-  const getCertData = (certId: string) => userCerts.find(uc => uc.certification_id === certId);
+  const daysRemaining = Math.max(0, 30 - accountAge);
+  const progress = Math.min(100, (accountAge / 30) * 100);
+  const isEligible = accountAge >= 30;
+
+  if (!cert) return null;
 
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-amber-50/50 via-orange-50/30 to-yellow-50/50 dark:from-amber-950/20 dark:via-orange-950/10 dark:to-yellow-950/20">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <Badge className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 border-0 px-4 py-1.5">
-              <Award className="w-4 h-4 mr-1" /> Certifications
+              <Award className="w-4 h-4 mr-1" /> Certification
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
-              Earn Your AI Certifications
+              Earn Your Certificate
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Complete learning paths and claim your certificates. Each certification validates your expertise in a specific AI domain.
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Use ZEPHORYX AI LAB for one month and earn your official certificate of achievement.
             </p>
-            {user && (
-              <div className="mt-6 inline-flex items-center gap-3 bg-card/80 backdrop-blur-sm rounded-full px-6 py-3 border border-border">
-                <Sparkles className="w-5 h-5 text-amber-500" />
-                <span className="font-semibold">{userCerts.length}/{certs.length} certifications earned</span>
-              </div>
-            )}
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {certs.map((cert, i) => {
-            const earned = isEarned(cert.id);
-            const certData = getCertData(cert.id);
-            const gradient = colorMap[cert.badge_color] || colorMap.blue;
-            const borderColor = borderColorMap[cert.badge_color] || borderColorMap.blue;
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <Card className="relative overflow-hidden border-2 border-amber-400/50 shadow-2xl shadow-amber-500/10">
+            <div className="h-2 bg-gradient-to-r from-amber-400 to-yellow-500" />
+            
+            <CardContent className="p-0">
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Certificate Image */}
+                <div className="p-8 flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+                  <img
+                    src={certificateImage}
+                    alt="ZEPHORYX AI LAB Certificate of Achievement"
+                    className="w-full max-w-sm rounded-lg shadow-2xl"
+                  />
+                </div>
 
-            return (
-              <motion.div
-                key={cert.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Card className={`relative overflow-hidden h-full transition-all duration-300 hover:shadow-xl ${earned ? `border-2 ${borderColor} shadow-lg` : 'border border-border/50'}`}>
-                  <div className={`h-2 bg-gradient-to-r ${gradient}`} />
-                  
-                  {earned && (
-                    <div className="absolute top-4 right-4">
-                      <div className={`p-2 rounded-full bg-gradient-to-r ${gradient} shadow-lg`}>
-                        <CheckCircle className="w-5 h-5 text-white" />
+                {/* Certificate Details */}
+                <div className="p-8 flex flex-col justify-center space-y-6">
+                  <div>
+                    <h3 className="text-2xl font-bold font-display mb-2">{cert.title}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{cert.description}</p>
+                  </div>
+
+                  {/* Progress Section */}
+                  {user && !userCert && (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="flex items-center gap-2 text-muted-foreground">
+                          <Clock className="w-4 h-4" />
+                          {isEligible ? 'Ready to claim!' : `${daysRemaining} days remaining`}
+                        </span>
+                        <span className="font-semibold">{Math.round(progress)}%</span>
                       </div>
+                      <div className="h-3 bg-muted rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full"
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${progress}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 1.5, ease: 'easeOut' }}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Account created {accountAge} day{accountAge !== 1 ? 's' : ''} ago • 30 days required
+                      </p>
                     </div>
                   )}
 
-                  <CardHeader className="pb-3">
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-3 shadow-lg`}>
-                      <Award className="w-8 h-8 text-white" />
+                  {/* Action */}
+                  {userCert ? (
+                    <div className="space-y-3 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="w-5 h-5 text-emerald-500" />
+                        <span className="font-bold text-emerald-700 dark:text-emerald-400">Certificate Earned!</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Certificate #: <span className="font-mono font-semibold">{userCert.certificate_number}</span>
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Earned: {new Date(userCert.earned_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </p>
                     </div>
-                    <CardTitle className="text-xl font-display">{cert.title}</CardTitle>
-                    <Badge variant="outline" className="w-fit capitalize text-xs">{cert.category}</Badge>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-muted-foreground leading-relaxed">{cert.description}</p>
-
-                    {earned && certData ? (
-                      <div className="space-y-2 p-3 rounded-lg bg-muted/50">
-                        <div className="flex items-center gap-2 text-sm">
-                          <CheckCircle className="w-4 h-4 text-emerald-500" />
-                          <span className="font-medium text-emerald-700 dark:text-emerald-400">Earned!</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">Certificate: <span className="font-mono">{certData.certificate_number}</span></p>
-                        <p className="text-xs text-muted-foreground">Date: {new Date(certData.earned_at).toLocaleDateString()}</p>
-                      </div>
-                    ) : user ? (
-                      <Button
-                        className={`w-full bg-gradient-to-r ${gradient} text-white hover:opacity-90 shadow-md`}
-                        onClick={() => claimCert(cert.id)}
-                        disabled={claiming === cert.id}
-                      >
-                        {claiming === cert.id ? 'Claiming...' : '🎉 Claim Certification'}
-                      </Button>
-                    ) : (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground p-3 rounded-lg bg-muted/30">
-                        <Lock className="w-4 h-4" />
-                        <span>Sign in to earn certifications</span>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
+                  ) : user ? (
+                    <Button
+                      className="w-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900 font-bold hover:opacity-90 shadow-lg text-lg py-6"
+                      onClick={claimCert}
+                      disabled={claiming || !isEligible}
+                    >
+                      {claiming ? 'Claiming...' : isEligible ? '🎉 Claim Your Certificate' : `🔒 Available in ${daysRemaining} days`}
+                    </Button>
+                  ) : (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground p-4 rounded-lg bg-muted/30">
+                      <Lock className="w-4 h-4" />
+                      <span>Sign in and use the platform for 30 days to earn this certificate</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </section>
   );
