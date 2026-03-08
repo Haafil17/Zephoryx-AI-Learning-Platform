@@ -11,11 +11,11 @@ import { motion } from "framer-motion";
 const MyCertificate = () => {
   const navigate = useNavigate();
 
-  const stats = [
-    { icon: Award, label: "Certificates Issued", value: "500+", color: "from-amber-500 to-orange-500" },
-    { icon: Shield, label: "Verified & Secure", value: "100%", color: "from-emerald-500 to-teal-500" },
-    { icon: Users, label: "Certified Members", value: "350+", color: "from-blue-500 to-indigo-500" },
-    { icon: Star, label: "Industry Recognized", value: "Global", color: "from-purple-500 to-pink-500" },
+  const features = [
+    { icon: Award, label: "Unique Certificate Number", description: "Each certificate gets a unique serial for verification", color: "from-amber-500 to-orange-500" },
+    { icon: Shield, label: "Publicly Verifiable", description: "Anyone can verify your certificate at /verify", color: "from-emerald-500 to-teal-500" },
+    { icon: Users, label: "30-Day Milestone", description: "Earned after one month of active membership", color: "from-blue-500 to-indigo-500" },
+    { icon: Star, label: "High-Res Download", description: "Download as a professional 1920×1358 PNG", color: "from-purple-500 to-pink-500" },
   ];
 
   return (
