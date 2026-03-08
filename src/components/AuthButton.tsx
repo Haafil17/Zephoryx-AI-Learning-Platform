@@ -49,6 +49,10 @@ export const AuthButton = () => {
       toast.error('Phone number is required');
       return;
     }
+    if (isSignUp && !fullName.trim()) {
+      toast.error('Full name is required');
+      return;
+    }
     
     setAuthLoading(true);
     const { error } = isSignUp 
