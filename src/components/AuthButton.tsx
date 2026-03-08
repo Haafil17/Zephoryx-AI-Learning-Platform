@@ -31,6 +31,7 @@ export const AuthButton = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [fullName, setFullName] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
   const handleAuth = async () => {
