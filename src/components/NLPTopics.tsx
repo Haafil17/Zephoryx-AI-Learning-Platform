@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, ChevronRight, BookOpen, Type, Languages, MessageSquare, BarChart3, Sparkles } from "lucide-react";
+import { FileText, ChevronRight, BookOpen, Type, Languages, MessageSquare, BarChart3, Sparkles, HelpCircle, Link, Database, Search } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const NLPTopics = () => {
