@@ -21,6 +21,7 @@ const authSchema = z.object({
 
 const signUpSchema = authSchema.extend({
   phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
+  fullName: z.string().min(2, 'Full name must be at least 2 characters').max(100, 'Full name must be less than 100 characters'),
 });
 
 export const AuthButton = () => {
