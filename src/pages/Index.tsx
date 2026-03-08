@@ -16,6 +16,11 @@ import { AIModelsTopics } from "@/components/AIModelsTopics";
 import { GuardrailsTopics } from "@/components/GuardrailsTopics";
 import { PromptEngineeringTopics } from "@/components/PromptEngineeringTopics";
 import { AgenticAITopics } from "@/components/AgenticAITopics";
+import { LLMFineTuningTopics } from "@/components/LLMFineTuningTopics";
+import { NLPTopics } from "@/components/NLPTopics";
+import { ComputerVisionTopics } from "@/components/ComputerVisionTopics";
+import { MLOpsTopics } from "@/components/MLOpsTopics";
+import { DeepLearningTopics } from "@/components/DeepLearningTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 
