@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Zap, Target } from "lucide-react";
+import { ArrowRight, Sparkles, Brain, Zap, Target, Award } from "lucide-react";
 import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
 import { AuthButton } from "./AuthButton";
@@ -67,6 +67,9 @@ export const Hero = () => {
             <Shield className="w-4 h-4 mr-1" /> Admin
           </Button>
         )}
+        <Button variant="outline" size="sm" onClick={() => navigate('/my-certificate')} className="border-amber-500/50 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-300">
+          <Award className="w-4 h-4 mr-1" /> Certificate
+        </Button>
         <AuthButton />
         <ThemeToggle />
       </div>

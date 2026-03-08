@@ -1,9 +1,11 @@
 import { Separator } from "@/components/ui/separator";
-import { Brain, Github, Twitter, Linkedin, Mail, Heart } from "lucide-react";
+import { Brain, Github, Twitter, Linkedin, Mail, Heart, Award } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import zephoryxLogo from "@/assets/zephoryx-logo.png";
 
 export const Footer = () => {
+  const navigate = useNavigate();
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -108,9 +110,10 @@ export const Footer = () => {
             <ul className="space-y-2.5 text-sm text-background/60">
               <li><button onClick={() => handleSocialClick('mail')} className="hover:text-background transition-colors">Contact Us</button></li>
               <li><button onClick={() => handleSocialClick('github')} className="hover:text-background transition-colors">Community</button></li>
+              <li><button onClick={() => navigate('/my-certificate')} className="hover:text-background transition-colors flex items-center gap-1"><Award className="w-3 h-3" /> Certificate</button></li>
+              <li><button onClick={() => navigate('/verify')} className="hover:text-background transition-colors">Verify Certificate</button></li>
               <li><button onClick={() => toast.info('Privacy Policy page coming soon')} className="hover:text-background transition-colors">Privacy Policy</button></li>
               <li><button onClick={() => toast.info('Terms of Service page coming soon')} className="hover:text-background transition-colors">Terms of Service</button></li>
-              <li><button onClick={() => toast.info('Cookie Policy page coming soon')} className="hover:text-background transition-colors">Cookie Policy</button></li>
             </ul>
           </div>
         </div>
