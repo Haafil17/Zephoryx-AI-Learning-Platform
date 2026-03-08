@@ -8,7 +8,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Award, Download, User, Clock } from 'lucide-react';
 import { toast } from 'sonner';
-import QRCode from 'qrcode';
 import certificateImage from '@/assets/certificate-badge.png';
 import zephorxLogo from '@/assets/zephoryx-logo.png';
 
