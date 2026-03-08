@@ -148,16 +148,28 @@ export const AuthButton = () => {
               />
             </div>
             {isSignUp && (
-              <div className="relative">
-                <Phone className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                <Input
-                  type="tel"
-                  placeholder="Phone Number"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+              <>
+                <div className="relative">
+                  <UserCircle className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <Input
+                    type="text"
+                    placeholder="Full Name (used on certificate)"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <Input
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </>
             )}
           </div>
           <div className="space-y-2">

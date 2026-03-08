@@ -273,11 +273,14 @@ export const Certifications = () => {
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                     <Input
-                      placeholder="Enter your full name for the certificate"
+                      placeholder={nameLoaded && !recipientName ? "Set your name during sign up" : "Your name from sign up"}
                       value={recipientName}
-                      onChange={(e) => setRecipientName(e.target.value)}
-                      className="pl-10"
+                      readOnly
+                      className="pl-10 bg-muted/50 cursor-not-allowed"
                     />
+                    {nameLoaded && !recipientName && user && (
+                      <p className="text-xs text-destructive mt-1">Your name was not set during sign up. Please contact support.</p>
+                    )}
                   </div>
 
                   {!user ? (
