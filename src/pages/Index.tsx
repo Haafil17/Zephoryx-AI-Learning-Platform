@@ -26,14 +26,12 @@ import { Footer } from "@/components/Footer";
 import { ChatFloatingButton } from "@/components/ChatFloatingButton";
 import { AIModelComparison } from "@/components/AIModelComparison";
 import { Newsletter } from "@/components/Newsletter";
-
 import { LearningPaths } from "@/components/LearningPaths";
 import { CommunitySection } from "@/components/CommunitySection";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Tabs,
@@ -45,18 +43,13 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   Brain, 
-  Zap, 
-  Search, 
   Code, 
-  Atom, 
   Sparkles,
-  Target,
   Play,
   X,
   Database,
   Plug,
   Network,
-  Cpu,
   Shield,
   Bot,
   Eye,
@@ -66,6 +59,53 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
+const features = [
+  { icon: Sparkles, title: "Prompt Engineering", color: "from-amber-500 to-orange-500" },
+  { icon: Bot, title: "Agentic AI", color: "from-indigo-500 to-violet-500" },
+  { icon: Database, title: "RAG & Retrieval", color: "from-emerald-500 to-teal-500" },
+  { icon: Plug, title: "MCP Protocol", color: "from-violet-500 to-purple-500" },
+  { icon: Network, title: "Orchestrators", color: "from-orange-500 to-red-500" },
+  { icon: Shield, title: "Guardrails", color: "from-red-500 to-rose-500" },
+  { icon: Brain, title: "Gen AI & Models", color: "from-purple-500 to-pink-500" },
+  { icon: Code, title: "Coding & Quantum", color: "from-teal-500 to-blue-500" },
+  { icon: Settings, title: "Fine-Tuning", color: "from-orange-500 to-red-500" },
+  { icon: FileText, title: "NLP", color: "from-sky-500 to-blue-500" },
+  { icon: Eye, title: "Computer Vision", color: "from-violet-500 to-fuchsia-500" },
+  { icon: Rocket, title: "MLOps", color: "from-lime-500 to-green-500" },
+  { icon: Brain, title: "Deep Learning", color: "from-rose-500 to-pink-500" },
+];
+
+const homeVideos = [
+  { id: "getting-started", title: "Getting Started with AI Prompting", thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center", duration: "4:32", embedId: "kWmX3pd1f10" },
+  { id: "advanced-techniques", title: "Advanced Prompting Techniques", thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center", duration: "8:15", embedId: "aircAruvnKk" },
+  { id: "real-examples", title: "Real-World AI Applications", thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center", duration: "12:45", embedId: "yR4hNBNS6yc" },
+];
+
+const tabs = [
+  { value: "prompting", label: "✍️ Prompting" },
+  { value: "agentic", label: "🤖 Agentic" },
+  { value: "rag", label: "🔍 RAG" },
+  { value: "mcp", label: "🔌 MCP" },
+  { value: "orchestrators", label: "⚙️ Orchestrators" },
+  { value: "guardrails", label: "🛡️ Guardrails" },
+  { value: "genai", label: "🎨 Gen AI" },
+  { value: "models", label: "🧠 Models" },
+  { value: "techniques", label: "🎯 Techniques" },
+  { value: "examples", label: "💡 Examples" },
+  { value: "bestpractices", label: "🏆 Best Practices" },
+  { value: "coding", label: "💻 Coding" },
+  { value: "quantum", label: "⚛️ Quantum" },
+  { value: "finetuning", label: "🔧 Fine-Tuning" },
+  { value: "nlp", label: "📝 NLP" },
+  { value: "vision", label: "👁️ Vision" },
+  { value: "mlops", label: "🚀 MLOps" },
+  { value: "deeplearning", label: "🧬 Deep Learning" },
+  { value: "ai", label: "📘 AI Basics" },
+  { value: "aitools", label: "🛠️ Tools" },
+  { value: "videos", label: "🎥 Videos" },
+  { value: "resources", label: "📚 Resources" },
+];
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState("prompting");
   const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
@@ -74,162 +114,23 @@ const Index = () => {
     const handleTabChange = (event: CustomEvent) => {
       setActiveTab(event.detail);
     };
-
     window.addEventListener('changeTab', handleTabChange as EventListener);
     return () => window.removeEventListener('changeTab', handleTabChange as EventListener);
   }, []);
-
-  const features = [
-    {
-      icon: Sparkles,
-      title: "Prompt Engineering",
-      description: "Master zero-shot, few-shot, chain-of-thought, ReAct, and every major prompting technique with real examples",
-      color: "from-amber-500 to-orange-500"
-    },
-    {
-      icon: Bot,
-      title: "Agentic AI",
-      description: "Build AI systems that reason, plan, use tools, and complete complex tasks autonomously",
-      color: "from-indigo-500 to-violet-500"
-    },
-    {
-      icon: Database,
-      title: "RAG & Retrieval",
-      description: "Learn Retrieval-Augmented Generation — embeddings, vector search, chunking, and production architectures",
-      color: "from-emerald-500 to-teal-500"
-    },
-    {
-      icon: Plug,
-      title: "MCP Protocol",
-      description: "Model Context Protocol — the universal standard for connecting AI to external tools and data",
-      color: "from-violet-500 to-purple-500"
-    },
-    {
-      icon: Network,
-      title: "AI Orchestrators",
-      description: "LangChain, LangGraph, CrewAI — frameworks for building multi-agent systems and workflows",
-      color: "from-orange-500 to-red-500"
-    },
-    {
-      icon: Shield,
-      title: "Guardrails & Safety",
-      description: "Prompt injection defense, content moderation, PII protection, and AI red-teaming",
-      color: "from-red-500 to-rose-500"
-    },
-    {
-      icon: Brain,
-      title: "Gen AI & Models",
-      description: "GPT-4o, Claude, Gemini, Llama — understand every major model and when to use each one",
-      color: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: Code,
-      title: "Coding & Quantum",
-      description: "AI-powered development, code generation, and the frontier of quantum computing + AI",
-      color: "from-teal-500 to-blue-500"
-    },
-    {
-      icon: Settings,
-      title: "LLM Fine-Tuning",
-      description: "LoRA, QLoRA, RLHF, DPO — customize language models for your specific domain and use case",
-      color: "from-orange-500 to-red-500"
-    },
-    {
-      icon: FileText,
-      title: "NLP & Text Processing",
-      description: "Tokenization, embeddings, NER, sentiment analysis, and machine translation fundamentals",
-      color: "from-sky-500 to-blue-500"
-    },
-    {
-      icon: Eye,
-      title: "Computer Vision",
-      description: "CNNs, YOLO, SAM, Vision Transformers — image classification, detection, and generation",
-      color: "from-violet-500 to-fuchsia-500"
-    },
-    {
-      icon: Rocket,
-      title: "AI Deployment & MLOps",
-      description: "Model serving, monitoring, CI/CD for ML, quantization, and production AI security",
-      color: "from-lime-500 to-green-500"
-    },
-    {
-      icon: Brain,
-      title: "Deep Learning",
-      description: "Transformers, LSTMs, GRUs, attention mechanisms, embeddings, and foundation models",
-      color: "from-rose-500 to-pink-500"
-    }
-  ];
-
-  const homeVideos = [
-    {
-      id: "getting-started",
-      title: "Getting Started with AI Prompting",
-      description: "Learn the basics of AI prompting in under 5 minutes",
-      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center",
-      duration: "4:32",
-      embedId: "kWmX3pd1f10"
-    },
-    {
-      id: "advanced-techniques", 
-      title: "Advanced Prompting Techniques",
-      description: "Chain-of-thought & few-shot learning strategies",
-      thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center",
-      duration: "8:15",
-      embedId: "aircAruvnKk"
-    },
-    {
-      id: "real-examples",
-      title: "Real-World AI Applications",
-      description: "Live demonstrations & practical use cases",
-      thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center",
-      duration: "12:45",
-      embedId: "yR4hNBNS6yc"
-    }
-  ];
-
-  const handleVideoPlay = (video: typeof homeVideos[0]) => {
-    setPlayingVideoId(video.id);
-    toast.success(`Playing: ${video.title}`, { description: "Loading video tutorial" });
-  };
-
-  const closeVideo = () => {
-    setPlayingVideoId(null);
-  };
 
   const currentVideo = homeVideos.find(v => v.id === playingVideoId);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
       <Hero />
-      
-      {/* AI-Powered Tools Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-indigo-950/30 dark:via-purple-950/30 dark:to-pink-950/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-              AI-Powered Tools
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Interactive AI tools powered by Gemini 2.5 Flash with full access to our knowledge base
-            </p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <PromptAnalyzer />
-            <PromptTester />
-          </div>
-        </div>
-      </section>
-      
+
       {/* Video Modal */}
       {playingVideoId && currentVideo && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-card rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-border">
-            <div className="flex justify-between items-center p-6 border-b border-border bg-muted/50">
-              <div>
-                <h3 className="text-xl font-bold text-foreground">{currentVideo.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">{currentVideo.description}</p>
-              </div>
-              <Button variant="ghost" size="sm" onClick={closeVideo}>
+            <div className="flex justify-between items-center p-4 border-b border-border bg-muted/50">
+              <h3 className="text-lg font-bold text-foreground">{currentVideo.title}</h3>
+              <Button variant="ghost" size="sm" onClick={() => setPlayingVideoId(null)}>
                 <X className="w-5 h-5" />
               </Button>
             </div>
@@ -246,162 +147,123 @@ const Index = () => {
           </div>
         </div>
       )}
-      
-      {/* Features Overview Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
-              Everything You Need to Master AI
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
-              From prompt engineering to RAG, MCP, agentic AI, guardrails, and quantum computing — real content, real resources, no fluff.
-            </p>
-            
-            {/* Video Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {homeVideos.map((video) => (
-                <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-card/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2 cursor-pointer" onClick={() => handleVideoPlay(video)}>
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title}
-                      className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300">
-                        <Play className="w-6 h-6" />
-                      </Button>
-                    </div>
-                    <Badge className="absolute top-3 right-3 bg-black/80 text-white font-semibold px-2 py-1">
-                      {video.duration}
-                    </Badge>
-                  </div>
-                  <CardContent className="p-6">
-                    <h4 className="font-bold text-lg mb-2 text-foreground group-hover:text-primary transition-colors">
-                      {video.title}
-                    </h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {video.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Compact Features + Videos Row */}
+      <section className="py-10 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6 text-center">
+            Everything You Need to Master AI
+          </h2>
+
+          {/* Features as compact icon cards */}
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3 mb-8">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: index * 0.08, duration: 0.5 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.02, duration: 0.3 }}
               >
-                <Card className="group relative overflow-hidden bg-card/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 h-full">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
-                  <CardHeader className="pb-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="w-7 h-7 text-white" />
+                <Card className="group bg-card/80 border-0 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <CardContent className="p-3 text-center">
+                    <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mx-auto mb-1.5`}>
+                      <feature.icon className="w-4 h-4 text-white" />
                     </div>
-                    <CardTitle className="text-xl font-bold text-foreground">
-                      {feature.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {feature.description}
-                    </p>
+                    <p className="text-xs font-semibold text-foreground leading-tight">{feature.title}</p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
+
+          {/* Inline video row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {homeVideos.map((video) => (
+              <Card key={video.id} className="group cursor-pointer flex flex-row items-center p-3 gap-3 bg-card/90 border-0 shadow-sm hover:shadow-lg transition-all" onClick={() => { setPlayingVideoId(video.id); toast.success(`Playing: ${video.title}`); }}>
+                <div className="relative w-20 h-14 flex-shrink-0 rounded-lg overflow-hidden">
+                  <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <Play className="w-4 h-4 text-white" />
+                  </div>
+                </div>
+                <div className="min-w-0">
+                  <h4 className="font-semibold text-sm text-foreground truncate">{video.title}</h4>
+                  <p className="text-xs text-muted-foreground">{video.duration}</p>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 pt-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex justify-center mb-12 gap-2 bg-muted/30 dark:bg-muted/10 rounded-full shadow-sm flex-wrap p-3 border border-border/50 backdrop-blur-sm">
-            {[
-              { value: "prompting", label: "✍️ Prompt Engineering" },
-              { value: "agentic", label: "🤖 Agentic AI" },
-              { value: "rag", label: "🔍 RAG" },
-              { value: "mcp", label: "🔌 MCP" },
-              { value: "orchestrators", label: "⚙️ Orchestrators" },
-              { value: "guardrails", label: "🛡️ Guardrails" },
-              { value: "genai", label: "🎨 Gen AI" },
-              { value: "models", label: "🧠 Models" },
-              { value: "techniques", label: "🎯 Techniques" },
-              { value: "examples", label: "💡 Examples" },
-              { value: "bestpractices", label: "🏆 Best Practices" },
-              { value: "coding", label: "💻 Coding" },
-              { value: "quantum", label: "⚛️ Quantum" },
-              { value: "finetuning", label: "🔧 Fine-Tuning" },
-              { value: "nlp", label: "📝 NLP" },
-              { value: "vision", label: "👁️ Vision" },
-              { value: "mlops", label: "🚀 MLOps" },
-              { value: "deeplearning", label: "🧬 Deep Learning" },
-              { value: "ai", label: "📘 AI Basics" },
-              { value: "aitools", label: "🛠️ AI Tools" },
-              { value: "videos", label: "🎥 Videos" },
-              { value: "resources", label: "📚 Resources" },
-            ].map(tab => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                className="px-4 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground"
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+      {/* AI Tools - compact */}
+      <section className="py-8 px-4 bg-muted/20">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4 text-center">
+            🛠️ AI-Powered Tools
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PromptAnalyzer />
+            <PromptTester />
+          </div>
+        </div>
+      </section>
 
-          <TabsContent value="prompting" className="focus:outline-none"><PromptEngineeringTopics /></TabsContent>
-          <TabsContent value="agentic" className="focus:outline-none"><AgenticAITopics /></TabsContent>
-          <TabsContent value="rag" className="focus:outline-none"><RAGTopics /></TabsContent>
-          <TabsContent value="mcp" className="focus:outline-none"><MCPTopics /></TabsContent>
-          <TabsContent value="orchestrators" className="focus:outline-none"><OrchestratorTopics /></TabsContent>
-          <TabsContent value="guardrails" className="focus:outline-none"><GuardrailsTopics /></TabsContent>
-          <TabsContent value="genai" className="focus:outline-none"><GenAITopics /></TabsContent>
-          <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /></TabsContent>
-          <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /></TabsContent>
-          <TabsContent value="examples" className="focus:outline-none"><Examples /></TabsContent>
-          <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
-          <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
-          <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
-          <TabsContent value="finetuning" className="focus:outline-none"><LLMFineTuningTopics /></TabsContent>
-          <TabsContent value="nlp" className="focus:outline-none"><NLPTopics /></TabsContent>
-          <TabsContent value="vision" className="focus:outline-none"><ComputerVisionTopics /></TabsContent>
-          <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
-          <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
-          <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
-          <TabsContent value="aitools" className="focus:outline-none">
-            <div className="space-y-8 pb-16">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-                  AI-Powered Tools
-                </h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                  Interactive tools powered by Gemini 2.5 Flash to help you build, analyze, and test prompts in real-time
-                </p>
+      {/* Sticky Tabs */}
+      <div className="max-w-7xl mx-auto px-4 pt-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md py-2 -mx-4 px-4 border-b border-border/30">
+            <TabsList className="flex justify-center gap-1 bg-muted/30 dark:bg-muted/10 rounded-2xl flex-wrap p-2 border border-border/50">
+              {tabs.map(tab => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className="px-2.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+
+          <div className="pt-6 pb-8">
+            <TabsContent value="prompting" className="focus:outline-none"><PromptEngineeringTopics /></TabsContent>
+            <TabsContent value="agentic" className="focus:outline-none"><AgenticAITopics /></TabsContent>
+            <TabsContent value="rag" className="focus:outline-none"><RAGTopics /></TabsContent>
+            <TabsContent value="mcp" className="focus:outline-none"><MCPTopics /></TabsContent>
+            <TabsContent value="orchestrators" className="focus:outline-none"><OrchestratorTopics /></TabsContent>
+            <TabsContent value="guardrails" className="focus:outline-none"><GuardrailsTopics /></TabsContent>
+            <TabsContent value="genai" className="focus:outline-none"><GenAITopics /></TabsContent>
+            <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /></TabsContent>
+            <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /></TabsContent>
+            <TabsContent value="examples" className="focus:outline-none"><Examples /></TabsContent>
+            <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
+            <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
+            <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
+            <TabsContent value="finetuning" className="focus:outline-none"><LLMFineTuningTopics /></TabsContent>
+            <TabsContent value="nlp" className="focus:outline-none"><NLPTopics /></TabsContent>
+            <TabsContent value="vision" className="focus:outline-none"><ComputerVisionTopics /></TabsContent>
+            <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
+            <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
+            <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
+            <TabsContent value="aitools" className="focus:outline-none">
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <PromptBuilder />
+                  <PromptAnalyzer />
+                </div>
+                <PromptTester />
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <PromptBuilder />
-                <PromptAnalyzer />
-              </div>
-              <PromptTester />
-            </div>
-          </TabsContent>
-          <TabsContent value="videos" className="focus:outline-none"><Videos /></TabsContent>
-          <TabsContent value="resources" className="focus:outline-none"><Resources /></TabsContent>
+            </TabsContent>
+            <TabsContent value="videos" className="focus:outline-none"><Videos /></TabsContent>
+            <TabsContent value="resources" className="focus:outline-none"><Resources /></TabsContent>
+          </div>
         </Tabs>
       </div>
 
       <AIModelComparison />
       <LearningPaths />
-      
       <CommunitySection />
       <Newsletter />
       <Footer />
