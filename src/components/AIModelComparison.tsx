@@ -175,8 +175,6 @@ const models: AIModel[] = [
   },
 ];
 
-const [selectedModels, setSelectedModels] = [() => {}, () => {}]; // placeholder
-
 export const AIModelComparison = () => {
   const [selected, setSelected] = useState<string[]>(["GPT-4o", "Claude 3.5 Sonnet", "Gemini 2.5 Flash"]);
   const [view, setView] = useState<"table" | "cards">("table");

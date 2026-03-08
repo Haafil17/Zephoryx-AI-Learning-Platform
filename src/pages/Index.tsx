@@ -23,7 +23,8 @@ import { MLOpsTopics } from "@/components/MLOpsTopics";
 import { DeepLearningTopics } from "@/components/DeepLearningTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
-
+import { ChatFloatingButton } from "@/components/ChatFloatingButton";
+import { AIModelComparison } from "@/components/AIModelComparison";
 import { Newsletter } from "@/components/Newsletter";
 
 import { LearningPaths } from "@/components/LearningPaths";
