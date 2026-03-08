@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Award, Download, User, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import QRCode from 'qrcode';
 import certificateImage from '@/assets/certificate-badge.png';
 import zephorxLogo from '@/assets/zephoryx-logo.png';
 
@@ -86,7 +87,7 @@ export const Certifications = () => {
     setClaiming(false);
   };
 
-  const downloadCertificate = () => {
+  const downloadCertificate = async () => {
     const canvas = certCanvasRef.current;
     if (!canvas || !recipientName.trim()) return;
     const ctx = canvas.getContext('2d');
@@ -188,7 +189,37 @@ export const Certifications = () => {
     ctx.font = 'bold 18px Georgia, serif';
     ctx.fillText('ZEPHORYX AI LAB', W / 2, 1140);
 
+    // QR Code for verification
+    if (userCert) {
+      try {
+        const verifyUrl = `${window.location.origin}/verify?code=${userCert.certificate_number}`;
+        const qrDataUrl = await QRCode.toDataURL(verifyUrl, {
+          width: 140,
+          margin: 1,
+          color: { dark: '#1a1a2e', light: '#ffffff00' },
+        });
+        const qrImg = new Image();
+        await new Promise<void>((resolve) => {
+          qrImg.onload = () => resolve();
+          qrImg.src = qrDataUrl;
+        });
+        // Draw QR bottom-right
+        const qrSize = 120;
+        const qrX = W - 220;
+        const qrY = H - 220;
+        ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+        ctx.fillStyle = '#888888';
+        ctx.font = '11px Georgia, serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('Scan to verify', qrX + qrSize / 2, qrY + qrSize + 16);
+        ctx.textAlign = 'center'; // reset
+      } catch (e) {
+        console.error('QR generation failed', e);
+      }
+    }
+
     // Footer
+    ctx.textAlign = 'center';
     ctx.fillStyle = '#888888';
     ctx.font = '14px Georgia, serif';
     ctx.fillText('www.zephoryx-ai-lab.lovable.app', W / 2, 1170);

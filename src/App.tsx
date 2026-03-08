@@ -12,6 +12,7 @@ import ResetPassword from "./pages/ResetPassword";
 import { lazy, Suspense } from "react";
 
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><AdminPanel /></Suspense>} />
+              <Route path="/verify" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><VerifyCertificate /></Suspense>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
