@@ -6,6 +6,7 @@ import zephoryxLogo from "@/assets/zephoryx-logo.png";
 import zephoryxLogo from "@/assets/zephoryx-logo.png";
 
 export const Footer = () => {
+  const navigate = useNavigate();
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
