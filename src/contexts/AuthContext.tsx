@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  signUp: (email: string, password: string, phoneNumber?: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, phoneNumber?: string, fullName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   loading: boolean;
@@ -47,14 +47,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, phoneNumber?: string) => {
+  const signUp = async (email: string, password: string, phoneNumber?: string, fullName?: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/`,
         data: {
-          phone_number: phoneNumber || null
+          phone_number: phoneNumber || null,
+          full_name: fullName || null
         }
       }
     });

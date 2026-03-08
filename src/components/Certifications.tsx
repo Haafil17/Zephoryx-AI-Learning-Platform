@@ -8,7 +8,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Award, Download, User, Clock } from 'lucide-react';
 import { toast } from 'sonner';
-import QRCode from 'qrcode';
 import certificateImage from '@/assets/certificate-badge.png';
 import zephorxLogo from '@/assets/zephoryx-logo.png';
 
@@ -26,6 +25,7 @@ export const Certifications = () => {
   const [userCert, setUserCert] = useState<UserCert | null>(null);
   const [claiming, setClaiming] = useState(false);
   const [recipientName, setRecipientName] = useState('');
+  const [nameLoaded, setNameLoaded] = useState(false);
   const certCanvasRef = useRef<HTMLCanvasElement>(null);
   const bgImgRef = useRef<HTMLImageElement | null>(null);
   const logoImgRef = useRef<HTMLImageElement | null>(null);
@@ -39,7 +39,16 @@ export const Certifications = () => {
 
   useEffect(() => {
     fetchCert();
-    if (user) fetchUserCert();
+    if (user) {
+      fetchUserCert();
+      // Load the user's full_name from their profile
+      const loadName = async () => {
+        const { data } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
+        if (data?.full_name) setRecipientName(data.full_name);
+        setNameLoaded(true);
+      };
+      loadName();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -189,34 +198,6 @@ export const Certifications = () => {
     ctx.font = 'bold 18px Georgia, serif';
     ctx.fillText('ZEPHORYX AI LAB', W / 2, 1140);
 
-    // QR Code for verification
-    if (userCert) {
-      try {
-        const verifyUrl = `${window.location.origin}/verify?code=${userCert.certificate_number}`;
-        const qrDataUrl = await QRCode.toDataURL(verifyUrl, {
-          width: 140,
-          margin: 1,
-          color: { dark: '#1a1a2e', light: '#ffffff00' },
-        });
-        const qrImg = new Image();
-        await new Promise<void>((resolve) => {
-          qrImg.onload = () => resolve();
-          qrImg.src = qrDataUrl;
-        });
-        // Draw QR bottom-right
-        const qrSize = 120;
-        const qrX = W - 220;
-        const qrY = H - 220;
-        ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
-        ctx.fillStyle = '#888888';
-        ctx.font = '11px Georgia, serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('Scan to verify', qrX + qrSize / 2, qrY + qrSize + 16);
-        ctx.textAlign = 'center'; // reset
-      } catch (e) {
-        console.error('QR generation failed', e);
-      }
-    }
 
     // Footer
     ctx.textAlign = 'center';
@@ -292,11 +273,14 @@ export const Certifications = () => {
                   <div className="relative">
                     <User className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
                     <Input
-                      placeholder="Enter your full name for the certificate"
+                      placeholder={nameLoaded && !recipientName ? "Set your name during sign up" : "Your name from sign up"}
                       value={recipientName}
-                      onChange={(e) => setRecipientName(e.target.value)}
-                      className="pl-10"
+                      readOnly
+                      className="pl-10 bg-muted/50 cursor-not-allowed"
                     />
+                    {nameLoaded && !recipientName && user && (
+                      <p className="text-xs text-destructive mt-1">Your name was not set during sign up. Please contact support.</p>
+                    )}
                   </div>
 
                   {!user ? (

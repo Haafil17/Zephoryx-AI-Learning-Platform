@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { LogIn, LogOut, User, Mail, Lock, UserPlus, Phone } from 'lucide-react';
+import { LogIn, LogOut, User, Mail, Lock, UserPlus, Phone, UserCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -21,6 +21,7 @@ const authSchema = z.object({
 
 const signUpSchema = authSchema.extend({
   phoneNumber: z.string().min(10, 'Phone number must be at least 10 digits'),
+  fullName: z.string().min(2, 'Full name must be at least 2 characters').max(100, 'Full name must be less than 100 characters'),
 });
 
 export const AuthButton = () => {
@@ -30,6 +31,7 @@ export const AuthButton = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [fullName, setFullName] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -37,7 +39,7 @@ export const AuthButton = () => {
     
     // Validate input
     const schema = isSignUp ? signUpSchema : authSchema;
-    const result = schema.safeParse({ email, password, phoneNumber: phoneNumber || undefined });
+    const result = schema.safeParse({ email, password, phoneNumber: phoneNumber || undefined, fullName: fullName || undefined });
     if (!result.success) {
       toast.error(result.error.errors[0].message);
       return;
@@ -47,10 +49,14 @@ export const AuthButton = () => {
       toast.error('Phone number is required');
       return;
     }
+    if (isSignUp && !fullName.trim()) {
+      toast.error('Full name is required');
+      return;
+    }
     
     setAuthLoading(true);
     const { error } = isSignUp 
-      ? await signUp(email, password, phoneNumber)
+      ? await signUp(email, password, phoneNumber, fullName)
       : await signIn(email, password);
     
     if (error) {
@@ -68,6 +74,7 @@ export const AuthButton = () => {
       setEmail('');
       setPassword('');
       setPhoneNumber('');
+      setFullName('');
     }
     setAuthLoading(false);
   };
@@ -141,16 +148,28 @@ export const AuthButton = () => {
               />
             </div>
             {isSignUp && (
-              <div className="relative">
-                <Phone className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                <Input
-                  type="tel"
-                  placeholder="Phone Number"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+              <>
+                <div className="relative">
+                  <UserCircle className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <Input
+                    type="text"
+                    placeholder="Full Name (used on certificate)"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <Input
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </>
             )}
           </div>
           <div className="space-y-2">
