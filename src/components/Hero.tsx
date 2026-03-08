@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Brain, Zap, Target } from "lucide-react";
+import { ArrowRight, Sparkles, Brain, Zap, Target, Award } from "lucide-react";
 import { UsernameSection } from "./UsernameSection";
 import { ThemeToggle } from "./ThemeToggle";
 import { AuthButton } from "./AuthButton";
