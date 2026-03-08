@@ -56,7 +56,7 @@ export const AuthButton = () => {
     
     setAuthLoading(true);
     const { error } = isSignUp 
-      ? await signUp(email, password, phoneNumber)
+      ? await signUp(email, password, phoneNumber, fullName)
       : await signIn(email, password);
     
     if (error) {
