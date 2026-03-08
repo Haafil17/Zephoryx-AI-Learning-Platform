@@ -370,6 +370,11 @@ const Index = () => {
           <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
           <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
           <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
+          <TabsContent value="finetuning" className="focus:outline-none"><LLMFineTuningTopics /></TabsContent>
+          <TabsContent value="nlp" className="focus:outline-none"><NLPTopics /></TabsContent>
+          <TabsContent value="vision" className="focus:outline-none"><ComputerVisionTopics /></TabsContent>
+          <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
+          <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
           <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
           <TabsContent value="aitools" className="focus:outline-none">
             <div className="space-y-8 pb-16">
