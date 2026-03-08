@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, ChevronRight, BookOpen, Workflow, Repeat, ArrowRightLeft, BarChart3, Layers, Sparkles } from "lucide-react";
+import { Brain, ChevronRight, BookOpen, Workflow, Repeat, ArrowRightLeft, BarChart3, Layers, Sparkles, Shuffle, GitBranch, Gauge, Box } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const DeepLearningTopics = () => {
@@ -53,6 +53,38 @@ export const DeepLearningTopics = () => {
       keyPoints: ["Pre-train on large data, fine-tune on task data", "Foundation models: one model, many tasks", "Emergent abilities appear at scale (>100B parameters)"],
       realWorld: "ImageNet-pretrained CNNs power medical imaging. GPT-4 is a foundation model used for 1000s of applications via API.",
       learnMoreUrl: "https://arxiv.org/abs/2108.07258"
+    },
+    {
+      title: "Batch Normalization & Layer Normalization",
+      description: "Normalization techniques stabilize training by reducing internal covariate shift. Batch Normalization (Ioffe & Szegedy, 2015) normalizes activations across the batch dimension — it was critical for training deep CNNs but struggles with small batches and variable-length sequences. Layer Normalization (Ba et al., 2016) normalizes across features within each sample, making it the default for transformers. RMSNorm (used in Llama) simplifies LayerNorm by removing the mean-centering step, reducing compute by ~10-15%.",
+      icon: Gauge,
+      keyPoints: ["BatchNorm: normalize across batch — dominant in CNNs", "LayerNorm: normalize across features — standard in transformers", "RMSNorm: faster variant used in Llama 2/3 and Mistral"],
+      realWorld: "Every modern transformer uses LayerNorm or RMSNorm. ResNet's success was partly due to BatchNorm enabling deeper networks.",
+      learnMoreUrl: "https://arxiv.org/abs/1607.06450"
+    },
+    {
+      title: "Dropout, Regularization & Generalization",
+      description: "Regularization prevents overfitting — when models memorize training data instead of learning generalizable patterns. Dropout (Srivastava et al., 2014) randomly zeroes neurons during training, forcing redundant representations. Weight decay (L2 regularization) penalizes large weights. Data augmentation artificially expands training data. Early stopping halts training when validation performance plateaus. Modern LLMs use dropout sparingly due to massive datasets, relying more on weight decay and careful learning rate schedules.",
+      icon: Shuffle,
+      keyPoints: ["Dropout rate: typically 0.1-0.5 depending on layer", "AdamW decouples weight decay from gradient updates", "Mixup and CutMix augment data by blending samples"],
+      realWorld: "GPT-3 used dropout of 0.1. EfficientNet uses extensive data augmentation. Most modern training uses AdamW with cosine LR decay.",
+      learnMoreUrl: "https://d2l.ai/chapter_multilayer-perceptrons/dropout.html"
+    },
+    {
+      title: "Generative Adversarial Networks (GANs)",
+      description: "GANs (Goodfellow et al., 2014) train two networks in competition: a Generator creates fake data and a Discriminator tries to distinguish real from fake. Through this adversarial game, the generator learns to produce increasingly realistic outputs. StyleGAN (Nvidia) generates photorealistic faces. CycleGAN enables unpaired image-to-image translation. While largely superseded by diffusion models for image generation, GANs remain important for super-resolution (Real-ESRGAN), video synthesis, and data augmentation.",
+      icon: GitBranch,
+      keyPoints: ["Generator and Discriminator play a minimax game", "Mode collapse: generator produces limited variety", "StyleGAN3: alias-free generation, no artifacts"],
+      realWorld: "Nvidia's StyleGAN powers thispersondoesnotexist.com. Real-ESRGAN upscales images in production apps. Pix2Pix translates sketches to photos.",
+      learnMoreUrl: "https://arxiv.org/abs/1406.2661"
+    },
+    {
+      title: "Diffusion Models",
+      description: "Diffusion models (Ho et al., 2020) generate data by learning to reverse a gradual noising process. Starting from pure noise, the model iteratively denoises to produce high-quality outputs. Latent Diffusion (Rombach et al., 2022) operates in a compressed latent space, making generation practical. DDPM, DDIM, and flow matching are different formulations. Classifier-free guidance controls the trade-off between quality and diversity. These models now dominate image, video, and audio generation.",
+      icon: Box,
+      keyPoints: ["Forward process: gradually add Gaussian noise to data", "Reverse process: neural network learns to denoise step by step", "CFG scale: higher = more prompt-adherent, lower = more diverse"],
+      realWorld: "Stable Diffusion, DALL-E 3, Midjourney, and Sora all use diffusion. Adobe Firefly uses latent diffusion for commercial image generation.",
+      learnMoreUrl: "https://arxiv.org/abs/2006.11239"
     },
   ];
 
