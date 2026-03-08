@@ -3,10 +3,10 @@ import { useRef, useState, useEffect } from "react";
 import { Users, BookOpen, Award, Zap } from "lucide-react";
 
 const stats = [
-  { icon: BookOpen, label: "Learning Topics", target: 15, suffix: "+" },
+  { icon: BookOpen, label: "AI Topics Covered", target: 17, suffix: "" },
   { icon: Award, label: "Certifications Available", target: 6, suffix: "" },
-  { icon: Users, label: "Content Sections", target: 50, suffix: "+" },
-  { icon: Zap, label: "Real Resources & Links", target: 120, suffix: "+" },
+  { icon: Users, label: "Deep Dive Articles", target: 80, suffix: "+" },
+  { icon: Zap, label: "Real Resources & Links", target: 200, suffix: "+" },
 ];
 
 function AnimatedNumber({ target, suffix }: { target: number; suffix: string }) {
