@@ -54,6 +54,38 @@ export const LLMFineTuningTopics = () => {
       realWorld: "Open LLM Leaderboard ranks fine-tuned models. TheBloke on Hugging Face provides quantized versions of popular models.",
       learnMoreUrl: "https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard"
     },
+    {
+      title: "Model Merging Techniques",
+      description: "Model merging combines multiple fine-tuned models into a single model without additional training. TIES (Trim, Elect Sign, Merge) resolves parameter conflicts between models. DARE (Drop And REscale) randomly drops delta parameters before merging. SLERP (Spherical Linear Interpolation) smoothly blends two models. Task arithmetic adds and subtracts task vectors to compose capabilities. MergeKit is the standard tool for model merging, supporting all major merge methods.",
+      icon: GitMerge,
+      keyPoints: ["TIES: resolves sign conflicts between fine-tuned deltas", "DARE: drop 90%+ of delta params with minimal quality loss", "MergeKit: CLI tool for all merge methods, used widely on HF"],
+      realWorld: "Many top Open LLM Leaderboard models are merges (e.g., Goliath-120B). Nous Research's Hermes models use careful merge strategies. Community merges often beat individual fine-tunes.",
+      learnMoreUrl: "https://github.com/arcee-ai/mergekit"
+    },
+    {
+      title: "Synthetic Data Generation",
+      description: "Synthetic data is artificially generated training data, often produced by stronger models to train weaker ones. Self-Instruct (Wang et al., 2022) uses the model itself to generate instruction-following data. Evol-Instruct (WizardLM) iteratively increases instruction complexity. Distillation generates reasoning traces from GPT-4/Claude to train open-source models. Key concerns: model collapse from training on AI-generated data, benchmark contamination, and the legal/licensing implications of using model outputs as training data.",
+      icon: FlaskConical,
+      keyPoints: ["Self-Instruct: bootstrap from 175 seed tasks to 52K examples", "Evol-Instruct: in-depth and in-breadth evolution of instructions", "Model collapse risk when training on too much synthetic data"],
+      realWorld: "Microsoft's Orca used GPT-4 reasoning traces. Phi models trained on 'textbook-quality' synthetic data. Alpaca used 52K examples from text-davinci-003.",
+      learnMoreUrl: "https://arxiv.org/abs/2212.10560"
+    },
+    {
+      title: "Constitutional AI & RLAIF",
+      description: "Constitutional AI (Anthropic, 2022) replaces human feedback with AI feedback guided by a set of principles ('constitution'). The model critiques and revises its own outputs according to these principles, then trains on the improved responses. RLAIF (Reinforcement Learning from AI Feedback) generalizes this — using an AI model as the reward signal instead of human annotators. This scales alignment beyond what human annotation budgets allow while maintaining controllable behavior through explicit principles.",
+      icon: Scale,
+      keyPoints: ["Constitution: set of principles the AI must follow", "Self-critique: model identifies its own harmful outputs", "Scales alignment without proportional human labor"],
+      realWorld: "Anthropic uses Constitutional AI for Claude. Google's RLAIF showed AI feedback can match human feedback quality. Open-source implementations in TRL library.",
+      learnMoreUrl: "https://arxiv.org/abs/2212.08073"
+    },
+    {
+      title: "Continued Pre-Training & Domain Adaptation",
+      description: "Continued pre-training extends a foundation model's knowledge by training on domain-specific corpora before instruction fine-tuning. This is how domain-specific LLMs are created — training Llama on medical literature (Med-PaLM), legal documents (SaulLM), code (CodeLlama), or financial data (FinGPT). The recipe: base model → continued pre-training on domain text → SFT on domain instructions → alignment. Key: careful learning rate scheduling to avoid catastrophic forgetting of general capabilities.",
+      icon: Sparkles,
+      keyPoints: ["Learning rate 10-100x lower than original pre-training", "Replay buffer: mix domain data with general data to prevent forgetting", "Domain vocabulary extension improves tokenization efficiency"],
+      realWorld: "CodeLlama: continued pre-training of Llama 2 on 500B code tokens. BioMistral trained on PubMed for biomedical NLP. SaulLM-7B trained on 30B tokens of legal text.",
+      learnMoreUrl: "https://arxiv.org/abs/2308.12950"
+    },
   ];
 
   return (

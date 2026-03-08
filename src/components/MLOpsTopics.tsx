@@ -54,6 +54,38 @@ export const MLOpsTopics = () => {
       realWorld: "Microsoft Responsible AI Standard governs all AI products. Google's Model Cards provide transparency for all public models.",
       learnMoreUrl: "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
     },
+    {
+      title: "Containerization & Orchestration",
+      description: "Docker packages ML models with their dependencies into portable containers. Kubernetes orchestrates container deployments with auto-scaling, health checks, and rolling updates. KServe (formerly KFServing) provides Kubernetes-native model serving with auto-scaling to zero, canary deployments, and multi-model serving. Triton Inference Server (Nvidia) supports TensorFlow, PyTorch, ONNX, and custom backends in a single serving solution with dynamic batching.",
+      icon: Container,
+      keyPoints: ["Docker multi-stage builds minimize image size for ML", "KServe: Kubernetes CRD for model serving with auto-scaling", "Triton: concurrent model execution with dynamic batching"],
+      realWorld: "Google Cloud Vertex AI uses containers for custom model serving. AWS SageMaker runs models in Docker containers. Seldon Core provides production ML deployment on Kubernetes.",
+      learnMoreUrl: "https://kserve.github.io/website/"
+    },
+    {
+      title: "GPU Infrastructure & Cost Optimization",
+      description: "Training and inference costs dominate ML budgets. Key strategies: spot/preemptible instances (70-90% cheaper), right-sizing GPU selection (A100 vs L4 vs T4), model quantization to reduce GPU memory, and batch inference for non-real-time workloads. Multi-GPU training with DeepSpeed ZeRO or PyTorch FSDP distributes model and data across GPUs. Cloud GPU comparisons: AWS (p5, g5), GCP (A3, G2), Azure (ND H100), and specialized providers (Lambda, RunPod, Together.ai).",
+      icon: Cpu,
+      keyPoints: ["Spot instances: 70-90% savings with interruption handling", "H100 vs A100 vs L4: match GPU to workload needs", "DeepSpeed ZeRO: partition optimizer, gradients, and parameters"],
+      realWorld: "Meta trained Llama 3 on 16K H100 GPUs. Stability AI uses A100 clusters for Stable Diffusion training. RunPod offers on-demand H100s at $3.89/hr.",
+      learnMoreUrl: "https://www.deepspeed.ai/"
+    },
+    {
+      title: "Edge Deployment & On-Device AI",
+      description: "Edge AI runs models directly on user devices — phones, browsers, IoT devices — reducing latency and preserving privacy. Key runtimes: ONNX Runtime (cross-platform), TensorFlow Lite (mobile), Core ML (Apple), and WebAssembly/WebGPU for browsers. Model optimization for edge: pruning, quantization (INT8/INT4), knowledge distillation, and architecture search (MobileNet, EfficientNet-Lite). On-device LLMs: Phi-3-mini, Gemma 2B, and Llama 3.2 1B run on smartphones.",
+      icon: Cloud,
+      keyPoints: ["TFLite and Core ML for mobile deployment", "WebGPU enables in-browser model inference", "Phi-3-mini: 3.8B parameter model runs on-device"],
+      realWorld: "Apple Intelligence runs models on-device for privacy. Google Pixel uses on-device AI for photo editing. Samsung Galaxy AI uses on-device translation.",
+      learnMoreUrl: "https://onnxruntime.ai/"
+    },
+    {
+      title: "Data Pipelines & Feature Engineering",
+      description: "Production ML requires robust data pipelines for ingestion, cleaning, transformation, and feature computation. Apache Airflow orchestrates data workflows. Feature stores (Feast, Tecton, Hopsworks) ensure consistency between training and serving features. Data validation (Great Expectations, TFX Data Validation) catches schema drift and anomalies before they impact models. Streaming features from Kafka or Flink enable real-time ML applications.",
+      icon: FileText,
+      keyPoints: ["Feast: open-source feature store for offline/online serving", "Great Expectations: data quality validation framework", "Point-in-time correctness prevents data leakage in training"],
+      realWorld: "Uber's Michelangelo platform manages features for 1000s of models. DoorDash uses real-time features for delivery time prediction. Stripe uses features for fraud detection.",
+      learnMoreUrl: "https://feast.dev/"
+    },
   ];
 
   return (

@@ -54,6 +54,38 @@ export const NLPTopics = () => {
       realWorld: "Notion AI summarizes documents. Slack uses AI for channel summaries. Bloomberg GPT summarizes financial reports.",
       learnMoreUrl: "https://huggingface.co/docs/transformers/en/tasks/summarization"
     },
+    {
+      title: "Question Answering Systems",
+      description: "QA systems extract or generate answers from text. Extractive QA (SQuAD-style) identifies answer spans within a passage — BERT-based models dominated this for years. Generative QA uses LLMs to synthesize answers from multiple sources. Open-domain QA combines retrieval (finding relevant documents) with reading comprehension (extracting answers). Modern RAG systems are essentially open-domain QA at scale. Benchmarks: SQuAD 2.0, Natural Questions, TriviaQA.",
+      icon: HelpCircle,
+      keyPoints: ["Extractive QA: predict start and end token positions", "Open-domain: retriever + reader pipeline (DPR + BERT)", "Modern approach: RAG with LLM replaces traditional QA pipelines"],
+      realWorld: "Google Search uses QA to show featured snippets. Alexa and Siri use QA for factual queries. Enterprise search tools use QA for internal knowledge bases.",
+      learnMoreUrl: "https://huggingface.co/docs/transformers/en/tasks/question_answering"
+    },
+    {
+      title: "Coreference Resolution & Relation Extraction",
+      description: "Coreference resolution identifies when different expressions refer to the same entity ('Obama' → 'he' → 'the president'). This is critical for document understanding and knowledge graph construction. Relation extraction identifies semantic relationships between entities ('Elon Musk' → 'CEO of' → 'Tesla'). Together, they enable structured information extraction from unstructured text. SpanBERT and neural coref models achieve near-human performance.",
+      icon: Link,
+      keyPoints: ["SpanBERT achieves state-of-the-art coreference resolution", "Relation types: is-a, part-of, located-in, works-for", "Knowledge graph construction from text via NER + RE"],
+      realWorld: "Google Knowledge Graph uses relation extraction at scale. Bloomberg extracts corporate relationships from news. Medical NLP extracts drug-disease relations from literature.",
+      learnMoreUrl: "https://arxiv.org/abs/1907.10529"
+    },
+    {
+      title: "Information Retrieval & Semantic Search",
+      description: "Information retrieval (IR) finds relevant documents for a query. Traditional IR uses TF-IDF and BM25 (lexical matching). Neural IR uses dense embeddings for semantic matching — ColBERT provides token-level interaction for high accuracy. Hybrid search combines BM25 + dense retrieval for the best of both worlds. Learned sparse representations (SPLADE) bridge lexical and semantic approaches. Cross-encoders re-rank candidates for maximum relevance.",
+      icon: Search,
+      keyPoints: ["BM25: still competitive, no training needed, fast", "ColBERT: late interaction for efficient neural retrieval", "Hybrid: BM25 + dense retrieval with reciprocal rank fusion"],
+      realWorld: "Elasticsearch 8+ supports dense vector search. Vespa.ai powers Yahoo and Spotify search. Cohere Rerank is widely used for re-ranking.",
+      learnMoreUrl: "https://www.sbert.net/examples/applications/retrieve_rerank/README.html"
+    },
+    {
+      title: "Text Classification & Topic Modeling",
+      description: "Text classification assigns predefined categories to text — spam detection, intent classification, content moderation. Fine-tuned BERT models achieve state-of-the-art on most benchmarks. Zero-shot classification using NLI models (BART-MNLI) handles unseen categories without training. Topic modeling discovers latent themes in document collections — LDA (Latent Dirichlet Allocation) is classical, BERTopic uses transformer embeddings + HDBSCAN clustering for modern topic discovery.",
+      icon: Database,
+      keyPoints: ["SetFit: few-shot classification with 8 examples matches full fine-tuning", "BERTopic: BERT embeddings + UMAP + HDBSCAN for topics", "Zero-shot via NLI: classify without any labeled data"],
+      realWorld: "Gmail uses text classification for spam filtering. Reddit uses it for content moderation. News organizations use topic modeling to track emerging stories.",
+      learnMoreUrl: "https://maartengr.github.io/BERTopic/index.html"
+    },
   ];
 
   return (

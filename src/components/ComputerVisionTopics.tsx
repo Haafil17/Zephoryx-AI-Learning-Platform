@@ -54,6 +54,38 @@ export const ComputerVisionTopics = () => {
       realWorld: "Apple Vision Pro uses depth estimation. Real estate uses NeRF for virtual tours. E-commerce uses generative AI for product images.",
       learnMoreUrl: "https://stability.ai/stable-diffusion"
     },
+    {
+      title: "Medical Image Analysis",
+      description: "Medical imaging AI assists radiologists and pathologists in detecting diseases from X-rays, CT scans, MRIs, and histopathology slides. U-Net (Ronneberger et al., 2015) remains the gold standard for medical image segmentation due to its skip connections preserving spatial detail. Models trained on CheXpert and MIMIC-CXR datasets can detect pneumonia, fractures, and tumors. FDA-cleared AI tools like Viz.ai for stroke and Paige for cancer are in clinical use.",
+      icon: Microscope,
+      keyPoints: ["U-Net: encoder-decoder with skip connections for segmentation", "Data scarcity solved with self-supervised pre-training", "FDA De Novo pathway for AI/ML medical devices"],
+      realWorld: "Google Health's AI detects diabetic retinopathy. PathAI analyzes pathology slides. Viz.ai alerts stroke teams in real-time from CT scans.",
+      learnMoreUrl: "https://arxiv.org/abs/1505.04597"
+    },
+    {
+      title: "Pose Estimation & Action Recognition",
+      description: "Pose estimation detects human body keypoints (joints) in images and video. OpenPose (CMU) was the first real-time multi-person pose estimator. MediaPipe (Google) provides lightweight pose, hand, and face landmark detection for mobile. MMPose supports 2D and 3D pose estimation. Action recognition classifies activities from video — SlowFast networks process temporal and spatial information at different rates, while VideoMAE uses masked autoencoders for self-supervised video understanding.",
+      icon: Activity,
+      keyPoints: ["17 body keypoints in COCO format (nose, shoulders, etc.)", "MediaPipe: runs in-browser and on mobile devices", "3D pose estimation from monocular video is an active research area"],
+      realWorld: "Apple Fitness+ uses pose estimation for workout tracking. Sports analytics companies track athlete movements. Sign language recognition uses hand pose estimation.",
+      learnMoreUrl: "https://google.github.io/mediapipe/"
+    },
+    {
+      title: "Face Recognition & Biometrics",
+      description: "Face recognition identifies or verifies individuals from facial features. Modern systems use deep metric learning — ArcFace, CosFace, and FaceNet learn embeddings where same-person faces are close and different-person faces are far apart. InsightFace provides open-source state-of-the-art models. Challenges: bias across demographics, lighting variations, occlusion (masks), and adversarial attacks. Liveness detection prevents spoofing with photos or videos.",
+      icon: Fingerprint,
+      keyPoints: ["ArcFace: additive angular margin for discriminative embeddings", "LFW benchmark: top models exceed 99.8% accuracy", "Anti-spoofing: depth sensing, liveness detection, challenge-response"],
+      realWorld: "Apple Face ID uses 3D face recognition with infrared. Clearview AI indexes billions of faces (controversial). Airport e-gates use face verification globally.",
+      learnMoreUrl: "https://insightface.ai/"
+    },
+    {
+      title: "Image Enhancement & Style Transfer",
+      description: "Image enhancement improves visual quality — super-resolution (Real-ESRGAN), denoising (Restormer), deblurring, and HDR reconstruction. Neural style transfer (Gatys et al., 2015) applies artistic styles to photos by separating content and style representations. Modern approaches: AdaIN (Adaptive Instance Normalization) enables real-time arbitrary style transfer. Image inpainting (LaMa, Stable Diffusion Inpaint) fills missing regions intelligently. Colorization adds color to grayscale images using learned priors.",
+      icon: Palette,
+      keyPoints: ["Real-ESRGAN: 4x upscaling with artifact removal", "Neural style transfer: content loss + style loss optimization", "Inpainting: LaMa uses Fourier convolutions for large holes"],
+      realWorld: "Adobe Photoshop uses AI for generative fill and neural filters. Topaz Labs uses deep learning for photo enhancement. Prisma app popularized neural style transfer.",
+      learnMoreUrl: "https://github.com/xinntao/Real-ESRGAN"
+    },
   ];
 
   return (
