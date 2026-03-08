@@ -39,7 +39,16 @@ export const Certifications = () => {
 
   useEffect(() => {
     fetchCert();
-    if (user) fetchUserCert();
+    if (user) {
+      fetchUserCert();
+      // Load the user's full_name from their profile
+      const loadName = async () => {
+        const { data } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
+        if (data?.full_name) setRecipientName(data.full_name);
+        setNameLoaded(true);
+      };
+      loadName();
+    }
   }, [user]);
 
   useEffect(() => {
