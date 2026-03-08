@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, ChevronRight, BookOpen, Workflow, Repeat, ArrowRightLeft, BarChart3, Layers, Sparkles } from "lucide-react";
+import { Brain, ChevronRight, BookOpen, Workflow, Repeat, ArrowRightLeft, BarChart3, Layers, Sparkles, Shuffle, GitBranch, Gauge, Box } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const DeepLearningTopics = () => {
