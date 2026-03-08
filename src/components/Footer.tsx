@@ -1,6 +1,8 @@
 import { Separator } from "@/components/ui/separator";
-import { Brain, Github, Twitter, Linkedin, Mail, Heart } from "lucide-react";
+import { Brain, Github, Twitter, Linkedin, Mail, Heart, Award } from "lucide-react";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import zephoryxLogo from "@/assets/zephoryx-logo.png";
 import zephoryxLogo from "@/assets/zephoryx-logo.png";
 
 export const Footer = () => {
