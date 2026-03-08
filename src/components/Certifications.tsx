@@ -240,13 +240,6 @@ export const Certifications = () => {
                     <span className="text-amber-800 font-bold text-sm tracking-wider">ZEPHORYX AI LAB</span>
                   </div>
                 </div>
-                    </div>
-                  )}
-                  <div className="mt-4 flex items-center gap-2">
-                    <img src={zephorxLogo} alt="ZEPHORYX" className="w-8 h-8 rounded" />
-                    <span className="text-amber-400 font-bold text-sm tracking-wider">ZEPHORYX AI LAB</span>
-                  </div>
-                </div>
 
                 {/* Right side */}
                 <div className="p-8 flex flex-col justify-center space-y-6">
