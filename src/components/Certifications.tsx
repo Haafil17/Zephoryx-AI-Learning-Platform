@@ -224,15 +224,22 @@ export const Certifications = () => {
             <CardContent className="p-0">
               <div className="grid md:grid-cols-2 gap-0">
                 {/* Certificate Preview */}
-                <div className="relative p-8 flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-[420px]">
-                  <img src={certificateImage} alt="ZEPHORYX AI LAB Certificate" className="w-full max-w-md rounded-lg shadow-2xl border border-amber-500/30" />
+                <div className="relative p-8 flex flex-col items-center justify-center bg-gradient-to-br from-amber-50 via-amber-100/50 to-amber-50 min-h-[420px]">
+                  <img src={certificateImage} alt="ZEPHORYX AI LAB Certificate" className="w-full max-w-md rounded-lg shadow-2xl border border-amber-300/50" />
                   {recipientName && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="text-center mt-16">
-                        <p className="text-amber-300/70 text-[10px] tracking-[0.2em] uppercase">This is to certify that</p>
-                        <p className="text-white font-bold text-xl md:text-2xl italic mt-1 drop-shadow-[0_2px_8px_rgba(200,168,78,0.4)]">{recipientName}</p>
-                        <p className="text-amber-200/40 text-[9px] mt-1 max-w-[200px] mx-auto leading-tight">has successfully used ZEPHORYX AI LAB for 1 month</p>
+                      <div className="text-center mt-4">
+                        <p className="text-amber-700/60 text-[9px] tracking-[0.2em] uppercase">This is to certify that</p>
+                        <p className="text-slate-900 font-bold text-xl md:text-2xl italic mt-1">{recipientName}</p>
+                        <p className="text-amber-700/40 text-[8px] mt-1 max-w-[200px] mx-auto leading-tight">has successfully used ZEPHORYX AI LAB for 1 month</p>
                       </div>
+                    </div>
+                  )}
+                  <div className="mt-4 flex items-center gap-2">
+                    <img src={zephorxLogo} alt="ZEPHORYX" className="w-8 h-8 rounded" />
+                    <span className="text-amber-800 font-bold text-sm tracking-wider">ZEPHORYX AI LAB</span>
+                  </div>
+                </div>
                     </div>
                   )}
                   <div className="mt-4 flex items-center gap-2">
