@@ -399,11 +399,13 @@ const Index = () => {
         </Tabs>
       </div>
 
+      <AIModelComparison />
       <LearningPaths />
       
       <CommunitySection />
       <Newsletter />
       <Footer />
+      <ChatFloatingButton />
     </div>
   );
 };
