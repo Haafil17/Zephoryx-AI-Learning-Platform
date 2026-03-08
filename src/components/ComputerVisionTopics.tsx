@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Eye, ChevronRight, BookOpen, Image, ScanLine, Box, Video, Layers } from "lucide-react";
+import { Eye, ChevronRight, BookOpen, Image, ScanLine, Box, Video, Layers, Microscope, Activity, Fingerprint, Palette } from "lucide-react";
 import { motion } from "framer-motion";
 
 export const ComputerVisionTopics = () => {
