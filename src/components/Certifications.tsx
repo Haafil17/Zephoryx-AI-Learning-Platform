@@ -96,88 +96,102 @@ export const Certifications = () => {
     canvas.width = W;
     canvas.height = H;
 
-    // Draw the generated certificate background image
+    // Draw the parchment certificate background
     if (bgImgRef.current) {
       ctx.drawImage(bgImgRef.current, 0, 0, W, H);
     } else {
-      // Fallback solid background
-      ctx.fillStyle = '#0f1730';
+      ctx.fillStyle = '#fdf6e3';
       ctx.fillRect(0, 0, W, H);
     }
 
-    // Semi-transparent overlay on the lower portion for text readability
-    ctx.fillStyle = 'rgba(15, 23, 48, 0.75)';
-    ctx.fillRect(150, 420, W - 300, H - 520);
-
     ctx.textAlign = 'center';
 
-    // "This is to certify that"
-    ctx.fillStyle = '#c8a84e';
-    ctx.font = '28px Georgia, serif';
-    ctx.fillText('This is to certify that', W / 2, 510);
+    // "CERTIFICATE OF ACHIEVEMENT" title
+    ctx.fillStyle = '#8B6914';
+    ctx.font = 'bold 60px Georgia, serif';
+    ctx.letterSpacing = '8px';
+    ctx.fillText('CERTIFICATE OF ACHIEVEMENT', W / 2, 220);
 
-    // Recipient name - BIG
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'italic bold 78px Georgia, serif';
-    ctx.fillText(recipientName, W / 2, 610);
-
-    // Gold underline
-    const nw = ctx.measureText(recipientName).width;
-    ctx.strokeStyle = '#c8a84e';
+    // Decorative line under title
+    ctx.strokeStyle = '#8B6914';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.moveTo(W / 2 - nw / 2 - 40, 635);
-    ctx.lineTo(W / 2 + nw / 2 + 40, 635);
+    ctx.moveTo(W / 2 - 350, 245);
+    ctx.lineTo(W / 2 + 350, 245);
+    ctx.stroke();
+
+    // "This is to certify that"
+    ctx.fillStyle = '#444444';
+    ctx.font = '30px Georgia, serif';
+    ctx.fillText('This is to certify that', W / 2, 340);
+
+    // Recipient name - BIG elegant
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = 'italic bold 86px Georgia, serif';
+    ctx.fillText(recipientName, W / 2, 460);
+
+    // Gold underline beneath name
+    const nw = ctx.measureText(recipientName).width;
+    ctx.strokeStyle = '#8B6914';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - nw / 2 - 60, 490);
+    ctx.lineTo(W / 2 + nw / 2 + 60, 490);
     ctx.stroke();
 
     // Description text
-    ctx.fillStyle = '#b0c0d0';
-    ctx.font = '24px Georgia, serif';
-    ctx.fillText('has successfully used the ZEPHORYX AI LAB platform', W / 2, 700);
-    ctx.fillText('for a period of one month, demonstrating commitment to AI learning', W / 2, 740);
-    ctx.fillText('across Prompt Engineering, Agentic AI, RAG, MCP, Guardrails,', W / 2, 780);
-    ctx.fillText('Generative AI, and Quantum Computing.', W / 2, 820);
+    ctx.fillStyle = '#333333';
+    ctx.font = '28px Georgia, serif';
+    ctx.fillText('has successfully used the ZEPHORYX AI LAB platform', W / 2, 570);
+    ctx.fillText('for a period of one month, demonstrating commitment to AI learning', W / 2, 615);
+    ctx.fillText('across Prompt Engineering, Agentic AI, RAG, MCP, Guardrails,', W / 2, 660);
+    ctx.fillText('Generative AI, and Quantum Computing.', W / 2, 705);
 
     // Date & cert number
     if (userCert) {
-      ctx.fillStyle = '#8899aa';
-      ctx.font = '20px Georgia, serif';
+      ctx.fillStyle = '#555555';
+      ctx.font = '22px Georgia, serif';
       const d = new Date(userCert.earned_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-      ctx.fillText(`Date: ${d}`, W / 2, 880);
-      ctx.fillText(`Certificate No: ${userCert.certificate_number}`, W / 2, 910);
+      ctx.fillText(`Date: ${d}`, W / 2, 790);
+      ctx.fillText(`Certificate No: ${userCert.certificate_number}`, W / 2, 825);
     }
 
-    // Divider
-    ctx.strokeStyle = '#c8a84e';
+    // Decorative divider
+    ctx.strokeStyle = '#8B6914';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(500, 950);
-    ctx.lineTo(W - 500, 950);
+    ctx.moveTo(550, 880);
+    ctx.lineTo(W - 550, 880);
     ctx.stroke();
 
     // CEO signature
-    ctx.fillStyle = '#c8a84e';
-    ctx.font = 'italic 36px Georgia, serif';
-    ctx.fillText('Haafil Mohammed', W / 2, 1010);
-    ctx.strokeStyle = '#8899aa';
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = 'italic 42px Georgia, serif';
+    ctx.fillText('Haafil Mohammed', W / 2, 960);
+    ctx.strokeStyle = '#555555';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(W / 2 - 180, 1025);
-    ctx.lineTo(W / 2 + 180, 1025);
+    ctx.moveTo(W / 2 - 200, 978);
+    ctx.lineTo(W / 2 + 200, 978);
     ctx.stroke();
-    ctx.fillStyle = '#8899aa';
-    ctx.font = '18px Georgia, serif';
-    ctx.fillText('Founder & CEO, ZEPHORYX AI LAB', W / 2, 1055);
+    ctx.fillStyle = '#555555';
+    ctx.font = '20px Georgia, serif';
+    ctx.fillText('Founder & CEO, ZEPHORYX AI LAB', W / 2, 1010);
 
     // Logo
     if (logoImgRef.current) {
-      ctx.drawImage(logoImgRef.current, W / 2 - 30, 1080, 60, 60);
+      ctx.drawImage(logoImgRef.current, W / 2 - 35, 1040, 70, 70);
     }
 
+    // "ZEPHORYX AI LAB" branding
+    ctx.fillStyle = '#8B6914';
+    ctx.font = 'bold 18px Georgia, serif';
+    ctx.fillText('ZEPHORYX AI LAB', W / 2, 1140);
+
     // Footer
-    ctx.fillStyle = '#556677';
+    ctx.fillStyle = '#888888';
     ctx.font = '14px Georgia, serif';
-    ctx.fillText('www.zephoryx-ai-lab.lovable.app', W / 2, 1180);
+    ctx.fillText('www.zephoryx-ai-lab.lovable.app', W / 2, 1170);
 
     const link = document.createElement('a');
     link.download = `ZEPHORYX-Certificate-${recipientName.replace(/\s+/g, '-')}.png`;
