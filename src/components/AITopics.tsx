@@ -1,338 +1,208 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Users, Target, Lightbulb, ChevronRight, Star, Video, Play, X } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Brain, ChevronRight, BookOpen, Layers, Eye, Cpu, FileText, GitBranch, Network, Shield, Lightbulb, Target } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const AITopics = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [playingVideoId, setPlayingVideoId] = useState<string | null>(null);
-
-  const aiConcepts = [
+  const concepts = [
+    {
+      title: "What is Artificial Intelligence?",
+      description: "Artificial Intelligence is the science of building systems that can perform tasks normally requiring human intelligence: understanding language, recognizing patterns, making decisions, and learning from experience. Modern AI is dominated by machine learning — systems that improve from data rather than explicit programming. The field was founded at the Dartmouth Conference (1956) by McCarthy, Minsky, and others. Today's AI renaissance is driven by three factors: massive datasets, powerful GPUs, and breakthrough algorithms (especially transformers).",
+      icon: Brain,
+      keyPoints: [
+        "Narrow AI (today): excels at specific tasks — chess, image recognition, language",
+        "General AI (AGI): human-level reasoning across all domains — not yet achieved",
+        "Modern AI = mostly machine learning, especially deep learning with neural networks"
+      ],
+      learnMoreUrl: "https://stanford.edu/~shervine/teaching/cs-229/"
+    },
     {
       title: "Machine Learning Fundamentals",
-      description: "Understanding supervised, unsupervised, and reinforcement learning approaches",
-      category: "fundamentals",
-      difficulty: "Beginner",
-      applications: ["Prediction", "Classification", "Clustering"],
+      description: "Machine learning (ML) is a subset of AI where systems learn patterns from data. Three main paradigms: (1) Supervised Learning — learn from labeled examples (input → output). Used for classification (spam/not spam) and regression (predict house price). (2) Unsupervised Learning — find patterns in unlabeled data. Used for clustering and dimensionality reduction. (3) Reinforcement Learning — learn by trial-and-error with rewards. Used for game playing and robotics. Key algorithms: linear regression, decision trees, random forests, SVMs, k-means.",
+      icon: Target,
+      keyPoints: [
+        "Supervised: labeled data → predict outputs (classification, regression)",
+        "Unsupervised: unlabeled data → discover structure (clustering, PCA)",
+        "Reinforcement: agent learns through reward signals (games, robotics, RLHF)"
+      ],
       learnMoreUrl: "https://www.coursera.org/learn/machine-learning"
     },
     {
-      title: "Neural Networks & Deep Learning", 
-      description: "Architecture and training of artificial neural networks for complex tasks",
-      category: "fundamentals",
-      difficulty: "Intermediate",
-      applications: ["Image Recognition", "Natural Language", "Speech"],
+      title: "Neural Networks & Deep Learning",
+      description: "Neural networks are inspired by the brain — layers of interconnected 'neurons' that transform inputs into outputs. Deep learning uses networks with many layers (hence 'deep'). Each layer learns progressively more abstract features: edges → textures → objects → scenes. Key architectures: CNNs (Convolutional Neural Networks) for images, RNNs/LSTMs for sequences, Transformers for everything (text, images, audio). Training uses backpropagation and gradient descent to minimize a loss function.",
+      icon: Network,
+      keyPoints: [
+        "Backpropagation: compute gradients layer by layer to update weights",
+        "CNNs: convolutional filters detect spatial features in images",
+        "Transformers: self-attention mechanism replaced RNNs for sequence tasks"
+      ],
       learnMoreUrl: "https://www.deeplearningbook.org/"
     },
     {
-      title: "AI Ethics & Bias",
-      description: "Responsible AI development and addressing algorithmic bias in systems",
-      category: "ethics",
-      difficulty: "Advanced", 
-      applications: ["Fair Hiring", "Medical Diagnosis", "Criminal Justice"],
-      learnMoreUrl: "https://www.partnershiponai.org/"
-    },
-    {
       title: "Computer Vision",
-      description: "Teaching machines to interpret and understand visual information",
-      category: "applications",
-      difficulty: "Intermediate",
-      applications: ["Object Detection", "Facial Recognition", "Medical Imaging"],
+      description: "Computer vision enables machines to interpret visual data. Modern CV is powered by deep learning — especially CNNs and Vision Transformers (ViT). Key tasks: Image Classification (what's in this image?), Object Detection (where are the objects? — YOLO, Faster R-CNN), Semantic Segmentation (label every pixel), Instance Segmentation (separate individual objects). Recent advances: CLIP (OpenAI) connects images and text in a shared embedding space, enabling zero-shot classification and text-to-image search.",
+      icon: Eye,
+      keyPoints: [
+        "YOLO (You Only Look Once): real-time object detection — detects objects in one pass",
+        "Vision Transformers (ViT): apply transformer architecture to image patches",
+        "CLIP: learns visual concepts from natural language — zero-shot image classification"
+      ],
       learnMoreUrl: "https://opencv.org/"
     },
     {
-      title: "Natural Language Processing",
-      description: "Enabling computers to understand, interpret, and generate human language",
-      category: "applications", 
-      difficulty: "Intermediate",
-      applications: ["Sentiment Analysis", "Translation", "Chatbots"],
-      learnMoreUrl: "https://huggingface.co/course/chapter1/1"
+      title: "Natural Language Processing (NLP)",
+      description: "NLP enables computers to understand and generate human language. Pre-transformer NLP used word embeddings (Word2Vec, GloVe) and RNNs. The transformer revolution (2017-present) changed everything: BERT (2018) introduced bidirectional understanding for tasks like question answering and classification. GPT (2018-2024) showed that autoregressive language modeling scales to human-level text generation. Modern NLP tasks: sentiment analysis, named entity recognition, machine translation, text summarization, question answering, and dialogue.",
+      icon: FileText,
+      keyPoints: [
+        "BERT: bidirectional encoder for understanding — pre-train then fine-tune on tasks",
+        "GPT: autoregressive decoder for generation — next-token prediction at massive scale",
+        "Tokenization: BPE (Byte Pair Encoding) splits text into subword tokens for the model"
+      ],
+      learnMoreUrl: "https://huggingface.co/learn/nlp-course/chapter1/1"
     },
     {
-      title: "AI in Healthcare",
-      description: "Transforming medical diagnosis, treatment planning, and drug discovery",
-      category: "industry",
-      difficulty: "Advanced",
-      applications: ["Drug Discovery", "Diagnostic Imaging", "Personalized Medicine"],
-      learnMoreUrl: "https://www.nature.com/subjects/machine-learning"
-    }
+      title: "Reinforcement Learning",
+      description: "Reinforcement Learning (RL) trains agents to make decisions by maximizing cumulative rewards through trial and error. The agent observes a state, takes an action, receives a reward, and updates its policy. Key algorithms: Q-Learning (value-based), Policy Gradient (directly optimize the policy), PPO (Proximal Policy Optimization — used in RLHF for LLMs). Famous successes: AlphaGo (beat world champion at Go), AlphaFold (predicted protein structures), and RLHF (aligning ChatGPT with human preferences).",
+      icon: GitBranch,
+      keyPoints: [
+        "PPO (Proximal Policy Optimization): the algorithm behind RLHF in ChatGPT",
+        "AlphaGo/AlphaZero: superhuman performance in Go, Chess, and Shogi via self-play",
+        "AlphaFold: solved protein structure prediction — Nobel Prize-worthy impact"
+      ],
+      learnMoreUrl: "https://spinningup.openai.com/en/latest/"
+    },
+    {
+      title: "AI Ethics, Bias & Fairness",
+      description: "AI systems can perpetuate and amplify societal biases present in training data. Key concerns: hiring algorithms discriminating against women (Amazon, 2018), facial recognition performing poorly on darker skin tones (Gender Shades study by Buolamwini & Gebru), and LLMs generating harmful stereotypes. Mitigation approaches: diverse training data, bias auditing, fairness metrics (demographic parity, equalized odds), interpretability tools (SHAP, LIME), and governance frameworks (EU AI Act, NIST AI RMF).",
+      icon: Shield,
+      keyPoints: [
+        "EU AI Act (2024): first comprehensive AI regulation — risk-based classification system",
+        "SHAP & LIME: explain individual model predictions for transparency",
+        "Responsible AI: fairness, accountability, transparency, ethics (FATE framework)"
+      ],
+      learnMoreUrl: "https://www.partnershiponai.org/"
+    },
+    {
+      title: "AI in Healthcare & Science",
+      description: "AI is transforming medicine and scientific research. Medical imaging: AI detects cancer in radiology scans with accuracy matching or exceeding human radiologists (Google Health, 2020). Drug discovery: AlphaFold predicted the 3D structure of virtually all known proteins — a problem that took biologists decades. AI also accelerates clinical trials, personalized treatment plans, and epidemic prediction. In materials science, GNoME (Google DeepMind) discovered 2.2 million new stable crystal structures.",
+      icon: Lightbulb,
+      keyPoints: [
+        "AlphaFold: predicted 200M+ protein structures — revolutionized biology",
+        "GNoME: discovered 2.2M new materials using graph neural networks",
+        "FDA has approved 500+ AI/ML-enabled medical devices as of 2024"
+      ],
+      learnMoreUrl: "https://deepmind.google/technologies/alphafold/"
+    },
+    {
+      title: "Transfer Learning & Foundation Models",
+      description: "Transfer learning reuses knowledge from one task/domain to improve performance on another. The foundation model paradigm: pre-train a massive model on broad data (ImageNet for vision, web text for language), then fine-tune or prompt it for specific tasks. This is why GPT-4, Claude, and Gemini work so well — they transfer knowledge from trillions of tokens to any downstream task. Key concept: emergent abilities appear at scale that don't exist in smaller models (in-context learning, chain-of-thought).",
+      icon: Layers,
+      keyPoints: [
+        "Pre-train once (expensive), fine-tune many times (cheap) — amortize training cost",
+        "Emergent abilities: in-context learning, CoT reasoning appear only in large models",
+        "Foundation models: one model → thousands of applications via prompting or fine-tuning"
+      ],
+      learnMoreUrl: "https://crfm.stanford.edu/report.html"
+    },
+    {
+      title: "Edge AI & Model Optimization",
+      description: "Edge AI runs AI models directly on devices (phones, IoT, cars) rather than in the cloud. Benefits: lower latency, offline capability, data privacy. Key techniques: Quantization (reduce precision from FP32 → INT8 → INT4, shrinking model size 4-8x), Pruning (remove unimportant weights), Knowledge Distillation (train a small 'student' model to mimic a large 'teacher' model). Apple's Core ML, Google's TensorFlow Lite, and ONNX Runtime enable on-device inference. Qualcomm and Apple have dedicated Neural Processing Units (NPUs).",
+      icon: Cpu,
+      keyPoints: [
+        "Quantization: FP32 → INT4 reduces model size by 8x with ~1% accuracy loss",
+        "Distillation: small models trained to mimic large ones (e.g., DistilBERT is 60% smaller)",
+        "NPUs: dedicated AI chips in phones — Apple A17 Pro, Qualcomm Snapdragon 8 Gen 3"
+      ],
+      learnMoreUrl: "https://onnxruntime.ai/"
+    },
   ];
 
-  const categories = [
-    { id: "all", name: "All Concepts", count: aiConcepts.length },
-    { id: "fundamentals", name: "Fundamentals", count: aiConcepts.filter(c => c.category === "fundamentals").length },
-    { id: "applications", name: "Applications", count: aiConcepts.filter(c => c.category === "applications").length },
-    { id: "ethics", name: "Ethics", count: aiConcepts.filter(c => c.category === "ethics").length },
-    { id: "industry", name: "Industry", count: aiConcepts.filter(c => c.category === "industry").length }
+  const resources = [
+    { name: "Stanford CS229 - Machine Learning", desc: "Andrew Ng's foundational ML course — free lecture notes and videos", url: "https://stanford.edu/~shervine/teaching/cs-229/" },
+    { name: "Fast.ai Practical Deep Learning", desc: "Top-down, practical deep learning course — code first, theory second", url: "https://course.fast.ai/" },
+    { name: "3Blue1Brown Neural Networks", desc: "Beautiful visual explanations of neural networks and deep learning", url: "https://www.3blue1brown.com/topics/neural-networks" },
+    { name: "Andrej Karpathy's Zero to Hero", desc: "Build neural networks from scratch in Python — by former Tesla AI director", url: "https://karpathy.ai/zero-to-hero.html" },
+    { name: "DeepLearning.AI Specializations", desc: "Comprehensive deep learning courses by Andrew Ng on Coursera", url: "https://www.deeplearning.ai/" },
+    { name: "Papers With Code", desc: "Browse state-of-the-art ML papers with code implementations", url: "https://paperswithcode.com/" },
   ];
-
-  const filteredConcepts = selectedCategory === "all" 
-    ? aiConcepts 
-    : aiConcepts.filter(concept => concept.category === selectedCategory);
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "Beginner": return "bg-green-100 text-green-800";
-      case "Intermediate": return "bg-yellow-100 text-yellow-800";
-      case "Advanced": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const handleLearnMore = (concept: typeof aiConcepts[0]) => {
-    window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer');
-    toast.success(`Opening ${concept.title} resources...`);
-  };
-
-  const aiVideos = [
-    {
-      id: "ai-basics",
-      title: "AI Fundamentals Explained",
-      description: "Complete introduction to artificial intelligence concepts",
-      thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center",
-      duration: "18:45",
-      category: "fundamentals",
-      embedId: "kWmX3pd1f10"
-    },
-    {
-      id: "neural-networks",
-      title: "Neural Networks Deep Dive",
-      description: "Understanding how neural networks process and learn from data",
-      thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center",
-      duration: "25:12", 
-      category: "fundamentals",
-      embedId: "aircAruvnKk"
-    },
-    {
-      id: "ai-ethics",
-      title: "AI Ethics in Practice",
-      description: "Real-world examples of ethical AI development and deployment",
-      thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop&crop=center",
-      duration: "14:30",
-      category: "ethics",
-      embedId: "AaAX-E6Vvd0"
-    },
-    {
-      id: "computer-vision",
-      title: "Computer Vision Applications",
-      description: "How machines see and interpret visual data",
-      thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center",
-      duration: "20:15",
-      category: "applications",
-      embedId: "yQQ7DX6bI5Y"
-    }
-  ];
-
-  const handleVideoPlay = (video: typeof aiVideos[0]) => {
-    setPlayingVideoId(video.id);
-    toast.success(`Playing: ${video.title}`, {
-      description: "Loading AI tutorial"
-    });
-  };
-
-  const closeVideo = () => {
-    setPlayingVideoId(null);
-  };
-
-  const currentVideo = aiVideos.find(v => v.id === playingVideoId);
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-950">
+    <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Enhanced Video Modal */}
-        {playingVideoId && currentVideo && (
-          <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
-              <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">
-                    {currentVideo.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    {currentVideo.description}
-                  </p>
-                </div>
-                <Button variant="ghost" size="sm" onClick={closeVideo} className="hover:bg-slate-200 dark:hover:bg-slate-700">
-                  <X className="w-5 h-5" />
-                </Button>
-              </div>
-              <div className="aspect-video bg-black">
-                <iframe
-                  src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1&start=0&title=ZEPHORYX%20AI%20LAB`}
-                  className="w-full h-full"
-                  allowFullScreen
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title={`ZEPHORYX AI LAB - ${currentVideo.title}`}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
-            Artificial Intelligence
+          <Badge className="mb-4 bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200 border-0 px-4 py-1.5">
+            <Brain className="w-4 h-4 mr-1" /> Foundations
+          </Badge>
+          <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent mb-4">
+            Artificial Intelligence Fundamentals
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Explore the fundamentals, applications, and future of artificial intelligence across industries and use cases
+          <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            From machine learning basics to neural networks, computer vision, NLP, and AI ethics — understand the complete landscape of artificial intelligence with real research and resources.
           </p>
         </div>
 
-        {/* Enhanced Video Gallery Section */}
-        <div className="mb-16 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-3xl p-8 border border-blue-100 dark:border-blue-800/50">
-          <h3 className="text-3xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
-            🎯 AI Learning Videos
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {aiVideos.map((video) => (
-              <Card key={video.id} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-2">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img 
-                    src={video.thumbnail} 
-                    alt={video.title}
-                    className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button
-                      onClick={() => handleVideoPlay(video)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-2xl transform scale-0 group-hover:scale-100 transition-all duration-300"
-                    >
-                      <Play className="w-5 h-5" />
-                    </Button>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+          {concepts.map((concept, i) => (
+            <motion.div
+              key={concept.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+            >
+              <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-card/90 backdrop-blur-sm">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 shadow-md">
+                      <concept.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <CardTitle className="text-xl font-display">{concept.title}</CardTitle>
                   </div>
-                  <Badge className="absolute top-3 right-3 bg-black/80 text-white font-semibold">
-                    {video.duration}
-                  </Badge>
-                </div>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg font-bold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {video.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm">
-                    {video.description}
+                  <CardDescription className="text-base leading-relaxed">
+                    {concept.description}
                   </CardDescription>
                 </CardHeader>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`${
-                selectedCategory === category.id
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white text-slate-700 hover:bg-blue-50 border-blue-200"
-              } px-6 py-3 rounded-full border transition-all duration-200 hover:scale-105`}
-            >
-              {category.name}
-              <Badge variant="secondary" className="ml-2 text-xs">
-                {category.count}
-              </Badge>
-            </Button>
-          ))}
-        </div>
-
-        {/* AI Concepts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {filteredConcepts.map((concept, index) => (
-            <Card key={index} className="group hover:shadow-2xl transition-all duration-500 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-0 shadow-lg hover:scale-105 hover:-translate-y-1">
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-4 bg-blue-100 dark:bg-blue-900/50 rounded-2xl group-hover:bg-blue-200 dark:group-hover:bg-blue-800/70 transition-colors group-hover:scale-110 duration-300">
-                    <Brain className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground mb-2">Key Points:</h4>
+                    <ul className="space-y-1.5">
+                      {concept.keyPoints.map((point, j) => (
+                        <li key={j} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-2 shrink-0" />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <Badge className={getDifficultyColor(concept.difficulty)}>
-                    {concept.difficulty}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {concept.title}
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                  {concept.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Applications:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {concept.applications.map((app, appIndex) => (
-                      <Badge key={appIndex} variant="outline" className="text-xs hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors">
-                        {app}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="ghost" 
-                    className="flex-1 justify-between text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-900/30 font-medium"
-                    onClick={() => handleLearnMore(concept)}
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-between text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/30"
+                    onClick={() => window.open(concept.learnMoreUrl, '_blank', 'noopener,noreferrer')}
                   >
-                    Learn More
+                    <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" /> Learn More</span>
                     <ChevronRight className="w-4 h-4" />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="hover:bg-blue-50 dark:hover:bg-blue-900/30"
-                    onClick={() => handleVideoPlay(aiVideos[index % aiVideos.length])}
-                  >
-                    <Video className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
-        {/* AI Impact Stats */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-10 text-white shadow-2xl">
-          <div className="text-center mb-10">
-            <h3 className="text-4xl font-bold mb-4">AI Transforming Industries</h3>
-            <p className="text-xl opacity-90 max-w-3xl mx-auto leading-relaxed">
-              Artificial Intelligence is revolutionizing how we work, learn, and solve complex problems across every sector
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Target className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">85%</div>
-              <div className="text-lg opacity-90">Accuracy Improvement</div>
-            </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Users className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">2.3B</div>
-              <div className="text-lg opacity-90">People Impacted</div>
-            </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Lightbulb className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">40%</div>
-              <div className="text-lg opacity-90">Productivity Boost</div>
-            </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
-                <Star className="w-10 h-10" />
-              </div>
-              <div className="text-4xl font-bold mb-2">100+</div>
-              <div className="text-lg opacity-90">Use Cases</div>
-            </div>
+        {/* Resources */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+          <h3 className="text-2xl font-bold text-center mb-8">Essential AI Learning Resources</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {resources.map((r) => (
+              <button
+                key={r.name}
+                onClick={() => window.open(r.url, '_blank', 'noopener,noreferrer')}
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-left hover:bg-white/20 transition-colors"
+              >
+                <h4 className="font-bold text-lg mb-1">{r.name}</h4>
+                <p className="text-sm text-white/80">{r.desc}</p>
+              </button>
+            ))}
           </div>
         </div>
       </div>
