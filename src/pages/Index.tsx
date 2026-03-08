@@ -350,7 +350,7 @@ const Index = () => {
       </div>
 
       <LearningPaths />
-      <Certifications />
+      
       <CommunitySection />
       <Newsletter />
       <Footer />
