@@ -11,11 +11,11 @@ import { motion } from "framer-motion";
 const MyCertificate = () => {
   const navigate = useNavigate();
 
-  const stats = [
-    { icon: Award, label: "Certificates Issued", value: "500+", color: "from-amber-500 to-orange-500" },
-    { icon: Shield, label: "Verified & Secure", value: "100%", color: "from-emerald-500 to-teal-500" },
-    { icon: Users, label: "Certified Members", value: "350+", color: "from-blue-500 to-indigo-500" },
-    { icon: Star, label: "Industry Recognized", value: "Global", color: "from-purple-500 to-pink-500" },
+  const features = [
+    { icon: Award, label: "Unique Certificate Number", description: "Each certificate gets a unique serial for verification", color: "from-amber-500 to-orange-500" },
+    { icon: Shield, label: "Publicly Verifiable", description: "Anyone can verify your certificate at /verify", color: "from-emerald-500 to-teal-500" },
+    { icon: Users, label: "30-Day Milestone", description: "Earned after one month of active membership", color: "from-blue-500 to-indigo-500" },
+    { icon: Star, label: "High-Res Download", description: "Download as a professional 1920×1358 PNG", color: "from-purple-500 to-pink-500" },
   ];
 
   return (
@@ -52,22 +52,22 @@ const MyCertificate = () => {
           </p>
         </motion.div>
 
-        {/* Stats Row */}
+        {/* Features Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-          {stats.map((stat, i) => (
+          {features.map((feat, i) => (
             <motion.div
-              key={stat.label}
+              key={feat.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
             >
               <Card className="border-0 shadow-md bg-card/80 backdrop-blur-sm text-center">
                 <CardContent className="pt-6 pb-4">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center mx-auto mb-3`}>
-                    <stat.icon className="w-5 h-5 text-white" />
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${feat.color} flex items-center justify-center mx-auto mb-3`}>
+                    <feat.icon className="w-5 h-5 text-white" />
                   </div>
-                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
+                  <p className="text-sm font-bold text-foreground">{feat.label}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{feat.description}</p>
                 </CardContent>
               </Card>
             </motion.div>
