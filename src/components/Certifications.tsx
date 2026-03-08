@@ -278,9 +278,26 @@ export const Certifications = () => {
                       readOnly
                       className="pl-10 bg-muted/50 cursor-not-allowed"
                     />
-                    {nameLoaded && !recipientName && user && (
-                      <p className="text-xs text-destructive mt-1">Your name was not set during sign up. Please contact support.</p>
-                    )}
+                    <div className="flex items-center justify-between mt-1">
+                      {nameLoaded && !recipientName && user && (
+                        <p className="text-xs text-destructive">Your name was not set during sign up.</p>
+                      )}
+                      {user && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const subject = encodeURIComponent('Certificate Name Change Request');
+                            const body = encodeURIComponent(
+                              `Hi Admin,\n\nI would like to request a name change for my certificate.\n\nAccount email: ${user.email}\nCurrent name: ${recipientName || '(not set)'}\nRequested new name: [Please enter your desired name here]\n\nThank you.`
+                            );
+                            window.open(`mailto:haafil006@gmail.com?subject=${subject}&body=${body}`, '_blank');
+                          }}
+                          className="text-xs text-primary hover:underline ml-auto"
+                        >
+                          Request name change
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   {!user ? (
