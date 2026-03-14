@@ -37,13 +37,13 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs";
+  TabsContent } from
+"@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  Brain, 
-  Code, 
+import {
+  Brain,
+  Code,
   Sparkles,
   Play,
   X,
@@ -55,56 +55,56 @@ import {
   Eye,
   FileText,
   Rocket,
-  Settings
-} from "lucide-react";
+  Settings } from
+"lucide-react";
 import { toast } from "sonner";
 
 const features = [
-  { icon: Sparkles, title: "Prompt Engineering", color: "from-amber-500 to-orange-500" },
-  { icon: Bot, title: "Agentic AI", color: "from-indigo-500 to-violet-500" },
-  { icon: Database, title: "RAG & Retrieval", color: "from-emerald-500 to-teal-500" },
-  { icon: Plug, title: "MCP Protocol", color: "from-violet-500 to-purple-500" },
-  { icon: Network, title: "Orchestrators", color: "from-orange-500 to-red-500" },
-  { icon: Shield, title: "Guardrails", color: "from-red-500 to-rose-500" },
-  { icon: Brain, title: "Gen AI & Models", color: "from-purple-500 to-pink-500" },
-  { icon: Code, title: "Coding & Quantum", color: "from-teal-500 to-blue-500" },
-  { icon: Settings, title: "Fine-Tuning", color: "from-orange-500 to-red-500" },
-  { icon: FileText, title: "NLP", color: "from-sky-500 to-blue-500" },
-  { icon: Eye, title: "Computer Vision", color: "from-violet-500 to-fuchsia-500" },
-  { icon: Rocket, title: "MLOps", color: "from-lime-500 to-green-500" },
-  { icon: Brain, title: "Deep Learning", color: "from-rose-500 to-pink-500" },
-];
+{ icon: Sparkles, title: "Prompt Engineering", color: "from-amber-500 to-orange-500" },
+{ icon: Bot, title: "Agentic AI", color: "from-indigo-500 to-violet-500" },
+{ icon: Database, title: "RAG & Retrieval", color: "from-emerald-500 to-teal-500" },
+{ icon: Plug, title: "MCP Protocol", color: "from-violet-500 to-purple-500" },
+{ icon: Network, title: "Orchestrators", color: "from-orange-500 to-red-500" },
+{ icon: Shield, title: "Guardrails", color: "from-red-500 to-rose-500" },
+{ icon: Brain, title: "Gen AI & Models", color: "from-purple-500 to-pink-500" },
+{ icon: Code, title: "Coding & Quantum", color: "from-teal-500 to-blue-500" },
+{ icon: Settings, title: "Fine-Tuning", color: "from-orange-500 to-red-500" },
+{ icon: FileText, title: "NLP", color: "from-sky-500 to-blue-500" },
+{ icon: Eye, title: "Computer Vision", color: "from-violet-500 to-fuchsia-500" },
+{ icon: Rocket, title: "MLOps", color: "from-lime-500 to-green-500" },
+{ icon: Brain, title: "Deep Learning", color: "from-rose-500 to-pink-500" }];
+
 
 const homeVideos = [
-  { id: "getting-started", title: "Getting Started with AI Prompting", thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center", duration: "4:32", embedId: "kWmX3pd1f10" },
-  { id: "advanced-techniques", title: "Advanced Prompting Techniques", thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center", duration: "8:15", embedId: "aircAruvnKk" },
-  { id: "real-examples", title: "Real-World AI Applications", thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center", duration: "12:45", embedId: "yR4hNBNS6yc" },
-];
+{ id: "getting-started", title: "Getting Started with AI Prompting", thumbnail: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=225&fit=crop&crop=center", duration: "4:32", embedId: "kWmX3pd1f10" },
+{ id: "advanced-techniques", title: "Advanced Prompting Techniques", thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=225&fit=crop&crop=center", duration: "8:15", embedId: "aircAruvnKk" },
+{ id: "real-examples", title: "Real-World AI Applications", thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=225&fit=crop&crop=center", duration: "12:45", embedId: "yR4hNBNS6yc" }];
+
 
 const tabs = [
-  { value: "prompting", label: "✍️ Prompting" },
-  { value: "agentic", label: "🤖 Agentic" },
-  { value: "rag", label: "🔍 RAG" },
-  { value: "mcp", label: "🔌 MCP" },
-  { value: "orchestrators", label: "⚙️ Orchestrators" },
-  { value: "guardrails", label: "🛡️ Guardrails" },
-  { value: "genai", label: "🎨 Gen AI" },
-  { value: "models", label: "🧠 Models" },
-  { value: "techniques", label: "🎯 Techniques" },
-  { value: "examples", label: "💡 Examples" },
-  { value: "bestpractices", label: "🏆 Best Practices" },
-  { value: "coding", label: "💻 Coding" },
-  { value: "quantum", label: "⚛️ Quantum" },
-  { value: "finetuning", label: "🔧 Fine-Tuning" },
-  { value: "nlp", label: "📝 NLP" },
-  { value: "vision", label: "👁️ Vision" },
-  { value: "mlops", label: "🚀 MLOps" },
-  { value: "deeplearning", label: "🧬 Deep Learning" },
-  { value: "ai", label: "📘 AI Basics" },
-  { value: "aitools", label: "🛠️ Tools" },
-  { value: "videos", label: "🎥 Videos" },
-  { value: "resources", label: "📚 Resources" },
-];
+{ value: "prompting", label: "✍️ Prompting" },
+{ value: "agentic", label: "🤖 Agentic" },
+{ value: "rag", label: "🔍 RAG" },
+{ value: "mcp", label: "🔌 MCP" },
+{ value: "orchestrators", label: "⚙️ Orchestrators" },
+{ value: "guardrails", label: "🛡️ Guardrails" },
+{ value: "genai", label: "🎨 Gen AI" },
+{ value: "models", label: "🧠 Models" },
+{ value: "techniques", label: "🎯 Techniques" },
+{ value: "examples", label: "💡 Examples" },
+{ value: "bestpractices", label: "🏆 Best Practices" },
+{ value: "coding", label: "💻 Coding" },
+{ value: "quantum", label: "⚛️ Quantum" },
+{ value: "finetuning", label: "🔧 Fine-Tuning" },
+{ value: "nlp", label: "📝 NLP" },
+{ value: "vision", label: "👁️ Vision" },
+{ value: "mlops", label: "🚀 MLOps" },
+{ value: "deeplearning", label: "🧬 Deep Learning" },
+{ value: "ai", label: "📘 AI Basics" },
+{ value: "aitools", label: "🛠️ Tools" },
+{ value: "videos", label: "🎥 Videos" },
+{ value: "resources", label: "📚 Resources" }];
+
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("prompting");
@@ -118,15 +118,15 @@ const Index = () => {
     return () => window.removeEventListener('changeTab', handleTabChange as EventListener);
   }, []);
 
-  const currentVideo = homeVideos.find(v => v.id === playingVideoId);
+  const currentVideo = homeVideos.find((v) => v.id === playingVideoId);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-950 dark:via-blue-950 dark:to-indigo-950">
       <Hero />
 
       {/* Video Modal */}
-      {playingVideoId && currentVideo && (
-        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
+      {playingVideoId && currentVideo &&
+      <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-card rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-border">
             <div className="flex justify-between items-center p-4 border-b border-border bg-muted/50">
               <h3 className="text-lg font-bold text-foreground">{currentVideo.title}</h3>
@@ -136,17 +136,17 @@ const Index = () => {
             </div>
             <div className="aspect-video bg-black">
               <iframe
-                src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
-                className="w-full h-full"
-                allowFullScreen
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                title={currentVideo.title}
-              />
+              src={`https://www.youtube.com/embed/${currentVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
+              className="w-full h-full"
+              allowFullScreen
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              title={currentVideo.title} />
+            
             </div>
           </div>
         </div>
-      )}
+      }
 
       {/* Compact Features + Videos Row */}
       <section className="py-10 px-4">
@@ -157,16 +157,16 @@ const Index = () => {
 
           {/* Features as compact icon cards */}
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3 mb-8">
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.02, duration: 0.3 }}
-              >
+            {features.map((feature, index) =>
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.02, duration: 0.3 }}>
+              
                 <Card className="group bg-card/80 border-0 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <CardContent className="p-3 text-center">
+                  <CardContent className="p-3 text-center py-[12px]">
                     <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mx-auto mb-1.5`}>
                       <feature.icon className="w-4 h-4 text-white" />
                     </div>
@@ -174,13 +174,13 @@ const Index = () => {
                   </CardContent>
                 </Card>
               </motion.div>
-            ))}
+            )}
           </div>
 
           {/* Inline video row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {homeVideos.map((video) => (
-              <Card key={video.id} className="group cursor-pointer flex flex-row items-center p-3 gap-3 bg-card/90 border-0 shadow-sm hover:shadow-lg transition-all" onClick={() => { setPlayingVideoId(video.id); toast.success(`Playing: ${video.title}`); }}>
+            {homeVideos.map((video) =>
+            <Card key={video.id} className="group cursor-pointer flex flex-row items-center p-3 gap-3 bg-card/90 border-0 shadow-sm hover:shadow-lg transition-all" onClick={() => {setPlayingVideoId(video.id);toast.success(`Playing: ${video.title}`);}}>
                 <div className="relative w-20 h-14 flex-shrink-0 rounded-lg overflow-hidden">
                   <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
@@ -192,7 +192,7 @@ const Index = () => {
                   <p className="text-xs text-muted-foreground">{video.duration}</p>
                 </div>
               </Card>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -215,15 +215,15 @@ const Index = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md py-2 -mx-4 px-4 border-b border-border/30">
             <TabsList className="flex justify-center gap-1 bg-muted/30 dark:bg-muted/10 rounded-2xl flex-wrap p-2 border border-border/50">
-              {tabs.map(tab => (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className="px-2.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground"
-                >
+              {tabs.map((tab) =>
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="px-2.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=inactive]:text-muted-foreground hover:text-foreground">
+                
                   {tab.label}
                 </TabsTrigger>
-              ))}
+              )}
             </TabsList>
           </div>
 
@@ -268,8 +268,8 @@ const Index = () => {
       <Newsletter />
       <Footer />
       <ChatFloatingButton />
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
