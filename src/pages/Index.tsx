@@ -103,6 +103,8 @@ const tabs = [
 { value: "mlops", label: "🚀 MLOps" },
 { value: "deeplearning", label: "🧬 Deep Learning" },
 { value: "ai", label: "📘 AI Basics" },
+{ value: "memory", label: "🧠 Memory Systems" },
+{ value: "comparisons", label: "⚖️ Comparisons" },
 { value: "aitools", label: "🛠️ Tools" },
 { value: "videos", label: "🎥 Videos" },
 { value: "resources", label: "📚 Resources" }];
