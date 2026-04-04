@@ -21,6 +21,8 @@ import { NLPTopics } from "@/components/NLPTopics";
 import { ComputerVisionTopics } from "@/components/ComputerVisionTopics";
 import { MLOpsTopics } from "@/components/MLOpsTopics";
 import { DeepLearningTopics } from "@/components/DeepLearningTopics";
+import { MemorySystemsTopics } from "@/components/MemorySystemsTopics";
+import { AIComparisonTopics } from "@/components/AIComparisonTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 import { ChatFloatingButton } from "@/components/ChatFloatingButton";
