@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import { lazy, Suspense } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthGate } from "@/components/AuthGate";
 
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
