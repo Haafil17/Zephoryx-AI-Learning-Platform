@@ -251,6 +251,8 @@ const Index = () => {
             <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
             <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
             <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
+            <TabsContent value="memory" className="focus:outline-none"><MemorySystemsTopics /></TabsContent>
+            <TabsContent value="comparisons" className="focus:outline-none"><AIComparisonTopics /></TabsContent>
             <TabsContent value="aitools" className="focus:outline-none">
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
