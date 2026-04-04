@@ -259,6 +259,9 @@ const Index = () => {
             <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
             <TabsContent value="memory" className="focus:outline-none"><MemorySystemsTopics /></TabsContent>
             <TabsContent value="comparisons" className="focus:outline-none"><AIComparisonTopics /></TabsContent>
+            <TabsContent value="transformers" className="focus:outline-none"><TransformersTopics /></TabsContent>
+            <TabsContent value="embeddings" className="focus:outline-none"><EmbeddingsTopics /></TabsContent>
+            <TabsContent value="ethics" className="focus:outline-none"><AIEthicsTopics /></TabsContent>
             <TabsContent value="aitools" className="focus:outline-none">
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
