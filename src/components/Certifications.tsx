@@ -8,8 +8,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { motion } from 'framer-motion';
 import { Award, Download, User, Clock } from 'lucide-react';
 import { toast } from 'sonner';
-import certificateImage from '@/assets/certificate-badge.png';
-import zephorxLogo from '@/assets/zephoryx-logo.png';
 
 const INSTANT_EMAILS = ['asma.haifz06@gmail.com', 'haafil006@gmail.com'];
 
@@ -27,8 +25,6 @@ export const Certifications = () => {
   const [recipientName, setRecipientName] = useState('');
   const [nameLoaded, setNameLoaded] = useState(false);
   const certCanvasRef = useRef<HTMLCanvasElement>(null);
-  const bgImgRef = useRef<HTMLImageElement | null>(null);
-  const logoImgRef = useRef<HTMLImageElement | null>(null);
 
   const isInstant = user ? INSTANT_EMAILS.includes(user.email || '') : false;
   const accountAgeDays = user?.created_at
@@ -41,7 +37,6 @@ export const Certifications = () => {
     fetchCert();
     if (user) {
       fetchUserCert();
-      // Load the user's full_name from their profile
       const loadName = async () => {
         const { data } = await supabase.from('profiles').select('full_name').eq('id', user.id).single();
         if (data?.full_name) setRecipientName(data.full_name);
@@ -50,15 +45,6 @@ export const Certifications = () => {
       loadName();
     }
   }, [user]);
-
-  useEffect(() => {
-    const bg = new Image();
-    bg.src = certificateImage;
-    bg.onload = () => { bgImgRef.current = bg; };
-    const logo = new Image();
-    logo.src = zephorxLogo;
-    logo.onload = () => { logoImgRef.current = logo; };
-  }, []);
 
   const fetchCert = async () => {
     const { data } = await supabase.from('certifications').select('id').limit(1).single();
@@ -106,145 +92,160 @@ export const Certifications = () => {
     canvas.width = W;
     canvas.height = H;
 
-    // Draw the parchment certificate background
-    if (bgImgRef.current) {
-      ctx.drawImage(bgImgRef.current, 0, 0, W, H);
-    } else {
-      ctx.fillStyle = '#fdf6e3';
-      ctx.fillRect(0, 0, W, H);
-    }
+    // === CLEAN CORPORATE CERTIFICATE ===
+    // White background
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, W, H);
+
+    // Top accent bar — solid dark navy
+    ctx.fillStyle = '#0F172A';
+    ctx.fillRect(0, 0, W, 8);
+
+    // Bottom accent bar
+    ctx.fillStyle = '#0F172A';
+    ctx.fillRect(0, H - 8, W, 8);
+
+    // Left accent stripe
+    ctx.fillStyle = '#2563EB';
+    ctx.fillRect(0, 8, 6, H - 16);
+
+    // Subtle border
+    ctx.strokeStyle = '#E2E8F0';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(40, 40, W - 80, H - 80);
+
+    // Inner border
+    ctx.strokeStyle = '#F1F5F9';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(50, 50, W - 100, H - 100);
 
     ctx.textAlign = 'center';
 
-    // Ornamental top accent
-    const drawOrnament = (y: number) => {
-      ctx.strokeStyle = '#B8860B';
-      ctx.lineWidth = 1.5;
-      const cx = W / 2;
-      // Left flourish
-      ctx.beginPath();
-      ctx.moveTo(cx - 300, y);
-      ctx.bezierCurveTo(cx - 250, y - 15, cx - 150, y - 15, cx - 80, y);
-      ctx.stroke();
-      // Right flourish
-      ctx.beginPath();
-      ctx.moveTo(cx + 300, y);
-      ctx.bezierCurveTo(cx + 250, y - 15, cx + 150, y - 15, cx + 80, y);
-      ctx.stroke();
-      // Center diamond
-      ctx.fillStyle = '#B8860B';
-      ctx.beginPath();
-      ctx.moveTo(cx, y - 8);
-      ctx.lineTo(cx + 8, y);
-      ctx.lineTo(cx, y + 8);
-      ctx.lineTo(cx - 8, y);
-      ctx.closePath();
-      ctx.fill();
-    };
-
-    // "CERTIFICATE OF ACHIEVEMENT" title
-    ctx.fillStyle = '#6B4F1D';
-    ctx.font = '600 16px Georgia, serif';
-    ctx.letterSpacing = '12px';
-    ctx.fillText('C E R T I F I C A T E', W / 2, 185);
-    ctx.font = '600 13px Georgia, serif';
+    // "CERTIFICATE OF ACHIEVEMENT" — clean sans-serif
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '500 14px "Helvetica Neue", Arial, sans-serif';
     ctx.letterSpacing = '8px';
-    ctx.fillText('O F   A C H I E V E M E N T', W / 2, 215);
+    ctx.fillText('C E R T I F I C A T E   O F   A C H I E V E M E N T', W / 2, 130);
 
-    drawOrnament(250);
-
-    // "This is to certify that"
-    ctx.letterSpacing = '0px';
-    ctx.fillStyle = '#555555';
-    ctx.font = 'italic 26px Georgia, serif';
-    ctx.fillText('This is to certify that', W / 2, 320);
-
-    // Recipient name - elegant script style
-    ctx.fillStyle = '#1a1a2e';
-    ctx.font = 'italic bold 78px Georgia, serif';
-    ctx.fillText(recipientName, W / 2, 430);
-
-    // Elegant underline beneath name
-    const nw = ctx.measureText(recipientName).width;
-    const gradient = ctx.createLinearGradient(W / 2 - nw / 2 - 40, 0, W / 2 + nw / 2 + 40, 0);
-    gradient.addColorStop(0, 'transparent');
-    gradient.addColorStop(0.15, '#B8860B');
-    gradient.addColorStop(0.85, '#B8860B');
-    gradient.addColorStop(1, 'transparent');
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(W / 2 - nw / 2 - 40, 460);
-    ctx.lineTo(W / 2 + nw / 2 + 40, 460);
-    ctx.stroke();
-
-    // Description text
-    ctx.fillStyle = '#444444';
-    ctx.font = '24px Georgia, serif';
-    const lines = [
-      'has successfully demonstrated dedication to AI learning',
-      'by actively using the ZEPHORYX AI LAB platform',
-      'for a period of one month, engaging with topics including',
-      'Prompt Engineering, Agentic AI, RAG, MCP, Guardrails,',
-      'Generative AI, Deep Learning, and Quantum Computing.',
-    ];
-    lines.forEach((line, i) => {
-      ctx.fillText(line, W / 2, 530 + i * 38);
-    });
-
-    drawOrnament(740);
-
-    // Date & cert number
-    if (userCert) {
-      ctx.fillStyle = '#666666';
-      ctx.font = '20px Georgia, serif';
-      const d = new Date(userCert.earned_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-      ctx.fillText(`Issued: ${d}`, W / 2, 790);
-      ctx.font = '600 18px "Courier New", monospace';
-      ctx.fillStyle = '#8B6914';
-      ctx.fillText(`Certificate No: ${userCert.certificate_number}`, W / 2, 825);
-    }
-
-    // Signature section
-    ctx.fillStyle = '#1a1a2e';
-    ctx.font = 'italic 38px Georgia, serif';
-    ctx.fillText('Haafil Mohammed', W / 2, 930);
-
-    // Signature line
-    const sigGradient = ctx.createLinearGradient(W / 2 - 180, 0, W / 2 + 180, 0);
-    sigGradient.addColorStop(0, 'transparent');
-    sigGradient.addColorStop(0.2, '#888');
-    sigGradient.addColorStop(0.8, '#888');
-    sigGradient.addColorStop(1, 'transparent');
-    ctx.strokeStyle = sigGradient;
+    // Thin horizontal rule
+    ctx.strokeStyle = '#CBD5E1';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(W / 2 - 180, 948);
-    ctx.lineTo(W / 2 + 180, 948);
+    ctx.moveTo(W / 2 - 200, 155);
+    ctx.lineTo(W / 2 + 200, 155);
     ctx.stroke();
 
-    ctx.fillStyle = '#666666';
-    ctx.font = '16px Georgia, serif';
-    ctx.letterSpacing = '3px';
-    ctx.fillText('F O U N D E R  &  C E O', W / 2, 980);
+    // Organization name
+    ctx.fillStyle = '#0F172A';
+    ctx.font = '700 28px "Helvetica Neue", Arial, sans-serif';
+    ctx.letterSpacing = '6px';
+    ctx.fillText('ZEPHORYX AI LAB', W / 2, 210);
     ctx.letterSpacing = '0px';
 
-    // Logo
-    if (logoImgRef.current) {
-      ctx.drawImage(logoImgRef.current, W / 2 - 30, 1010, 60, 60);
+    // "This certifies that"
+    ctx.fillStyle = '#64748B';
+    ctx.font = '400 22px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('This is to certify that', W / 2, 310);
+
+    // Recipient name — large, bold, clean
+    ctx.fillStyle = '#0F172A';
+    ctx.font = '700 64px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText(recipientName, W / 2, 420);
+
+    // Blue underline under name
+    const nw = ctx.measureText(recipientName).width;
+    ctx.strokeStyle = '#2563EB';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - nw / 2 - 20, 445);
+    ctx.lineTo(W / 2 + nw / 2 + 20, 445);
+    ctx.stroke();
+
+    // Description — clean body text
+    ctx.fillStyle = '#475569';
+    ctx.font = '400 22px "Helvetica Neue", Arial, sans-serif';
+    const lines = [
+      'has successfully demonstrated dedication to AI learning by actively',
+      'engaging with the ZEPHORYX AI LAB platform for a period of one month.',
+      '',
+      'Topics covered include Prompt Engineering, Agentic AI, RAG,',
+      'Model Context Protocol, Guardrails, Generative AI, Deep Learning,',
+      'Computer Vision, NLP, MLOps, and Quantum Computing.',
+    ];
+    lines.forEach((line, i) => {
+      ctx.fillText(line, W / 2, 510 + i * 36);
+    });
+
+    // Horizontal divider
+    ctx.strokeStyle = '#E2E8F0';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(200, 760);
+    ctx.lineTo(W - 200, 760);
+    ctx.stroke();
+
+    // Date and Certificate Number — two columns
+    if (userCert) {
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '400 14px "Helvetica Neue", Arial, sans-serif';
+      ctx.letterSpacing = '2px';
+      ctx.fillText('DATE ISSUED', 250, 810);
+      ctx.letterSpacing = '0px';
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '600 20px "Helvetica Neue", Arial, sans-serif';
+      const d = new Date(userCert.earned_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      ctx.fillText(d, 250, 840);
+
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '400 14px "Helvetica Neue", Arial, sans-serif';
+      ctx.letterSpacing = '2px';
+      ctx.fillText('CERTIFICATE NO.', W - 250, 810);
+      ctx.letterSpacing = '0px';
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '600 20px "Courier New", monospace';
+      ctx.fillText(userCert.certificate_number, W - 250, 840);
     }
 
-    // Brand name
-    ctx.fillStyle = '#8B6914';
-    ctx.font = '600 15px Georgia, serif';
-    ctx.letterSpacing = '6px';
-    ctx.fillText('Z E P H O R Y X   A I   L A B', W / 2, 1100);
+    // Signature section — centered
+    ctx.textAlign = 'center';
+
+    // Signature line
+    ctx.strokeStyle = '#CBD5E1';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - 150, 960);
+    ctx.lineTo(W / 2 + 150, 960);
+    ctx.stroke();
+
+    // Signature name
+    ctx.fillStyle = '#0F172A';
+    ctx.font = '600 24px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('Haafil Mohammed', W / 2, 1000);
+
+    // Title
+    ctx.fillStyle = '#64748B';
+    ctx.font = '400 16px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('Founder & CEO', W / 2, 1030);
+
+    // Footer — brand
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '400 13px "Helvetica Neue", Arial, sans-serif';
+    ctx.letterSpacing = '4px';
+    ctx.fillText('ZEPHORYX AI LAB', W / 2, 1120);
     ctx.letterSpacing = '0px';
 
     // Verification URL
-    ctx.fillStyle = '#999999';
-    ctx.font = '12px Georgia, serif';
-    ctx.fillText('Verify at: zephoryx-ai-lab-ai-learning-platform.lovable.app/verify', W / 2, 1135);
+    ctx.fillStyle = '#CBD5E1';
+    ctx.font = '400 12px "Helvetica Neue", Arial, sans-serif';
+    ctx.fillText('Verify at: zephoryx-ai-lab-ai-learning-platform.lovable.app/verify', W / 2, 1150);
+
+    // Small blue accent dot
+    ctx.fillStyle = '#2563EB';
+    ctx.beginPath();
+    ctx.arc(W / 2, 1080, 4, 0, Math.PI * 2);
+    ctx.fill();
 
     const link = document.createElement('a');
     link.download = `ZEPHORYX-Certificate-${recipientName.replace(/\s+/g, '-')}.png`;
@@ -253,60 +254,81 @@ export const Certifications = () => {
     toast.success('Certificate downloaded!');
   };
 
+  // Certificate preview component
+  const CertificatePreview = () => (
+    <div className="relative bg-white rounded-lg shadow-2xl border border-slate-200 p-8 aspect-[1920/1358] flex flex-col items-center justify-center text-center overflow-hidden">
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-slate-900" />
+      {/* Bottom bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-900" />
+      {/* Left accent */}
+      <div className="absolute top-1.5 left-0 bottom-1.5 w-1 bg-blue-600" />
+
+      <p className="text-[8px] tracking-[0.25em] text-slate-400 uppercase mb-1">Certificate of Achievement</p>
+      <div className="w-16 h-px bg-slate-300 mb-2" />
+      <p className="text-[10px] font-bold tracking-[0.15em] text-slate-900 uppercase mb-3">ZEPHORYX AI LAB</p>
+
+      <p className="text-[7px] text-slate-500 mb-1">This is to certify that</p>
+      <p className="text-lg font-bold text-slate-900 mb-0.5 leading-tight">
+        {recipientName || 'Your Name'}
+      </p>
+      <div className="w-20 h-0.5 bg-blue-600 mb-2" />
+
+      <p className="text-[6px] text-slate-500 max-w-[180px] leading-relaxed mb-3">
+        has successfully demonstrated dedication to AI learning by actively engaging with the ZEPHORYX AI LAB platform.
+      </p>
+
+      <div className="w-12 h-px bg-slate-200 mb-1" />
+      <p className="text-[8px] font-semibold text-slate-900">Haafil Mohammed</p>
+      <p className="text-[6px] text-slate-500">Founder & CEO</p>
+
+      <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2 mb-1" />
+      <p className="text-[5px] tracking-[0.1em] text-slate-400">ZEPHORYX AI LAB</p>
+    </div>
+  );
+
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-amber-50/50 via-orange-50/30 to-yellow-50/50 dark:from-amber-950/20 dark:via-orange-950/10 dark:to-yellow-950/20">
+    <section className="py-16 px-4">
       <canvas ref={certCanvasRef} className="hidden" />
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <Badge className="mb-4 bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 border-0 px-4 py-1.5">
+            <Badge className="mb-4 bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-0 px-4 py-1.5">
               <Award className="w-4 h-4 mr-1" /> Official Certification
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
-              ZEPHORYX AI LAB Certificate
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+              Certificate of Achievement
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Earn your official Certificate of Achievement for dedicated AI learning.
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Earn your official ZEPHORYX AI LAB certificate after one month of active learning.
             </p>
           </motion.div>
         </div>
 
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <Card className="relative overflow-hidden border-2 border-amber-400/50 shadow-2xl shadow-amber-500/10">
-            <div className="h-2 bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400" />
+          <Card className="relative overflow-hidden border border-border shadow-xl">
             <CardContent className="p-0">
               <div className="grid md:grid-cols-2 gap-0">
                 {/* Certificate Preview */}
-                <div className="relative p-8 flex flex-col items-center justify-center bg-gradient-to-br from-amber-50 via-amber-100/50 to-amber-50 min-h-[420px]">
-                  <img src={certificateImage} alt="ZEPHORYX AI LAB Certificate" className="w-full max-w-md rounded-lg shadow-2xl border border-amber-300/50" />
-                  {recipientName && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="text-center mt-4">
-                        <p className="text-amber-700/60 text-[9px] tracking-[0.2em] uppercase">This is to certify that</p>
-                        <p className="text-slate-900 font-bold text-xl md:text-2xl italic mt-1">{recipientName}</p>
-                        <p className="text-amber-700/40 text-[8px] mt-1 max-w-[200px] mx-auto leading-tight">has successfully used ZEPHORYX AI LAB for 1 month</p>
-                      </div>
-                    </div>
-                  )}
-                  <div className="mt-4 flex items-center gap-2">
-                    <img src={zephorxLogo} alt="ZEPHORYX" className="w-8 h-8 rounded" />
-                    <span className="text-amber-800 font-bold text-sm tracking-wider">ZEPHORYX AI LAB</span>
+                <div className="p-8 flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900/50 min-h-[420px]">
+                  <div className="w-full max-w-sm">
+                    <CertificatePreview />
                   </div>
                 </div>
 
                 {/* Right side */}
                 <div className="p-8 flex flex-col justify-center space-y-6">
                   <div>
-                    <h3 className="text-2xl font-bold font-display mb-2">Certificate of Achievement</h3>
-                    <p className="text-muted-foreground leading-relaxed text-sm">
-                      This certificate recognizes your dedication to AI learning on ZEPHORYX AI LAB for one month, covering Prompt Engineering, Agentic AI, RAG, MCP, Guardrails, Generative AI, and Quantum Computing.
+                    <h3 className="text-2xl font-bold mb-2 text-foreground">Claim Your Certificate</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      This certificate recognizes your dedication to AI learning on ZEPHORYX AI LAB, covering Prompt Engineering, Agentic AI, RAG, MCP, Guardrails, Generative AI, and more.
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/50">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center text-slate-900 font-bold text-sm">HM</div>
+                    <div className="w-10 h-10 rounded-full bg-slate-900 dark:bg-slate-100 flex items-center justify-center text-white dark:text-slate-900 font-bold text-sm">HM</div>
                     <div>
-                      <p className="font-semibold text-sm">Haafil Mohammed</p>
+                      <p className="font-semibold text-sm text-foreground">Haafil Mohammed</p>
                       <p className="text-xs text-muted-foreground">Founder & CEO, ZEPHORYX AI LAB</p>
                     </div>
                   </div>
@@ -354,7 +376,7 @@ export const Certifications = () => {
                         ✅ Certificate #{userCert.certificate_number} earned on {new Date(userCert.earned_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                       </p>
                       <Button
-                        className="w-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900 font-bold hover:opacity-90 shadow-lg"
+                        className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-lg"
                         onClick={downloadCertificate}
                         disabled={!recipientName.trim()}
                       >
@@ -363,19 +385,19 @@ export const Certifications = () => {
                     </div>
                   ) : (
                     <Button
-                      className="w-full bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-900 font-bold hover:opacity-90 shadow-lg text-lg py-6"
+                      className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold shadow-lg text-lg py-6"
                       onClick={claimCert}
                       disabled={claiming || !recipientName.trim()}
                     >
-                      {claiming ? 'Claiming...' : '🎉 Claim Your Certificate'}
+                      {claiming ? 'Claiming...' : 'Claim Your Certificate'}
                     </Button>
                   )}
 
                   <div className="text-xs text-muted-foreground space-y-1 pt-2 border-t border-border/50">
                     <p className="font-semibold text-foreground/80">Requirements:</p>
-                    <p>• Active membership for 1 month</p>
+                    <p>• Active membership for 1 month (or instant access for select accounts)</p>
                     <p>• Signed by Founder & CEO Haafil Mohammed</p>
-                    <p>• Unique certificate number for verification</p>
+                    <p>• Unique certificate number for public verification</p>
                   </div>
                 </div>
               </div>

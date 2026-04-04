@@ -21,6 +21,8 @@ import { NLPTopics } from "@/components/NLPTopics";
 import { ComputerVisionTopics } from "@/components/ComputerVisionTopics";
 import { MLOpsTopics } from "@/components/MLOpsTopics";
 import { DeepLearningTopics } from "@/components/DeepLearningTopics";
+import { MemorySystemsTopics } from "@/components/MemorySystemsTopics";
+import { AIComparisonTopics } from "@/components/AIComparisonTopics";
 import { Videos } from "@/components/Videos";
 import { Footer } from "@/components/Footer";
 import { ChatFloatingButton } from "@/components/ChatFloatingButton";
@@ -101,6 +103,8 @@ const tabs = [
 { value: "mlops", label: "🚀 MLOps" },
 { value: "deeplearning", label: "🧬 Deep Learning" },
 { value: "ai", label: "📘 AI Basics" },
+{ value: "memory", label: "🧠 Memory Systems" },
+{ value: "comparisons", label: "⚖️ Comparisons" },
 { value: "aitools", label: "🛠️ Tools" },
 { value: "videos", label: "🎥 Videos" },
 { value: "resources", label: "📚 Resources" }];
@@ -247,6 +251,8 @@ const Index = () => {
             <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
             <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
             <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
+            <TabsContent value="memory" className="focus:outline-none"><MemorySystemsTopics /></TabsContent>
+            <TabsContent value="comparisons" className="focus:outline-none"><AIComparisonTopics /></TabsContent>
             <TabsContent value="aitools" className="focus:outline-none">
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
