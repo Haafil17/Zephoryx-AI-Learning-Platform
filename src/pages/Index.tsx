@@ -108,6 +108,9 @@ const tabs = [
 { value: "ai", label: "📘 AI Basics" },
 { value: "memory", label: "🧠 Memory Systems" },
 { value: "comparisons", label: "⚖️ Comparisons" },
+{ value: "transformers", label: "⚡ Transformers" },
+{ value: "embeddings", label: "📐 Embeddings" },
+{ value: "ethics", label: "🛡️ Ethics" },
 { value: "aitools", label: "🛠️ Tools" },
 { value: "videos", label: "🎥 Videos" },
 { value: "resources", label: "📚 Resources" }];
