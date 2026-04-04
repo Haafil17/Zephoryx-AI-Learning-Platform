@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import { lazy, Suspense } from "react";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { AuthGate } from "@/components/AuthGate";
 
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 const VerifyCertificate = lazy(() => import("./pages/VerifyCertificate"));
@@ -20,20 +22,22 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light" storageKey="prompt-engineering-theme">
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
+              <Route path="/" element={<AuthGate><Index /></AuthGate>} />
               <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/admin" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><AdminPanel /></Suspense>} />
+              <Route path="/admin" element={<AuthGate><Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><AdminPanel /></Suspense></AuthGate>} />
               <Route path="/verify" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><VerifyCertificate /></Suspense>} />
-              <Route path="/my-certificate" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><MyCertificate /></Suspense>} />
+              <Route path="/my-certificate" element={<AuthGate><Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}><MyCertificate /></Suspense></AuthGate>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
