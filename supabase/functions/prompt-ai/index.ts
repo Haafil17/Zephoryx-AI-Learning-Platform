@@ -9,8 +9,14 @@ const corsHeaders = {
 
 // Input validation schema
 const requestSchema = z.object({
-  action: z.enum(['analyze', 'test', 'rag', 'embed']),
+  action: z.enum(['analyze', 'test', 'rag', 'embed', 'mentor']),
   prompt: z.string().max(5000).optional(),
+  userContext: z.object({
+    xp: z.number().optional(),
+    level: z.string().optional(),
+    completedTopics: z.array(z.string()).optional(),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+  }).optional(),
   addToKnowledge: z.object({
     title: z.string().trim().min(1).max(200),
     content: z.string().trim().min(1).max(10000),
