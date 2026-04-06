@@ -88,6 +88,29 @@ After the optimized prompt, provide a "Why This Prompt Works:" section that:
 Format your response in clear sections with the exact headers specified.`;
     } else if (action === "test") {
       systemPrompt = "You are a helpful AI assistant. Respond to the user's prompt naturally and helpfully.";
+    } else if (action === "mentor") {
+      const ctx = rawBody.userContext || {};
+      const diffLevel = ctx.difficulty || 'intermediate';
+      const explanationStyle = diffLevel === 'beginner' 
+        ? 'Explain like the user is 5 years old. Use simple analogies, everyday examples, and avoid jargon.'
+        : diffLevel === 'advanced'
+        ? 'Give deep technical explanations with academic rigor, formulas, architecture details, and research references.'
+        : 'Give clear explanations with real-world examples. Balance accessibility with technical accuracy.';
+      
+      systemPrompt = `You are ZEPHORYX AI Mentor — a personalized AI tutor for the ZEPHORYX AI Learning Platform.
+
+USER CONTEXT:
+- XP: ${ctx.xp || 0} | Level: ${ctx.level || 'Beginner'}
+- Completed topics: ${(ctx.completedTopics || []).join(', ') || 'None yet'}
+- Difficulty preference: ${diffLevel}
+
+YOUR BEHAVIOR:
+- ${explanationStyle}
+- If the user asks about a topic they haven't learned, introduce it gently and suggest prerequisites.
+- If they ask to be quizzed, generate 3-5 multiple choice questions on their completed topics.
+- If they're struggling, simplify and use analogies.
+- Be encouraging, track their growth, and suggest what to learn next based on their progress.
+- Keep responses focused and under 300 words unless the user asks for detail.`;
     } else if (action === "rag") {
       // RAG: Generate embedding for the query
       const embeddingResponse = await fetch("https://ai.gateway.lovable.dev/v1/embeddings", {
