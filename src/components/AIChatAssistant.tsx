@@ -119,14 +119,14 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
   };
 
   const quickActions = [
+    { icon: GraduationCap, label: "Quiz Me", message: "Quiz me on what I've learned so far" },
     { icon: Target, label: "Techniques", message: "What are the best prompt engineering techniques?" },
-    { icon: Lightbulb, label: "Examples", message: "Give me practical prompt examples" },
+    { icon: Lightbulb, label: "Next Step", message: "Based on my progress, what should I learn next?" },
     { icon: Brain, label: "AI Topics", message: "Explain key AI and machine learning concepts" },
     { icon: Palette, label: "Gen AI", message: "How do generative AI models work?" },
-    { icon: Atom, label: "Quantum", message: "What is quantum computing and how does it relate to AI?" },
     { icon: Code, label: "Coding", message: "Help me with AI coding best practices" },
     { icon: Zap, label: "RAG", message: "How does Retrieval-Augmented Generation work?" },
-    { icon: BookOpen, label: "Fine-Tuning", message: "Explain LLM fine-tuning techniques like LoRA and QLoRA" }
+    { icon: BookOpen, label: "Revise", message: "Help me revise the topics I've already completed" }
   ];
 
   const handleHeaderMouseDown = (e: React.MouseEvent) => {
