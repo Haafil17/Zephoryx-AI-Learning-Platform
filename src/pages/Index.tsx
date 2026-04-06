@@ -36,6 +36,9 @@ import { CommunitySection } from "@/components/CommunitySection";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
+import { SkillTree } from "@/components/SkillTree";
+import { ProgressDashboard } from "@/components/ProgressDashboard";
+import { DifficultyToggle } from "@/components/DifficultyToggle";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
