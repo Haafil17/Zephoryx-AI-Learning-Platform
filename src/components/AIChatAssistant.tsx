@@ -198,9 +198,9 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                 <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mb-4">
                   <Bot className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">ZEPHORYX AI Assistant</h3>
+                <h3 className="font-semibold text-foreground mb-2">Your AI Mentor</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Ask me anything about AI, prompt engineering, RAG, fine-tuning, and more!
+                  I know your progress and adapt to your level. Ask me to quiz you, explain concepts, or suggest what to learn next!
                 </p>
                 <div className="grid grid-cols-2 gap-2 w-full max-h-48 overflow-y-auto">
                   {quickActions.map((action, index) => (
