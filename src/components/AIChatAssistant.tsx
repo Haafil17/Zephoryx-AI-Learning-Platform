@@ -57,7 +57,16 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
 
   const sendToAI = async (userMessage: string): Promise<string> => {
     const { data, error } = await supabase.functions.invoke('prompt-ai', {
-      body: { action: 'test', prompt: userMessage }
+      body: { 
+        action: 'mentor', 
+        prompt: userMessage,
+        userContext: {
+          xp: userProfile?.xp || 0,
+          level: userProfile?.level || 'AI Beginner',
+          difficulty,
+          completedTopics: [],
+        }
+      }
     });
 
     if (error) throw new Error(error.message || 'Failed to get AI response');
