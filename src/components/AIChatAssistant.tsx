@@ -4,26 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Send, 
-  X, 
-  Minimize2, 
-  Maximize2,
-  Bot,
-  User,
-  Sparkles,
-  Lightbulb,
-  Code,
-  BookOpen,
-  Zap,
-  Target,
-  Brain,
-  Atom,
-  Palette,
-  Trash2,
-  Loader2
+  Send, X, Minimize2, Maximize2, Bot, User, Sparkles,
+  Lightbulb, Code, BookOpen, Zap, Target, Brain, Atom,
+  Palette, Trash2, Loader2, GraduationCap
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDifficulty } from "@/contexts/DifficultyContext";
+import { Badge } from "@/components/ui/badge";
 
 interface ChatMessage {
   id: string;
