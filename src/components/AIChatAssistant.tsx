@@ -171,10 +171,12 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                 <Bot className="w-4 h-4" />
               </div>
               <div>
-                <CardTitle className="text-sm font-semibold">ZEPHORYX Assistant</CardTitle>
+                <CardTitle className="text-sm font-semibold">ZEPHORYX Mentor</CardTitle>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs opacity-90">Powered by Gemini 2.5 Flash</span>
+                  <span className="text-xs opacity-90">
+                    {userProfile ? `${userProfile.level} · ${userProfile.xp} XP` : 'Powered by Gemini 2.5 Flash'}
+                  </span>
                 </div>
               </div>
             </div>
