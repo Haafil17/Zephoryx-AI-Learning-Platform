@@ -223,7 +223,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Sticky Tabs */}
+      {/* Skill Tree */}
+      <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
+
+      {/* Progress Dashboard */}
+      <ProgressDashboard />
+
+      {/* Sticky Tabs with Difficulty Toggle */}
       <div className="max-w-7xl mx-auto px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md py-2 -mx-4 px-4 border-b border-border/30">
