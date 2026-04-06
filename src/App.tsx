@@ -24,6 +24,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light" storageKey="prompt-engineering-theme">
       <AuthProvider>
+        <DifficultyProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
