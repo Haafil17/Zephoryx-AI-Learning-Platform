@@ -4,26 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
-  Send, 
-  X, 
-  Minimize2, 
-  Maximize2,
-  Bot,
-  User,
-  Sparkles,
-  Lightbulb,
-  Code,
-  BookOpen,
-  Zap,
-  Target,
-  Brain,
-  Atom,
-  Palette,
-  Trash2,
-  Loader2
+  Send, X, Minimize2, Maximize2, Bot, User, Sparkles,
+  Lightbulb, Code, BookOpen, Zap, Target, Brain, Atom,
+  Palette, Trash2, Loader2, GraduationCap
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDifficulty } from "@/contexts/DifficultyContext";
+import { Badge } from "@/components/ui/badge";
 
 interface ChatMessage {
   id: string;
@@ -44,11 +33,21 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [userProfile, setUserProfile] = useState<{ xp: number; level: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ startX: number; startY: number; offsetX: number; offsetY: number }>({
     startX: 0, startY: 0, offsetX: 0, offsetY: 0
   });
   const [chatPosition, setChatPosition] = useState(position);
+  const { user } = useAuth();
+  const { difficulty } = useDifficulty();
+
+  // Fetch user profile for context
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('profiles').select('xp, level').eq('id', user.id).single()
+      .then(({ data }) => { if (data) setUserProfile({ xp: data.xp || 0, level: data.level || 'AI Beginner' }); });
+  }, [user]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -58,7 +57,16 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
 
   const sendToAI = async (userMessage: string): Promise<string> => {
     const { data, error } = await supabase.functions.invoke('prompt-ai', {
-      body: { action: 'test', prompt: userMessage }
+      body: { 
+        action: 'mentor', 
+        prompt: userMessage,
+        userContext: {
+          xp: userProfile?.xp || 0,
+          level: userProfile?.level || 'AI Beginner',
+          difficulty,
+          completedTopics: [],
+        }
+      }
     });
 
     if (error) throw new Error(error.message || 'Failed to get AI response');
@@ -111,14 +119,14 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
   };
 
   const quickActions = [
+    { icon: GraduationCap, label: "Quiz Me", message: "Quiz me on what I've learned so far" },
     { icon: Target, label: "Techniques", message: "What are the best prompt engineering techniques?" },
-    { icon: Lightbulb, label: "Examples", message: "Give me practical prompt examples" },
+    { icon: Lightbulb, label: "Next Step", message: "Based on my progress, what should I learn next?" },
     { icon: Brain, label: "AI Topics", message: "Explain key AI and machine learning concepts" },
     { icon: Palette, label: "Gen AI", message: "How do generative AI models work?" },
-    { icon: Atom, label: "Quantum", message: "What is quantum computing and how does it relate to AI?" },
     { icon: Code, label: "Coding", message: "Help me with AI coding best practices" },
     { icon: Zap, label: "RAG", message: "How does Retrieval-Augmented Generation work?" },
-    { icon: BookOpen, label: "Fine-Tuning", message: "Explain LLM fine-tuning techniques like LoRA and QLoRA" }
+    { icon: BookOpen, label: "Revise", message: "Help me revise the topics I've already completed" }
   ];
 
   const handleHeaderMouseDown = (e: React.MouseEvent) => {
@@ -163,10 +171,12 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                 <Bot className="w-4 h-4" />
               </div>
               <div>
-                <CardTitle className="text-sm font-semibold">ZEPHORYX Assistant</CardTitle>
+                <CardTitle className="text-sm font-semibold">ZEPHORYX Mentor</CardTitle>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-xs opacity-90">Powered by Gemini 2.5 Flash</span>
+                  <span className="text-xs opacity-90">
+                    {userProfile ? `${userProfile.level} · ${userProfile.xp} XP` : 'Powered by Gemini 2.5 Flash'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -188,9 +198,9 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
                 <div className="w-16 h-16 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full flex items-center justify-center mb-4">
                   <Bot className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">ZEPHORYX AI Assistant</h3>
+                <h3 className="font-semibold text-foreground mb-2">Your AI Mentor</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Ask me anything about AI, prompt engineering, RAG, fine-tuning, and more!
+                  I know your progress and adapt to your level. Ask me to quiz you, explain concepts, or suggest what to learn next!
                 </p>
                 <div className="grid grid-cols-2 gap-2 w-full max-h-48 overflow-y-auto">
                   {quickActions.map((action, index) => (

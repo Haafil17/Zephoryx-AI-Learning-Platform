@@ -36,6 +36,9 @@ import { CommunitySection } from "@/components/CommunitySection";
 import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
+import { SkillTree } from "@/components/SkillTree";
+import { ProgressDashboard } from "@/components/ProgressDashboard";
+import { DifficultyToggle } from "@/components/DifficultyToggle";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -220,10 +223,19 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Sticky Tabs */}
+      {/* Skill Tree */}
+      <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
+
+      {/* Progress Dashboard */}
+      <ProgressDashboard />
+
+      {/* Sticky Tabs with Difficulty Toggle */}
       <div className="max-w-7xl mx-auto px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-md py-2 -mx-4 px-4 border-b border-border/30">
+            <div className="flex justify-center mb-2">
+              <DifficultyToggle />
+            </div>
             <TabsList className="flex justify-center gap-1 bg-muted/30 dark:bg-muted/10 rounded-2xl flex-wrap p-2 border border-border/50">
               {tabs.map((tab) =>
               <TabsTrigger
