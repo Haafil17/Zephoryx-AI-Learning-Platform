@@ -33,11 +33,21 @@ export const AIChatAssistant: React.FC<AIChatAssistantProps> = ({ isOpen, onTogg
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [userProfile, setUserProfile] = useState<{ xp: number; level: string } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ startX: number; startY: number; offsetX: number; offsetY: number }>({
     startX: 0, startY: 0, offsetX: 0, offsetY: 0
   });
   const [chatPosition, setChatPosition] = useState(position);
+  const { user } = useAuth();
+  const { difficulty } = useDifficulty();
+
+  // Fetch user profile for context
+  useEffect(() => {
+    if (!user) return;
+    supabase.from('profiles').select('xp, level').eq('id', user.id).single()
+      .then(({ data }) => { if (data) setUserProfile({ xp: data.xp || 0, level: data.level || 'AI Beginner' }); });
+  }, [user]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
