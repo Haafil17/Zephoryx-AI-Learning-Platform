@@ -228,11 +228,6 @@ const Index = () => {
         <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
       </div>
 
-      {/* Progress Dashboard */}
-      <div id="dashboard">
-        <ProgressDashboard />
-      </div>
-
       {/* Sticky Tabs with Difficulty Toggle */}
       <div className="max-w-7xl mx-auto px-4 pt-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
