@@ -151,13 +151,18 @@ export const RAGTopics = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <Badge className="mb-4 bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200 border-0 px-4 py-1.5">
-            <Database className="w-4 h-4 mr-1" /> Core AI Architecture Pattern
+            <Database className="w-4 h-4 mr-1" /> {difficulty === 'beginner' ? '🌱 Beginner Friendly' : difficulty === 'advanced' ? '🔬 Research Level' : 'Core AI Architecture'}
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
-            Retrieval-Augmented Generation (RAG)
+            {difficulty === 'beginner' ? 'How AI Looks Things Up (RAG)' : difficulty === 'advanced' ? 'RAG — Architecture & Research' : 'Retrieval-Augmented Generation (RAG)'}
           </h2>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            The most important architecture pattern in modern AI applications. Learn how to build systems that ground LLM responses in your own data.
+            {difficulty === 'beginner'
+              ? "Ever wonder how AI can answer questions about things it wasn't trained on? RAG is the secret — it lets AI search for answers before responding!"
+              : difficulty === 'advanced'
+              ? "Dense retrieval architectures, advanced chunking strategies, evaluation frameworks, and production-scale RAG systems with mathematical rigor."
+              : "The most important architecture pattern in modern AI. Learn how to build systems that ground LLM responses in your own data."
+            }
           </p>
         </div>
 
