@@ -191,13 +191,18 @@ export const DeepLearningTopics = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <Badge className="mb-4 bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-200 border-0 px-4 py-1.5">
-            <Brain className="w-4 h-4 mr-1" /> Neural Network Architectures
+            <Brain className="w-4 h-4 mr-1" /> {difficulty === 'beginner' ? '🌱 Beginner Friendly' : difficulty === 'advanced' ? '🔬 Research Level' : 'Neural Network Architectures'}
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold font-display bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-4">
-            Deep Learning Foundations
+            Deep Learning {difficulty === 'beginner' ? 'Made Simple' : difficulty === 'advanced' ? '— Research Depth' : 'Foundations'}
           </h2>
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Transformers, LSTMs, GRUs, attention mechanisms, embeddings, and the architectures that power modern AI.
+            {difficulty === 'beginner'
+              ? "Understanding how AI thinks, learns, and creates — explained with fun analogies anyone can follow."
+              : difficulty === 'advanced'
+              ? "Mathematical foundations, state-of-the-art architectures, and research-level analysis of modern deep learning."
+              : "Transformers, LSTMs, GRUs, attention mechanisms, embeddings, and the architectures that power modern AI."
+            }
           </p>
         </div>
 
