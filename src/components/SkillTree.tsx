@@ -68,17 +68,11 @@ export const SkillTree: React.FC<SkillTreeProps> = ({
 }) => {
   const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
 
-  const isUnlocked = (node: SkillNode): boolean => {
-    if (node.requires.length === 0) return true;
-    return node.requires.every(req => completedTopics.includes(req)) && userXp >= node.xpRequired;
-  };
-
   const isCompleted = (node: SkillNode): boolean => completedTopics.includes(node.id);
 
-  const getNodeStatus = (node: SkillNode): 'completed' | 'unlocked' | 'locked' => {
+  const getNodeStatus = (node: SkillNode): 'completed' | 'unlocked' => {
     if (isCompleted(node)) return 'completed';
-    if (isUnlocked(node)) return 'unlocked';
-    return 'locked';
+    return 'unlocked';
   };
 
   const tiers = [0, 1, 2, 3, 4];
@@ -131,33 +125,19 @@ export const SkillTree: React.FC<SkillTreeProps> = ({
                           className={`relative cursor-pointer transition-all duration-300 hover:scale-105 ${
                             status === 'completed'
                               ? 'border-green-500/50 bg-green-500/5 shadow-green-500/10 shadow-lg'
-                              : status === 'unlocked'
-                              ? 'border-primary/30 bg-card hover:shadow-xl hover:border-primary/50'
-                              : 'border-muted bg-muted/30 opacity-60'
+                              : 'border-primary/30 bg-card hover:shadow-xl hover:border-primary/50'
                           }`}
-                          onClick={() => {
-                            if (status !== 'locked') {
-                              setSelectedNode(node);
-                            }
-                          }}
+                          onClick={() => setSelectedNode(node)}
                         >
                           <CardContent className="p-4 text-center">
                             {status === 'completed' && (
                               <CheckCircle2 className="absolute top-2 right-2 w-4 h-4 text-green-500" />
                             )}
-                            {status === 'locked' && (
-                              <Lock className="absolute top-2 right-2 w-3.5 h-3.5 text-muted-foreground" />
-                            )}
-                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${node.color} flex items-center justify-center mx-auto mb-2 ${
-                              status === 'locked' ? 'grayscale' : ''
-                            }`}>
+                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${node.color} flex items-center justify-center mx-auto mb-2`}>
                               <node.icon className="w-6 h-6 text-white" />
                             </div>
                             <h4 className="text-sm font-bold text-foreground leading-tight mb-1">{node.title}</h4>
                             <p className="text-[10px] text-muted-foreground leading-tight">{node.description}</p>
-                            {status === 'locked' && (
-                              <p className="text-[9px] text-muted-foreground mt-1">{node.xpRequired} XP needed</p>
-                            )}
                           </CardContent>
                         </Card>
                       </motion.div>
