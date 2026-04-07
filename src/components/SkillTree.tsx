@@ -68,17 +68,11 @@ export const SkillTree: React.FC<SkillTreeProps> = ({
 }) => {
   const [selectedNode, setSelectedNode] = useState<SkillNode | null>(null);
 
-  const isUnlocked = (node: SkillNode): boolean => {
-    if (node.requires.length === 0) return true;
-    return node.requires.every(req => completedTopics.includes(req)) && userXp >= node.xpRequired;
-  };
-
   const isCompleted = (node: SkillNode): boolean => completedTopics.includes(node.id);
 
-  const getNodeStatus = (node: SkillNode): 'completed' | 'unlocked' | 'locked' => {
+  const getNodeStatus = (node: SkillNode): 'completed' | 'unlocked' => {
     if (isCompleted(node)) return 'completed';
-    if (isUnlocked(node)) return 'unlocked';
-    return 'locked';
+    return 'unlocked';
   };
 
   const tiers = [0, 1, 2, 3, 4];
