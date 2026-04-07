@@ -37,6 +37,7 @@ import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
 import { SkillTree } from "@/components/SkillTree";
+import { TopicCompleteButton } from "@/components/TopicCompleteButton";
 import { ProgressDashboard } from "@/components/ProgressDashboard";
 import { DifficultyToggle } from "@/components/DifficultyToggle";
 import { Card, CardContent } from "@/components/ui/card";
@@ -224,10 +225,14 @@ const Index = () => {
       </section>
 
       {/* Skill Tree */}
-      <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
+      <div id="skill-tree">
+        <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
+      </div>
 
       {/* Progress Dashboard */}
-      <ProgressDashboard />
+      <div id="dashboard">
+        <ProgressDashboard />
+      </div>
 
       {/* Sticky Tabs with Difficulty Toggle */}
       <div className="max-w-7xl mx-auto px-4 pt-4">
@@ -250,30 +255,30 @@ const Index = () => {
           </div>
 
           <div className="pt-6 pb-8">
-            <TabsContent value="prompting" className="focus:outline-none"><PromptEngineeringTopics /></TabsContent>
-            <TabsContent value="agentic" className="focus:outline-none"><AgenticAITopics /></TabsContent>
-            <TabsContent value="rag" className="focus:outline-none"><RAGTopics /></TabsContent>
-            <TabsContent value="mcp" className="focus:outline-none"><MCPTopics /></TabsContent>
-            <TabsContent value="orchestrators" className="focus:outline-none"><OrchestratorTopics /></TabsContent>
-            <TabsContent value="guardrails" className="focus:outline-none"><GuardrailsTopics /></TabsContent>
-            <TabsContent value="genai" className="focus:outline-none"><GenAITopics /></TabsContent>
-            <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /></TabsContent>
-            <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /></TabsContent>
-            <TabsContent value="examples" className="focus:outline-none"><Examples /></TabsContent>
-            <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /></TabsContent>
-            <TabsContent value="coding" className="focus:outline-none"><CodingTopics /></TabsContent>
-            <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /></TabsContent>
-            <TabsContent value="finetuning" className="focus:outline-none"><LLMFineTuningTopics /></TabsContent>
-            <TabsContent value="nlp" className="focus:outline-none"><NLPTopics /></TabsContent>
-            <TabsContent value="vision" className="focus:outline-none"><ComputerVisionTopics /></TabsContent>
-            <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /></TabsContent>
-            <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /></TabsContent>
-            <TabsContent value="ai" className="focus:outline-none"><AITopics /></TabsContent>
-            <TabsContent value="memory" className="focus:outline-none"><MemorySystemsTopics /></TabsContent>
-            <TabsContent value="comparisons" className="focus:outline-none"><AIComparisonTopics /></TabsContent>
-            <TabsContent value="transformers" className="focus:outline-none"><TransformersTopics /></TabsContent>
-            <TabsContent value="embeddings" className="focus:outline-none"><EmbeddingsTopics /></TabsContent>
-            <TabsContent value="ethics" className="focus:outline-none"><AIEthicsTopics /></TabsContent>
+            <TabsContent value="prompting" className="focus:outline-none"><PromptEngineeringTopics /><TopicCompleteButton category="prompting" topicTitle="Prompt Engineering" /></TabsContent>
+            <TabsContent value="agentic" className="focus:outline-none"><AgenticAITopics /><TopicCompleteButton category="agentic" topicTitle="Agentic AI" /></TabsContent>
+            <TabsContent value="rag" className="focus:outline-none"><RAGTopics /><TopicCompleteButton category="rag" topicTitle="RAG Systems" /></TabsContent>
+            <TabsContent value="mcp" className="focus:outline-none"><MCPTopics /><TopicCompleteButton category="mcp" topicTitle="MCP Protocol" /></TabsContent>
+            <TabsContent value="orchestrators" className="focus:outline-none"><OrchestratorTopics /><TopicCompleteButton category="orchestrators" topicTitle="Orchestrators" /></TabsContent>
+            <TabsContent value="guardrails" className="focus:outline-none"><GuardrailsTopics /><TopicCompleteButton category="guardrails" topicTitle="Guardrails" /></TabsContent>
+            <TabsContent value="genai" className="focus:outline-none"><GenAITopics /><TopicCompleteButton category="genai" topicTitle="Generative AI" /></TabsContent>
+            <TabsContent value="models" className="focus:outline-none"><AIModelsTopics /><TopicCompleteButton category="models" topicTitle="AI Models" /></TabsContent>
+            <TabsContent value="techniques" className="focus:outline-none"><ExpandedTechniques /><TopicCompleteButton category="techniques" topicTitle="Techniques" /></TabsContent>
+            <TabsContent value="examples" className="focus:outline-none"><Examples /><TopicCompleteButton category="examples" topicTitle="Examples" /></TabsContent>
+            <TabsContent value="bestpractices" className="focus:outline-none"><EnhancedBestPractices /><TopicCompleteButton category="bestpractices" topicTitle="Best Practices" /></TabsContent>
+            <TabsContent value="coding" className="focus:outline-none"><CodingTopics /><TopicCompleteButton category="coding" topicTitle="Coding" /></TabsContent>
+            <TabsContent value="quantum" className="focus:outline-none"><QuantumTopics /><TopicCompleteButton category="quantum" topicTitle="Quantum AI" /></TabsContent>
+            <TabsContent value="finetuning" className="focus:outline-none"><LLMFineTuningTopics /><TopicCompleteButton category="finetuning" topicTitle="Fine-Tuning" /></TabsContent>
+            <TabsContent value="nlp" className="focus:outline-none"><NLPTopics /><TopicCompleteButton category="nlp" topicTitle="NLP" /></TabsContent>
+            <TabsContent value="vision" className="focus:outline-none"><ComputerVisionTopics /><TopicCompleteButton category="vision" topicTitle="Computer Vision" /></TabsContent>
+            <TabsContent value="mlops" className="focus:outline-none"><MLOpsTopics /><TopicCompleteButton category="mlops" topicTitle="MLOps" /></TabsContent>
+            <TabsContent value="deeplearning" className="focus:outline-none"><DeepLearningTopics /><TopicCompleteButton category="deeplearning" topicTitle="Deep Learning" /></TabsContent>
+            <TabsContent value="ai" className="focus:outline-none"><AITopics /><TopicCompleteButton category="ai" topicTitle="AI Basics" /></TabsContent>
+            <TabsContent value="memory" className="focus:outline-none"><MemorySystemsTopics /><TopicCompleteButton category="memory" topicTitle="Memory Systems" /></TabsContent>
+            <TabsContent value="comparisons" className="focus:outline-none"><AIComparisonTopics /><TopicCompleteButton category="comparisons" topicTitle="Comparisons" /></TabsContent>
+            <TabsContent value="transformers" className="focus:outline-none"><TransformersTopics /><TopicCompleteButton category="transformers" topicTitle="Transformers" /></TabsContent>
+            <TabsContent value="embeddings" className="focus:outline-none"><EmbeddingsTopics /><TopicCompleteButton category="embeddings" topicTitle="Embeddings" /></TabsContent>
+            <TabsContent value="ethics" className="focus:outline-none"><AIEthicsTopics /><TopicCompleteButton category="ethics" topicTitle="Ethics" /></TabsContent>
             <TabsContent value="aitools" className="focus:outline-none">
               <div className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

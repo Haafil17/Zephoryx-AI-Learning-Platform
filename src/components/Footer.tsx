@@ -69,11 +69,14 @@ export const Footer = () => {
             <h3 className="font-semibold mb-4 text-sm uppercase tracking-wider text-background/40">Learn</h3>
             <ul className="space-y-2.5 text-sm text-background/60">
               {[
+                { label: 'Skill Tree', id: 'skill-tree' },
+                { label: 'Dashboard', id: 'dashboard' },
                 { label: 'Techniques', id: 'techniques' },
                 { label: 'Examples', id: 'examples' },
                 { label: 'Best Practices', id: 'bestpractices' },
                 { label: 'AI Tools', id: 'aitools' },
                 { label: 'Videos', id: 'videos' },
+                { label: 'Learning Paths', id: 'learning-paths' },
               ].map(link => (
                 <li key={link.id}>
                   <button onClick={() => scrollToSection(link.id)} className="hover:text-background transition-colors">
