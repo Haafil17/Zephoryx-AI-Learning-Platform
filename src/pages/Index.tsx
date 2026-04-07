@@ -225,10 +225,14 @@ const Index = () => {
       </section>
 
       {/* Skill Tree */}
-      <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
+      <div id="skill-tree">
+        <SkillTree onNavigate={(tab) => setActiveTab(tab)} />
+      </div>
 
       {/* Progress Dashboard */}
-      <ProgressDashboard />
+      <div id="dashboard">
+        <ProgressDashboard />
+      </div>
 
       {/* Sticky Tabs with Difficulty Toggle */}
       <div className="max-w-7xl mx-auto px-4 pt-4">
