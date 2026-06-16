@@ -75,7 +75,7 @@ interface CertificationRow {
   created_at: string;
 }
 
-const ADMIN_EMAILS = ['haafil006@gmail.com', 'syedmusheer982@gmail.com', 'syedmuheer982@gmail.com'];
+
 
 const sidebarSections = [
   {
