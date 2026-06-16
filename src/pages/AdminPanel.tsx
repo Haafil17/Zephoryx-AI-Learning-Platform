@@ -75,7 +75,7 @@ interface CertificationRow {
   created_at: string;
 }
 
-const ADMIN_EMAILS = ['haafil006@gmail.com', 'syedmusheer982@gmail.com', 'syedmuheer982@gmail.com'];
+
 
 const sidebarSections = [
   {
@@ -140,6 +140,7 @@ const AdminPanel = () => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState<UserProfile[]>([]);
+  const [adminUserIds, setAdminUserIds] = useState<Set<string>>(new Set());
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [lessons, setLessons] = useState<LessonRow[]>([]);
   const [plans, setPlans] = useState<any[]>([]);
@@ -176,21 +177,23 @@ const AdminPanel = () => {
 
   const fetchAllData = async () => {
     setLoadingData(true);
-    const [profilesRes, subsRes, lessonsRes, plansRes, kbRes, certsRes] = await Promise.all([
+    const [profilesRes, subsRes, lessonsRes, plansRes, kbRes, certsRes, rolesRes] = await Promise.all([
       supabase.from('profiles').select('*').order('created_at', { ascending: false }),
       supabase.from('subscriptions').select('*').order('created_at', { ascending: false }),
       supabase.from('lessons').select('*').order('created_at', { ascending: false }),
       supabase.from('subscription_plans').select('*').order('price'),
       supabase.from('knowledge_base').select('id, title, content, category, created_at').order('created_at', { ascending: false }),
       supabase.from('certifications').select('*').order('required_xp'),
+      supabase.from('user_roles').select('user_id').eq('role', 'admin'),
     ]);
-    
+
     if (profilesRes.data) setUsers(profilesRes.data as UserProfile[]);
     if (subsRes.data) setSubscriptions(subsRes.data);
     if (lessonsRes.data) setLessons(lessonsRes.data as LessonRow[]);
     if (plansRes.data) setPlans(plansRes.data);
     if (kbRes.data) setKnowledgeBase(kbRes.data as KnowledgeItem[]);
     if (certsRes.data) setCertifications(certsRes.data as CertificationRow[]);
+    if (rolesRes.data) setAdminUserIds(new Set(rolesRes.data.map((r: any) => r.user_id)));
     setLoadingData(false);
   };
 
@@ -668,12 +671,12 @@ const AdminPanel = () => {
                             <Button variant="ghost" size="sm" className="h-7 w-7 p-0" onClick={() => setSelectedUser(selectedUser?.id === u.id ? null : u)}>
                               <Eye className="w-3.5 h-3.5" />
                             </Button>
-                            {!ADMIN_EMAILS.includes(u.email || '') && (
+                            {!adminUserIds.has(u.id) && (
                               <Button variant={u.blocked ? "outline" : "destructive"} size="sm" className="h-7 text-xs" onClick={() => handleBlockUser(u.id, !u.blocked)}>
                                 {u.blocked ? <><Unlock className="w-3 h-3 mr-1" /> Unblock</> : <><Lock className="w-3 h-3 mr-1" /> Block</>}
                               </Button>
                             )}
-                            {ADMIN_EMAILS.includes(u.email || '') && (
+                            {adminUserIds.has(u.id) && (
                               <Badge variant="secondary" className="gap-1 text-[10px]"><Shield className="w-2.5 h-2.5" /> Admin</Badge>
                             )}
                           </div>
@@ -1093,13 +1096,16 @@ const AdminPanel = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {ADMIN_EMAILS.map(email => (
-                <div key={email} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+              {users.filter(u => adminUserIds.has(u.id)).map(u => (
+                <div key={u.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
                   <Shield className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium">{email}</span>
+                  <span className="text-sm font-medium">{u.full_name || u.email || u.id.slice(0, 8)}</span>
                   <Badge variant="secondary" className="text-[10px] ml-auto">Admin</Badge>
                 </div>
               ))}
+              {users.filter(u => adminUserIds.has(u.id)).length === 0 && (
+                <p className="text-xs text-muted-foreground">No admin accounts found.</p>
+              )}
             </div>
           </CardContent>
         </Card>

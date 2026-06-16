@@ -5,7 +5,6 @@ import { supabase } from '@/integrations/supabase/client';
 interface LeaderboardUser {
   id: string;
   full_name: string | null;
-  email: string | null;
   avatar_url: string | null;
   xp: number;
   level: string;
@@ -20,7 +19,7 @@ export const useLeaderboard = () => {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('id, full_name, email, avatar_url, xp, level')
+          .select('id, full_name, avatar_url, xp, level')
           .order('xp', { ascending: false })
           .limit(5);
 
