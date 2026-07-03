@@ -366,6 +366,8 @@ const AdminPanel = () => {
         return <CertificationsTab />;
       case 'subscriptions':
         return <BillingTab />;
+      case 'api':
+        return <ApiKeysManager />;
       case 'settings':
         return <SettingsTab />;
       default:
