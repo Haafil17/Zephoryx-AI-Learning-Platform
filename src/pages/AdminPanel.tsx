@@ -101,6 +101,12 @@ const sidebarSections = [
     ],
   },
   {
+    label: 'DEVELOPERS',
+    items: [
+      { key: 'api', icon: KeyRound, label: 'Public API' },
+    ],
+  },
+  {
     label: 'SYSTEM',
     items: [
       { key: 'settings', icon: Settings, label: 'Settings' },
