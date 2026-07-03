@@ -19,9 +19,10 @@ import {
   BarChart3, BookOpen, Activity, TrendingUp, Clock, Download, Database,
   AlertTriangle, Eye, Mail, Phone, Star, Zap, Globe, Lock, Unlock,
   ChevronDown, ChevronUp, Copy, ExternalLink, Filter, Award,
-  LayoutDashboard, Settings, Menu, X, ChevronRight
+  LayoutDashboard, Settings, Menu, X, ChevronRight, KeyRound
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ApiKeysManager } from '@/components/ApiKeysManager';
 
 interface UserProfile {
   id: string;
@@ -98,6 +99,12 @@ const sidebarSections = [
     label: 'FINANCE',
     items: [
       { key: 'subscriptions', icon: CreditCard, label: 'Billing & Plans' },
+    ],
+  },
+  {
+    label: 'DEVELOPERS',
+    items: [
+      { key: 'api', icon: KeyRound, label: 'Public API' },
     ],
   },
   {
@@ -360,6 +367,8 @@ const AdminPanel = () => {
         return <CertificationsTab />;
       case 'subscriptions':
         return <BillingTab />;
+      case 'api':
+        return <ApiKeysManager />;
       case 'settings':
         return <SettingsTab />;
       default:
