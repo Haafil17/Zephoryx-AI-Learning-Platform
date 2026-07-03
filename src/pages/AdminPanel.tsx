@@ -19,7 +19,7 @@ import {
   BarChart3, BookOpen, Activity, TrendingUp, Clock, Download, Database,
   AlertTriangle, Eye, Mail, Phone, Star, Zap, Globe, Lock, Unlock,
   ChevronDown, ChevronUp, Copy, ExternalLink, Filter, Award,
-  LayoutDashboard, Settings, Menu, X, ChevronRight
+  LayoutDashboard, Settings, Menu, X, ChevronRight, KeyRound
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
