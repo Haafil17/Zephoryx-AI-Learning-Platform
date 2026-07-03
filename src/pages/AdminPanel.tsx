@@ -22,6 +22,7 @@ import {
   LayoutDashboard, Settings, Menu, X, ChevronRight, KeyRound
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ApiKeysManager } from '@/components/ApiKeysManager';
 
 interface UserProfile {
   id: string;
