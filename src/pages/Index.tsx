@@ -37,6 +37,7 @@ import { PromptBuilder } from "@/components/PromptBuilder";
 import { PromptAnalyzer } from "@/components/PromptAnalyzer";
 import { PromptTester } from "@/components/PromptTester";
 import { SkillTree } from "@/components/SkillTree";
+import { AILab } from "@/components/AILab";
 import { DifficultyToggle } from "@/components/DifficultyToggle";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -220,6 +221,11 @@ const Index = () => {
             <PromptTester />
           </div>
         </div>
+      </section>
+
+      {/* AI Lab — Mentor, Projects, Code Review, Roadmap, Skills, Portfolio */}
+      <section id="ai-lab" className="py-8 px-4 bg-gradient-to-br from-indigo-50/50 via-purple-50/30 to-pink-50/50 dark:from-indigo-950/30 dark:via-purple-950/20 dark:to-pink-950/30">
+        <AILab />
       </section>
 
       {/* Skill Tree */}
