@@ -97,10 +97,10 @@ const MentorPanel: React.FC = () => {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data } = await supabase.from("mentor_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      const { data } = await (supabase as any).from("mentor_profiles").select("*").eq("user_id", user.id).maybeSingle();
       if (!data) {
-        await supabase.from("mentor_profiles").insert({ user_id: user.id });
-        const { data: created } = await supabase.from("mentor_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        await (supabase as any).from("mentor_profiles").insert({ user_id: user.id });
+        const { data: created } = await (supabase as any).from("mentor_profiles").select("*").eq("user_id", user.id).maybeSingle();
         setProfile(created);
       } else setProfile(data);
     })();
@@ -124,7 +124,7 @@ const MentorPanel: React.FC = () => {
 
   const saveProfile = async () => {
     if (!user || !profile) return;
-    await supabase.from("mentor_profiles").update({
+    await (supabase as any).from("mentor_profiles").update({
       goal: profile.goal, notes: profile.notes,
       strengths: profile.strengths, weaknesses: profile.weaknesses,
       updated_at: new Date().toISOString(),
@@ -202,7 +202,7 @@ const MentorPanel: React.FC = () => {
 const ProjectsPanel: React.FC = () => {
   const [projects, setProjects] = useState<any[]>([]);
   useEffect(() => {
-    supabase.from("lab_projects").select("*").order("difficulty").then(({ data }) => setProjects(data || []));
+    (supabase as any).from("lab_projects").select("*").order("difficulty").then(({ data }) => setProjects(data || []));
   }, []);
   const diffColor = (d: string) => ({
     beginner: "bg-emerald-500/10 text-emerald-600 border-emerald-500/30",
@@ -246,7 +246,7 @@ const ReviewPanel: React.FC = () => {
   const [lastSubmissionId, setLastSubmissionId] = useState<string | null>(null);
 
   useEffect(() => {
-    supabase.from("lab_projects").select("*").order("difficulty").then(({ data }) => {
+    (supabase as any).from("lab_projects").select("*").order("difficulty").then(({ data }) => {
       setProjects(data || []);
       if (data?.[0]) { setProjectId(data[0].id); setCode(data[0].starter_code || ""); }
     });
@@ -345,7 +345,7 @@ const RoadmapPanel: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("lab_roadmaps").select("*").eq("user_id", user.id).maybeSingle().then(({ data }) => {
+    (supabase as any).from("lab_roadmaps").select("*").eq("user_id", user.id).maybeSingle().then(({ data }) => {
       if (data) { setRoadmap(data); setGoal(data.goal); }
     });
   }, [user]);
@@ -404,7 +404,7 @@ const SkillGraphPanel: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("skill_scores").select("*").eq("user_id", user.id).then(({ data }) => {
+    (supabase as any).from("skill_scores").select("*").eq("user_id", user.id).then(({ data }) => {
       const map: Record<string, number> = {};
       (data || []).forEach((s: any) => { map[s.skill] = s.score; });
       setScores(map);
@@ -447,7 +447,7 @@ const PortfolioPanel: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("lab_portfolio").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).then(({ data }) => setItems(data || []));
+    (supabase as any).from("lab_portfolio").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).then(({ data }) => setItems(data || []));
   }, [user]);
 
   if (selected) {
