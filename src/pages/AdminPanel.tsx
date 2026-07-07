@@ -39,12 +39,10 @@ interface Subscription {
   id: string;
   user_id: string;
   status: string;
-  current_period_start: string;
-  current_period_end: string;
+  current_period_end: string | null;
   plan_id: string;
-  payment_provider: string | null;
-  payment_id: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 interface LessonRow {
