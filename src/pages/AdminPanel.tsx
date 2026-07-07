@@ -39,12 +39,10 @@ interface Subscription {
   id: string;
   user_id: string;
   status: string;
-  current_period_start: string;
-  current_period_end: string;
+  current_period_end: string | null;
   plan_id: string;
-  payment_provider: string | null;
-  payment_id: string | null;
   created_at: string;
+  updated_at: string;
 }
 
 interface LessonRow {
@@ -1060,7 +1058,6 @@ const AdminPanel = () => {
                   <TableRow>
                     <TableHead className="text-xs">User</TableHead>
                     <TableHead className="text-xs">Status</TableHead>
-                    <TableHead className="text-xs">Provider</TableHead>
                     <TableHead className="text-xs">Period End</TableHead>
                     <TableHead className="text-xs">Created</TableHead>
                   </TableRow>
@@ -1072,14 +1069,13 @@ const AdminPanel = () => {
                       <TableRow key={s.id}>
                         <TableCell className="text-xs font-medium">{subUser?.email || s.user_id.slice(0, 8) + '...'}</TableCell>
                         <TableCell><Badge variant={s.status === 'active' ? 'default' : 'destructive'} className="text-[10px]">{s.status}</Badge></TableCell>
-                        <TableCell className="text-xs">{s.payment_provider || 'None'}</TableCell>
-                        <TableCell className="text-xs">{new Date(s.current_period_end).toLocaleDateString()}</TableCell>
+                        <TableCell className="text-xs">{s.current_period_end ? new Date(s.current_period_end).toLocaleDateString() : '—'}</TableCell>
                         <TableCell className="text-xs">{new Date(s.created_at).toLocaleDateString()}</TableCell>
                       </TableRow>
                     );
                   })}
                   {subscriptions.length === 0 && (
-                    <TableRow><TableCell colSpan={5} className="text-center py-8 text-muted-foreground text-sm">No subscriptions</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={4} className="text-center py-8 text-muted-foreground text-sm">No subscriptions</TableCell></TableRow>
                   )}
                 </TableBody>
               </Table>
