@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -50,24 +50,6 @@ export type Database = {
           request_count?: number
           revoked?: boolean
           updated_at?: string
-        }
-        Relationships: []
-      }
-      auth_settings_notes: {
-        Row: {
-          created_at: string | null
-          id: string
-          note: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          note: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          note?: string
         }
         Relationships: []
       }
@@ -134,39 +116,253 @@ export type Database = {
         }
         Relationships: []
       }
+      lab_portfolio: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_public: boolean | null
+          live_url: string | null
+          readme: string
+          resume_bullet: string
+          submission_id: string | null
+          tags: Json | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_public?: boolean | null
+          live_url?: string | null
+          readme: string
+          resume_bullet: string
+          submission_id?: string | null
+          tags?: Json | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_public?: boolean | null
+          live_url?: string | null
+          readme?: string
+          resume_bullet?: string
+          submission_id?: string | null
+          tags?: Json | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_portfolio_submission_id_fkey"
+            columns: ["submission_id"]
+            isOneToOne: false
+            referencedRelation: "lab_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lab_projects: {
+        Row: {
+          brief: string
+          created_at: string | null
+          difficulty: string
+          id: string
+          language: string
+          rubric: Json
+          slug: string
+          starter_code: string | null
+          title: string
+          topic: string
+        }
+        Insert: {
+          brief: string
+          created_at?: string | null
+          difficulty?: string
+          id?: string
+          language?: string
+          rubric?: Json
+          slug: string
+          starter_code?: string | null
+          title: string
+          topic: string
+        }
+        Update: {
+          brief?: string
+          created_at?: string | null
+          difficulty?: string
+          id?: string
+          language?: string
+          rubric?: Json
+          slug?: string
+          starter_code?: string | null
+          title?: string
+          topic?: string
+        }
+        Relationships: []
+      }
+      lab_roadmaps: {
+        Row: {
+          current_week: number
+          goal: string
+          plan: Json
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          current_week?: number
+          goal?: string
+          plan?: Json
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          current_week?: number
+          goal?: string
+          plan?: Json
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      lab_submissions: {
+        Row: {
+          code: string
+          created_at: string | null
+          id: string
+          project_id: string
+          review: Json | null
+          score: number | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          code: string
+          created_at?: string | null
+          id?: string
+          project_id: string
+          review?: Json | null
+          score?: number | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          code?: string
+          created_at?: string | null
+          id?: string
+          project_id?: string
+          review?: Json | null
+          score?: number | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lab_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "lab_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lessons: {
         Row: {
           category: string
-          content: string
-          created_at: string
+          content: string | null
+          created_at: string | null
           description: string | null
           difficulty: string
           id: string
           title: string
-          updated_at: string
+          updated_at: string | null
           xp_reward: number
         }
         Insert: {
           category?: string
-          content: string
-          created_at?: string
+          content?: string | null
+          created_at?: string | null
           description?: string | null
           difficulty?: string
           id?: string
           title: string
-          updated_at?: string
+          updated_at?: string | null
           xp_reward?: number
         }
         Update: {
           category?: string
-          content?: string
-          created_at?: string
+          content?: string | null
+          created_at?: string | null
           description?: string | null
           difficulty?: string
           id?: string
           title?: string
-          updated_at?: string
+          updated_at?: string | null
           xp_reward?: number
+        }
+        Relationships: []
+      }
+      mentor_events: {
+        Row: {
+          created_at: string | null
+          id: string
+          kind: string
+          meta: Json | null
+          summary: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          kind: string
+          meta?: Json | null
+          summary: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          kind?: string
+          meta?: Json | null
+          summary?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mentor_profiles: {
+        Row: {
+          created_at: string | null
+          goal: string | null
+          interests: Json | null
+          notes: string | null
+          strengths: Json | null
+          updated_at: string | null
+          user_id: string
+          weaknesses: Json | null
+        }
+        Insert: {
+          created_at?: string | null
+          goal?: string | null
+          interests?: Json | null
+          notes?: string | null
+          strengths?: Json | null
+          updated_at?: string | null
+          user_id: string
+          weaknesses?: Json | null
+        }
+        Update: {
+          created_at?: string | null
+          goal?: string | null
+          interests?: Json | null
+          notes?: string | null
+          strengths?: Json | null
+          updated_at?: string | null
+          user_id?: string
+          weaknesses?: Json | null
         }
         Relationships: []
       }
@@ -209,68 +405,86 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_scores: {
+        Row: {
+          id: string
+          score: number
+          skill: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          score?: number
+          skill: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          score?: number
+          skill?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscription_plans: {
         Row: {
-          created_at: string
+          created_at: string | null
           display_name: string
-          features: Json
+          features: Json | null
           id: string
           name: string
           price: number
+          updated_at: string | null
         }
         Insert: {
-          created_at?: string
+          created_at?: string | null
           display_name: string
-          features?: Json
+          features?: Json | null
           id?: string
           name: string
           price?: number
+          updated_at?: string | null
         }
         Update: {
-          created_at?: string
+          created_at?: string | null
           display_name?: string
-          features?: Json
+          features?: Json | null
           id?: string
           name?: string
           price?: number
+          updated_at?: string | null
         }
         Relationships: []
       }
       subscriptions: {
         Row: {
-          created_at: string
-          current_period_end: string
-          current_period_start: string
+          created_at: string | null
+          current_period_end: string | null
           id: string
-          payment_id: string | null
-          payment_provider: string | null
           plan_id: string
           status: string
-          updated_at: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
-          created_at?: string
-          current_period_end?: string
-          current_period_start?: string
+          created_at?: string | null
+          current_period_end?: string | null
           id?: string
-          payment_id?: string | null
-          payment_provider?: string | null
           plan_id: string
           status?: string
-          updated_at?: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
-          created_at?: string
-          current_period_end?: string
-          current_period_start?: string
+          created_at?: string | null
+          current_period_end?: string | null
           id?: string
-          payment_id?: string | null
-          payment_provider?: string | null
           plan_id?: string
           status?: string
-          updated_at?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -286,29 +500,29 @@ export type Database = {
       usage_tracking: {
         Row: {
           count: number
-          created_at: string
-          date: string
+          created_at: string | null
           feature: string
           id: string
-          updated_at: string
+          reset_at: string | null
+          updated_at: string | null
           user_id: string
         }
         Insert: {
           count?: number
-          created_at?: string
-          date?: string
+          created_at?: string | null
           feature: string
           id?: string
-          updated_at?: string
+          reset_at?: string | null
+          updated_at?: string | null
           user_id: string
         }
         Update: {
           count?: number
-          created_at?: string
-          date?: string
+          created_at?: string | null
           feature?: string
           id?: string
-          updated_at?: string
+          reset_at?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -347,21 +561,24 @@ export type Database = {
       }
       user_lesson_progress: {
         Row: {
-          completed_at: string
+          completed_at: string | null
+          created_at: string | null
           id: string
           lesson_id: string
           user_id: string
           xp_earned: number
         }
         Insert: {
-          completed_at?: string
+          completed_at?: string | null
+          created_at?: string | null
           id?: string
           lesson_id: string
           user_id: string
           xp_earned?: number
         }
         Update: {
-          completed_at?: string
+          completed_at?: string | null
+          created_at?: string | null
           id?: string
           lesson_id?: string
           user_id?: string
